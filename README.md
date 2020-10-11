@@ -1,5 +1,7 @@
 # Overview
 
+![Thematic Image](https://w.wallhaven.cc/full/4x/wallhaven-4xgw53.jpg)
+
 A Python library for working with ORCA
 
 This project was generated with [cookiecutter](https://github.com/audreyr/cookiecutter) using [jacebrowning/template-python](https://github.com/jacebrowning/template-python).
@@ -15,7 +17,7 @@ This project was generated with [cookiecutter](https://github.com/audreyr/cookie
 
 ## Requirements
 
-* Python 3.8+
+- Python 3.8+
 
 ## Installation
 
