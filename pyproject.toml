@@ -13,3 +13,7 @@ readme = "README.rst"
 [tool.poetry.dependencies]
 python = "*"
 click = ">=7.0"
+
+[tool.dephell.main]
+from = {format = "poetry", path = "pyproject.toml"}
+to = {format = "setuppy", path = "setup.py"}
