@@ -1,18 +1,38 @@
-[tool]
 [tool.poetry]
 name = "wailord"
 version = "0.0.1"
 description = "Wailord is a python library to interact with ORCA"
 license = "GNU General Public License v3"
-keywords = ["wailord"]
-classifiers = ["Development Status :: 2 - Pre-Alpha", "Intended Audience :: Developers", "License :: OSI Approved :: GNU General Public License v3 (GPLv3)", "Natural Language :: English", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3.5", "Programming Language :: Python :: 3.6", "Programming Language :: Python :: 3.7", "Programming Language :: Python :: 3.8"]
-homepage = "https://github.com/HaoZeke/wailord"
 authors = ["Rohit Goswami <rog32@hi.is>"]
+keywords = ["wailord", "quantum chemistry", "orca"]
+classifiers = ["Development Status :: 2 - Pre-Alpha", "Intended Audience :: Developers", "License :: OSI Approved :: GNU General Public License v3 (GPLv3)", "Natural Language :: English", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3.5", "Programming Language :: Python :: 3.6", "Programming Language :: Python :: 3.7", "Programming Language :: Python :: 3.8"]
+
+homepage = "https://github.com/HaoZeke/wailord"
+repository = "https://github.com/HaoZeke/wailord"
+documentation = "https://github.com/HaoZeke/wailord"
+
 readme = "README.rst"
 
 [tool.poetry.dependencies]
-python = "*"
+python = "^3.7"
 click = ">=7.0"
+
+[tool.poetry.dev-dependencies]
+check-manifest = "*"
+pytest = "^4.6"
+
+[tool.poetry.extras]
+test = ["coverage", "pytest"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry.urls]
+issues = "https://github.com/HaoZeke/wailord/issues"
+
+[tool.poetry.scripts]
+run = "wailord.cli:main"
 
 [tool.dephell.main]
 from = {format = "poetry", path = "pyproject.toml"}
