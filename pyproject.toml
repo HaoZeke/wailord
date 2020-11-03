@@ -20,6 +20,8 @@ ase = "^3.20.1"
 pandas = "^1.1.3"
 parsimonious = "^0.8.1"
 konfik = "^2.0.0"
+cookiecutter = "^1.7.2"
+Jinja2 = "^2.11.2"
 
 [tool.poetry.dev-dependencies]
 check-manifest = "*"
