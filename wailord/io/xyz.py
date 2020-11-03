@@ -11,7 +11,8 @@ Example:
 Some more details.
 
 Todo:
-    * For module TODOs
+    * Make tests
+    * Return interesting things
     * You have to also use ``sphinx.ext.todo`` extension
 
 .. _Google Python Style Guide:
@@ -36,14 +37,17 @@ grammar = Grammar(
     ws              = ~"\s*"
     """
 )
+"""grammar: The xyz grammar.
 
+Recall that by default the format `specification for an xyz``
+The docstring may span multiple lines. The type may optionally be specified
+on the first line, separated by a colon.
+"""
 class xyzVisitor(NodeVisitor):
+
     def visit_meta(self, node, visited_children):
         """ Returns the overall output. """
-        output = {}
-        print("meta")
-        print(node.text)
-        return output
+        return node.text
     def visit_coord_block(self, node, visited_children):
         """ Makes a dict of the section (as key) and the key/value pairs. """
         print("coord_block")

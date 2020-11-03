@@ -1,21 +1,11 @@
 import pandas as pd
 import wailord.io as waio
+from wailord.utils import get_project_root
 
-# data = open("te.data").read()
-# sv = waio.sv.SchoolVisitor()
-# tree = waio.sv.grammar.parse(data)
-# sv.visit(tree)
-# df = pd.DataFrame.from_records(sv.output, columns = ['School', 'Grade', 'Student number', 'Name', 'Score'])
-# print(df)
+DATA_DIR = get_project_root() / "tests" / "data"
 
-# data = open("h2mol.xyz").readlines()
-# data.pop(1)
-# data = ''.join(map(str, data))
-# sx = waio.xyz.xyzVisitor()
-# tree = waio.xyz.grammar.parse(data)
-# outp = sx.visit(tree)
-sx = waio.xyz.xyzIO("h2mol.xyz")
-outp = sx.read()
-print(outp)
-# df = pd.DataFrame.from_records(sv.output, columns = ['School', 'Grade', 'Student number', 'Name', 'Score'])
-# print(df)
+def test_xyz():
+    # Make this more general
+    sx = waio.xyz.xyzIO(DATA_DIR/"h2mol.xyz")
+    outp = sx.read().split('\n')
+    assert len(outp)==4 # Fix later
