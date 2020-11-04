@@ -1,0 +1,37 @@
+#+title: Wailord Development Notes
+#+subtitle: Personal ramblings
+* Concept
+The idea is to work with ~orca~ in a more natural manner.
+** Experiments
+A ~config~ file is scanned and a series of ~orca~ input files are generated in a combinatorial manner.
+*** TODO Handle auto-insertion of results
+A common design pattern is the ability to use the results of one calculation in a higher level calculation.
+**** Concepts
+- Need to poll the system to check outputs
+  + Output validation will be implemented for the helpers
+- Or use a daemon
+  + Like ~FRESHS~ cite:kratzerFlexibleRareEvent2014
+- Try not to recreate ~aiida~ cite:huberAiiDAScalableComputational2020
+  + Or work with it
+** Hacks
+The hacks are essentially pre-fabricated single-use experiments to be used for simple setups.
+- The library functions can be used in conjunction with these to insert results
+- This is more of an interactive use system
+  + Templates are either ~cookiecutter~ or ~jinja~
+* Features
+** TODO Parsing
+One of the motivating goals was the perceived need to develop a formal grammar for each of the I/O operations, so as to provide more robust error handling. A *goal* is to support all formats considered by ~ase~ cite:larsenAtomicSimulationEnvironment2017.
+*** TODO Output
+On a related note, the existing output structure of ~orca~ is neither amenable to high density storage nor particularly useful for programmatic access.
+- This will be improved by the formal grammar
+- Long term, though it would be better to shift to ~hdf5~
+** TODO Analysis
+A library is only as good as the results which can been obtained with it. With this in mind, it is expected that the documentation, following best practices, will include examples of
+- model fitting
+  + ML!!! (GPyTorch?)
+- statistical tests of significance
+  + DFT and HF (+Post HF)
+** Structure
+Well-structured code is one of the goals.
+*** TODO Full test coverage
+*** TODO Maximal documentation coverage
