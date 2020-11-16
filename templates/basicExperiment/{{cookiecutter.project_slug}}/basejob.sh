@@ -7,7 +7,7 @@
 #THIS JOB SCRIPT DOES NOT SUPPORT PARALLEL COMPUTATIONS USING ORCA
 
 export job=$SLURM_JOB_NAME
-export orcadir=/home/via9/orca_4_2_1_linux_x86-64_openmpi314/
+export orcadir="{{cookiecutter.orca_root}}"
 scratchlocation=/scratch
 
 echo $HOSTNAME

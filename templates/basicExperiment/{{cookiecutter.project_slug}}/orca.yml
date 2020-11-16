@@ -25,3 +25,4 @@ extra: |
     Print[ P_Basis ] 2
     Print[ P_MOs ] 1
     end
+jobscript: "basejob.sh"
