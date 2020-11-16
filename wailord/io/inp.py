@@ -68,6 +68,13 @@ class inpParser:
             self.parse_qc()
 
     def genharness(self, basename, slow=False):
+        """
+        Generate a harness file.
+
+        Args:
+            :param basename: The folder into which the harness should be put.
+            :param slow: A parameter used to ensure better practices, rate limits to submitting 10 files every 30 seconds
+        """
         with open(f"{basename.parent}/harness.sh", "w") as op:
             op.write("#!/usr/bin/env bash\n")
             op.write("export cur_file=$(realpath $0) \n")
