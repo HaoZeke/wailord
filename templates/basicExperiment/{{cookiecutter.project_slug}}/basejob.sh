@@ -8,7 +8,13 @@
 
 export job=$SLURM_JOB_NAME
 export orcadir="{{cookiecutter.orca_root}}"
-scratchlocation=/scratch
+export cur_dir=$(realpath $0)
+
+if [ ! -d "/scratch" ]; then
+	scratchlocation=/tmp
+else
+	scratchlocation=/scratch
+fi
 
 echo $HOSTNAME
 
@@ -28,7 +34,7 @@ if [ ! -d "$tdir" ]; then
 	exit
 fi
 
-cp $SLURM_SUBMIT_DIR/*.inp $tdir/
+cp *.inp $tdir/
 cd $tdir
 
 echo "Job execution start: $(date)"

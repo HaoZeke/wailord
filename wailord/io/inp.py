@@ -21,6 +21,7 @@ Todo:
 
 """
 import wailord.io as waio
+import wailord.utils as wau
 
 import shutil
 import itertools as itertt
@@ -67,10 +68,16 @@ class inpParser:
             self.parse_qc()
 
     def genharness(self, basename, slow=False):
-        with open(f"{basename}/harness.sh", "w") as op:
+        with open(f"{basename.parent}/harness.sh", "w") as op:
             op.write("#!/usr/bin/env bash\n")
+            op.write("export cur_file=$(realpath $0) \n")
+            op.write('export cur_dir=$(dirname "${cur_file}")\n')
             for num, script in enumerate(self.scripts, start=1):
-                op.write(f"qsub ./{script}")
+                op.write(f'cd "./{script.parents[0]}"')
+                op.write("\n")
+                op.write(f"qsub './{script.name}'")
+                op.write("\n")
+                op.write("cd $cur_dir\n")
                 op.write("\n")
                 if slow == True:
                     if num % 10 == 0:
@@ -125,13 +132,21 @@ class inpParser:
         }
         self.writeinp(tmpconf)
         self.putscript(
-            to_loc=path, from_loc=self.conf_path.parent / self.konfik.config.jobscript
+            to_loc=path,
+            from_loc=self.conf_path.parent / self.konfik.config.jobscript,
+            slug=f"{tmpconf['basis']}_{tmpconf['style']}",
         )
 
-    def putscript(self, from_loc, to_loc):
+    def putscript(self, from_loc, to_loc, slug):
         """Copies the jobscript"""
         shutil.copy(from_loc, to_loc)
-        self.scripts.append(to_loc / self.konfik.config.jobscript)
+        scriptname = to_loc / self.konfik.config.jobscript
+        rep_obj = {
+            "prev": ["ORCA_CALCULATION"],
+            "to": [slug],
+        }
+        wau.repkey(scriptname, rep_obj)
+        self.scripts.append(scriptname)
 
     def writeinp(self, confobj, extralines=None):
         """Writes an input file. Minimally should have:
