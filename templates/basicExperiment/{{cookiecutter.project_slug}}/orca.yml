@@ -3,10 +3,10 @@ qc:
     active: True
     # RHF by default can be ["RHF", "UHF", "Both"]
     # Multiple keys generate more inputs
-    style: ["RHF"]
+    style: ["RHF", "UHF"]
     # Used to generate a series of input files
     # Each key is a new file
-    calculations: ["OPT", "EGRAD"]
+    calculations: ["OPT normalprint", "EGRAD"]
     basis_sets:
         - 6-31G
         - 6-311G
@@ -20,3 +20,8 @@ xyz: "inp.xyz"
 spin:
     - "0 3"
     - "0 4"
+extra: |
+    %output
+    Print[ P_Basis ] 2
+    Print[ P_MOs ] 1
+    end
