@@ -1,0 +1,8 @@
+{
+    "project_slug": "sluggy",
+    "project_name": "default_name",
+    "desc": "Short Description",
+    "author": "Rohit",
+    "year": "2020",
+    "license": ["MIT","MPLv2","Private"]
+}
