@@ -22,9 +22,10 @@ Todo:
 """
 import wailord.io as waio
 
+import shutil
+import itertools as itertt
 from pathlib import Path
 from operator import itemgetter
-import itertools as itertt
 
 from konfik import Konfik
 
@@ -72,10 +73,6 @@ class inpParser:
         )
         self.qcopts = qcList
 
-    def show_qcopts(self):
-        print(self.qcopts)
-        return
-
     def gendir_qc(self, basename=Path("wailordFold"), extra=None):
         """Function to generate QC folder structure recursively"""
         if extra != None:
@@ -115,6 +112,13 @@ class inpParser:
             "name": path / "orca.inp",
         }
         self.writeinp(tmpconf)
+        self.putscript(
+            to_loc=path, from_loc=self.conf_path.parent / self.konfik.config.jobscript
+        )
+
+    def putscript(self, from_loc, to_loc):
+        """Copies the jobscript"""
+        shutil.copy(from_loc, to_loc)
 
     def writeinp(self, confobj, extralines=None):
         """Writes an input file. Minimally should have:
