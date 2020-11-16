@@ -114,6 +114,7 @@ def get_e(orcaoutdat, basis, system):
 
 
 def getBL(dat, x, y, z, indi=[0, 1]):
+    """Takes in a data frame of xyz coordinates and uses it to calculate the bond length"""
     v1 = np.array(
         [dat.x[indi[0]].magnitude, dat.y[indi[0]].magnitude, dat.z[indi[0]].magnitude]
     )
@@ -124,6 +125,8 @@ def getBL(dat, x, y, z, indi=[0, 1]):
 
 
 def getBA(dat, x, y, z, indi=[0, 1, 2]):
+    """Takes in a data frame of xyz coordinates and uses it to generate the
+    plane angle, indices are used such that the first is the relative center"""
     v1 = np.array(
         [dat.x[indi[0]].magnitude, dat.y[indi[0]].magnitude, dat.z[indi[0]].magnitude]
     )
@@ -133,11 +136,15 @@ def getBA(dat, x, y, z, indi=[0, 1, 2]):
     v3 = np.array(
         [dat.x[indi[2]].magnitude, dat.y[indi[2]].magnitude, dat.z[indi[2]].magnitude]
     )
-    return Q_(vg.angle(v1, v2, v3), "degrees")
+    v12 = v2 - v1
+    v13 = v3 - v1
+    return Q_(vg.angle(v12, v13, units="deg"), "degrees")
 
 
-def genEnergySet(rootdir, latex=False, full=False):
-    """Takes in a Path object, and optionally returns a TeX table or a full dataset with the filenames and geometries"""
+def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASIS):
+    """Takes in a Path object, and typically returns bond angles and energies.
+    Optionally returns a TeX table or a full dataset with the filenames and
+    geometries"""
     outs = []
     for root, dirs, files in os.walk(rootdir.resolve()):
         for filename in files:
@@ -146,16 +153,28 @@ def genEnergySet(rootdir, latex=False, full=False):
     outdat = pd.DataFrame(data=outs)
     basis_type = CategoricalDtype(categories=order_basis, ordered=True)
     outdat["basis"] = outdat["basis"].astype(basis_type)
+    # print(outdat.basis[0])
+    # print(pd.DataFrame(outdat.fGeom[0]))
+    outdat["angle"] = outdat.fGeom.apply(
+        lambda geom: getBA(
+            pd.DataFrame(geom),
+            pd.DataFrame(geom).x,
+            pd.DataFrame(geom).y,
+            pd.DataFrame(geom).z,
+            [0, 1, 2],
+        )
+    )
     outdat.sort_values(by=["basis"], ignore_index=True, inplace=True)
     outdat.final_energy = outdat.final_energy.apply(
         lambda x: np.around(x, decimals=deci)
     )
+    outdat.angle = outdat.angle.apply(lambda x: np.around(x, decimals=deci))
     if latex == True:
         return outdat.drop(["filename", "fGeom"], axis=1).to_latex(
-            caption="Calculated systems at both basis sets", index=False
+            caption="Calculated systems at all basis sets", index=True
         )
-    elif full == False:
-        outdat = pd.DataFrame(data=outs).drop(["filename", "fGeom"], axis=1)
+    elif full == True:
+        return outdat
     else:
-        pass
+        outdat.drop(["filename", "fGeom"], axis=1, inplace=True)
     return outdat
