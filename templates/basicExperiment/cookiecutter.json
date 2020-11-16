@@ -4,5 +4,8 @@
     "desc": "Short Description",
     "author": "Rohit",
     "year": "2020",
-    "license": ["MIT","MPLv2","Private"]
+    "license": ["MIT","MPLv2","Private"],
+    "orca_root": "/home/via9/orca_4_2_1_linux_x86-64_openmpi314/",
+    "orca_yml": "orca.yml",
+    "inp_xyz": "inp.xyz"
 }
