@@ -112,17 +112,19 @@ class inpParser:
             self.gendir_qcbasis(path / cal)
 
     def gendir_qcbasis(self, path):
-        """Generates the final of input files"""
+        """Generates the final of input files. Note that the folders will have +
+        replaced by P and * by 8"""
         for base in self.konfik.config.qc.basis_sets:
-            Path.mkdir(path / base, parents=True, exist_ok=True)
-            self.geninp(path / base)
+            bas = base.replace("+", "P").replace("*", "8")
+            Path.mkdir(path / bas, parents=True, exist_ok=True)
+            self.geninp(path / bas)
 
     def geninp(self, path):
         """Uses the path to generate details for an input file"""
         tmpstr = str(path).split("/")
         tmpconf = {
             # Reverse the function call order
-            "basis": tmpstr[-1],
+            "basis": tmpstr[-1].replace("P", "+").replace("8", "*"),
             "calc": tmpstr[-2],
             "spin": " ".join(
                 list(itertt.chain.from_iterable(tmpstr[-3].replace("spin_", "")))
