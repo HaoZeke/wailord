@@ -26,6 +26,7 @@ Todo:
 import re, itertools, sys, os
 from pathlib import Path
 from collections import namedtuple
+from pandas.api.types import CategoricalDtype
 
 from pint import UnitRegistry
 import numpy as np
@@ -37,6 +38,19 @@ Q_ = ureg.Quantity
 
 inpcart = namedtuple("inpcart", "atype x y z")
 orcaout = namedtuple("orcaout", "final_energy fGeom basis filename system")
+
+ORDERED_BASIS = [
+    "STO-3G",
+    "3-21G",
+    "6-31G",
+    "6-311G",
+    "6-311G*",
+    "6-311G**",
+    "6-311++G**",
+    "6-311++G(2d,2p)",
+    "6-311++G(2df,2pd)",
+    "6-311++G(3df,3pd)",
+]
 
 
 def parseOut(filename, plotter=False):
@@ -130,6 +144,12 @@ def genEnergySet(rootdir, latex=False, full=False):
             if "out" in filename and "slurm" not in filename:
                 outs.append(parseOut(f"{root}/{filename}"))
     outdat = pd.DataFrame(data=outs)
+    basis_type = CategoricalDtype(categories=order_basis, ordered=True)
+    outdat["basis"] = outdat["basis"].astype(basis_type)
+    outdat.sort_values(by=["basis"], ignore_index=True, inplace=True)
+    outdat.final_energy = outdat.final_energy.apply(
+        lambda x: np.around(x, decimals=deci)
+    )
     if latex == True:
         return outdat.drop(["filename", "fGeom"], axis=1).to_latex(
             caption="Calculated systems at both basis sets", index=False
