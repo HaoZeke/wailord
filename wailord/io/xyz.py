@@ -23,7 +23,7 @@ Todo:
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
 
-grammar = Grammar(
+grammar_xyz = Grammar(
     r"""
     meta = natoms ws coord_block ws?
     natoms = number
@@ -37,7 +37,7 @@ grammar = Grammar(
     ws              = ~"\\s*"
     """
 )
-"""grammar: The xyz grammar.
+"""grammar_xyz: The xyz grammar.
 
 Recall that by default the format `specification for an xyz``
 The docstring may span multiple lines. The type may optionally be specified
@@ -102,7 +102,7 @@ class xyzIO:
             dat.pop(1)  # Kill comment line
             dat = "".join(map(str, dat))
             sx = xyzVisitor()
-            tree = grammar.parse(dat)
+            tree = grammar_xyz.parse(dat)
             sx.visit(tree)
             self.xyzdat = sx
             return
