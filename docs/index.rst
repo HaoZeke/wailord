@@ -8,7 +8,7 @@ Welcome to Wailord's documentation!
    readme
    installation
    usage
-   modules
+   source/modules
    contributing
    authors
    history
