@@ -14,6 +14,9 @@ DATA_DIR = get_project_root() / "tests" / "data"
 
 
 def printDiff(f1, f2):
+    """
+    Helper function to diagnose errors between files
+    """
     diff = difflib.Differ()
     with open(f1) as fo1:
         f1t = fo1.read()
