@@ -39,7 +39,7 @@ class inpParser:
         self.extra = None
         self.conf_path = filename
         self.konfik = Konfik(config_path=filename)
-        self.qcopts = []
+        self.scripts = []
 
     def __repr__(self):
         return f"{self.konfik.show_config()}"
@@ -66,6 +66,17 @@ class inpParser:
         if self.qc.active == True:
             self.parse_qc()
 
+    def genharness(self, basename, slow=False):
+        with open(f"{basename}/harness.sh", "w") as op:
+            op.write("#!/usr/bin/env bash\n")
+            for num, script in enumerate(self.scripts, start=1):
+                op.write(f"qsub ./{script}")
+                op.write("\n")
+                if slow == True:
+                    if num % 10 == 0:
+                        op.write('echo("Slowing down!")\n')
+                        op.write("sleep 30s\n")
+
     def parse_qc(self):
         print("Parsing QC")
         qcList = list(
@@ -80,6 +91,7 @@ class inpParser:
             self.extra = extra
         for styl in self.konfik.config.qc.style:
             self.gendir_qcspin(basename / styl)
+        self.genharness(basename)
 
     def gendir_qcspin(self, path):
         """Generates the style folders"""
@@ -119,6 +131,7 @@ class inpParser:
     def putscript(self, from_loc, to_loc):
         """Copies the jobscript"""
         shutil.copy(from_loc, to_loc)
+        self.scripts.append(to_loc / self.konfik.config.jobscript)
 
     def writeinp(self, confobj, extralines=None):
         """Writes an input file. Minimally should have:
