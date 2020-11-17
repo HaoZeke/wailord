@@ -72,8 +72,10 @@ class inpParser:
         Generate a harness file.
 
         Args:
-            :param basename: The folder into which the harness should be put.
-            :param slow: A parameter used to ensure better practices, rate limits to submitting 10 files every 30 seconds
+            basename (str): The folder into which the harness should be put.
+            slow (bool): A parameter used to ensure better practices, rate limits to submitting 10 files every 30 seconds
+        Returns:
+            Nothing: This generates a file, and nothing else
         """
         with open(f"{basename.parent}/harness.sh", "w") as op:
             op.write("#!/usr/bin/env bash\n")
