@@ -30,6 +30,11 @@ Sphinx = "^3.3.1"
 sphinxcontrib-apidoc = "^0.3.0"
 sphinx-library = "^1.1.2"
 sphinx-autobuild = "^2020.9.1"
+sphinx-proof = "^0.0.3"
+sphinx-copybutton = "^0.3.1"
+sphinxcontrib-doxylink = "^1.6.1"
+sphinx-sitemap = "^2.2.0"
+sphinx-togglebutton = "^0.2.3"
 
 [tool.poetry.dev-dependencies]
 check-manifest = "*"
