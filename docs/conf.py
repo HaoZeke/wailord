@@ -99,7 +99,21 @@ todo_include_todos = True
 # a list of builtin themes.
 #
 # html_theme = "alabaster"
-html_theme = "nervproject"
+# html_theme = "nervproject"
+html_theme = "library"
+
+# Sidebars
+html_sidebars = {
+    "**": [
+        "about.html",  # Project name, description, etc.
+        "searchbox.html",  # Search.
+        "extralinks.html",  # Links specified in theme options.
+        "globaltoc.html",  # Global table of contents.
+        "localtoc.html",  # Contents of the current page.
+        "readingmodes.html",  # Light/sepia/dark color schemes.
+        "sponsors.html",  # Fancy sponsor links.
+    ]
+}
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
