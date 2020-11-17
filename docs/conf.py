@@ -43,7 +43,16 @@ extensions = [
     "sphinx.ext.mathjax",  # Need math support
     "sphinx.ext.githubpages",  # Puts the .nojekyll and CNAME files
     "sphinxcontrib.apidoc",  # Automatically sets up sphinx-apidoc
+    "sphinxcontrib.apidoc",  # Automatically sets up sphinx-apidoc
+    "sphinx.proof",  # Future proofing
+    "sphinx_copybutton",  # Let there be plagiarism!
+    "sphinx-sitemap",  # Always a good idea
+    "sphinx_togglebutton",  # Toggles reduce clutter
+    "sphinxcontrib-doxylink",  # Configure and link to d-SEAMS https://sphinxcontrib-doxylink.readthedocs.io/en/stable/
 ]
+
+# Sitemap Config
+html_baseurl = "https://wailord.rgoswami.me/"
 
 # MathJax Configuration
 mathjax_config = {
