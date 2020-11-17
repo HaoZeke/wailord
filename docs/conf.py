@@ -28,7 +28,7 @@ import wailord
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-# needs_sphinx = '1.0'
+needs_sphinx = "2.4"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
@@ -44,6 +44,12 @@ extensions = [
     "sphinx.ext.githubpages",  # Puts the .nojekyll and CNAME files
     "sphinxcontrib.apidoc",  # Automatically sets up sphinx-apidoc
 ]
+
+# MathJax Configuration
+mathjax_config = {
+    "extensions": ["tex2jax.js"],
+    "jax": ["input/TeX", "output/HTML-CSS"],
+}
 
 # API Doc settings
 apidoc_module_dir = "../"
