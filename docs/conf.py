@@ -33,13 +33,16 @@ import wailord
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.todo",
-    "sphinx.ext.imgconverter",
-    "sphinxcontrib.apidoc",
+    "sphinx.ext.autodoc",  # Consumes docstrings
+    "sphinx.ext.napoleon",  # Allows for Google Style Docs
+    "sphinx.ext.viewcode",  # Links to source code
+    "sphinx.ext.intersphinx",  # Connects to other documentation
+    "sphinx.ext.todo",  # Show TODO details
+    "sphinx.ext.imgconverter",  # Handle svg images
+    "sphinx.ext.duration",  # Shows times in the processing pipeline
+    "sphinx.ext.mathjax",  # Need math support
+    "sphinx.ext.githubpages",  # Puts the .nojekyll and CNAME files
+    "sphinxcontrib.apidoc",  # Automatically sets up sphinx-apidoc
 ]
 
 # API Doc settings
