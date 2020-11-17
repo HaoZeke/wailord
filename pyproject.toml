@@ -27,8 +27,8 @@ flake8 = "^3.8.4"
 vg = "^1.9.0"
 Pint = "^0.16.1"
 Sphinx = "^3.3.1"
-sphinx-nervproject-theme = "^2.0.2"
 sphinxcontrib-apidoc = "^0.3.0"
+sphinx-library = "^1.1.2"
 
 [tool.poetry.dev-dependencies]
 check-manifest = "*"

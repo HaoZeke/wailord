@@ -686,27 +686,12 @@ lint = ["flake8 (>=3.5.0)", "flake8-import-order", "mypy (>=0.790)", "docutils-s
 test = ["pytest", "pytest-cov", "html5lib", "typed-ast", "cython"]
 
 [[package]]
-name = "sphinx-fasvg"
-version = "0.1.3"
-description = "Use font-awesome icons in SVG form"
+name = "sphinx-library"
+version = "1.1.2"
+description = "Typography-centric Sphinx theme that reads like a good book."
 category = "main"
 optional = false
 python-versions = "*"
-
-[package.dependencies]
-sphinx = ">=2.0.0"
-
-[[package]]
-name = "sphinx-nervproject-theme"
-version = "2.0.2"
-description = "A Sphinx-doc theme based on Vuepress"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-sphinx = ">=3.0.0"
-sphinx-fasvg = "*"
 
 [[package]]
 name = "sphinxcontrib-apidoc"
@@ -873,7 +858,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "3b654d1854161f6043c1d047e0c71163fddb76b0add7182eac4a68fe01ebc946"
+content-hash = "129ababee20f6b316b7b81e1d969dfdc963b09bd16f16e4e8ec8e179b2ee0f09"
 
 [metadata.files]
 alabaster = [
@@ -1311,11 +1296,9 @@ sphinx = [
     {file = "Sphinx-3.3.1-py3-none-any.whl", hash = "sha256:d4e59ad4ea55efbb3c05cde3bfc83bfc14f0c95aa95c3d75346fcce186a47960"},
     {file = "Sphinx-3.3.1.tar.gz", hash = "sha256:1e8d592225447104d1172be415bc2972bd1357e3e12fdc76edf2261105db4300"},
 ]
-sphinx-fasvg = [
-    {file = "sphinx_fasvg-0.1.3.tar.gz", hash = "sha256:549d96c1edecc3f219d6c82d4914666868ce79f693a99128e9ea926c1aed774c"},
-]
-sphinx-nervproject-theme = [
-    {file = "sphinx_nervproject_theme-2.0.2.tar.gz", hash = "sha256:0f400f356a67e0f00c6ed00de00d0213da793e2f333131670cc764b6e29601b3"},
+sphinx-library = [
+    {file = "sphinx-library-1.1.2.tar.gz", hash = "sha256:a5b59bbf3c8688eae24845ed02f70272438984e56b1ae5bf616591f94f4b1552"},
+    {file = "sphinx_library-1.1.2-py3-none-any.whl", hash = "sha256:21c3f448d17224246e36a5db678e98b9261a1909604c160cd12f45fa1e7eb695"},
 ]
 sphinxcontrib-apidoc = [
     {file = "sphinxcontrib-apidoc-0.3.0.tar.gz", hash = "sha256:729bf592cf7b7dd57c4c05794f732dc026127275d785c2a5494521fdde773fb9"},
