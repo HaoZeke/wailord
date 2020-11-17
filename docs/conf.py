@@ -208,7 +208,5 @@ texinfo_documents = [
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 
-# sphinx-apidoc -o source/ ../
-# Update the index
-# Delete tests
-# make blah blah
+# sphinx-autobuild docs docs/_build/html
+# replace makefile
