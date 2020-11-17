@@ -102,6 +102,10 @@ todo_include_todos = True
 # html_theme = "nervproject"
 html_theme = "library"
 
+#################
+# Library Theme #
+#################
+
 # Sidebars
 html_sidebars = {
     "**": [
@@ -113,6 +117,17 @@ html_sidebars = {
         "readingmodes.html",  # Light/sepia/dark color schemes.
         "sponsors.html",  # Fancy sponsor links.
     ]
+}
+
+html_theme_options = {
+    "show_breadcrumbs": True,
+    "reading_mode": "sepia",
+    "typography": "book",
+    "extra_links": {
+        "Source Code": "https://github.com/HaoZeke/wailord",
+        "Donate": "https://liberapay.com/rohit/donate",
+        "Personal": "https://rgoswami.me",
+    },
 }
 
 # Theme options are theme-specific and customize the look and feel of a
