@@ -176,4 +176,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+# Docs
+docs/source
