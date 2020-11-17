@@ -2,6 +2,8 @@
 Wailord
 =======
 
+.. image:: https://w.wallhaven.cc/full/4x/wallhaven-4xgw53.jpg
+        :alt: Logo of sorts
 
 .. image:: https://img.shields.io/pypi/v/wailord.svg
         :target: https://pypi.python.org/pypi/wailord
@@ -24,18 +26,19 @@ Wailord is a python library to interact with ORCA
 
 
 * Free software: GNU General Public License v3
-* Documentation: https://wailord.readthedocs.io.
+* Documentation: https://wailord.readthedocs.io. **TBD**
 
 
 Features
 --------
 
-* TODO
+* Integrates with SLURM in a manner of speaking
 
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+* This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+* The image is from wallhaven.cc
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
