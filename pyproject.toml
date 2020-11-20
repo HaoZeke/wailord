@@ -44,6 +44,7 @@ sphinx-fasvg = "^0.1.3"
 sphinx-minipres = "^0.2.1"
 robpol86-sphinxcontrib-googleanalytics = "^0.1"
 releases = "^1.6.3"
+Pint-Pandas = "^0.1"
 
 [tool.poetry.dev-dependencies]
 check-manifest = "*"

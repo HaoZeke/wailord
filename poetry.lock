@@ -483,6 +483,21 @@ test = ["pytest", "pytest-mpl", "pytest-cov"]
 uncertainties = ["uncertainties (>=3.0)"]
 
 [[package]]
+name = "pint-pandas"
+version = "0.1"
+description = "Physical quantities module"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+pandas = ">=1.0.4"
+pint = ">=0.13"
+
+[package.extras]
+test = ["pytest", "pytest-mpl", "pytest-cov", "codecov", "coveralls", "nbval"]
+
+[[package]]
 name = "pluggy"
 version = "0.13.1"
 description = "plugin and hook calling mechanisms for python"
@@ -1154,7 +1169,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "81278adf90160041d5f181bc052963ab86a0e7db56bf5453dbaf125d8f0a10f9"
+content-hash = "25dbb8f42ff272f76ac352dda5a6b8227b6f8080041bdff606466129c6edd609"
 
 [metadata.files]
 alabaster = [
@@ -1456,6 +1471,10 @@ pillow = [
 pint = [
     {file = "Pint-0.16.1-py2.py3-none-any.whl", hash = "sha256:63ccb7153754923fd95477be69dcf8d7d0764ec2ebb3f6945f920c31fdf13392"},
     {file = "Pint-0.16.1.tar.gz", hash = "sha256:d43a2e9ae003164978b60fdf8cd920d8581e1a5991df8dded29b00f4850ec83a"},
+]
+pint-pandas = [
+    {file = "Pint-Pandas-0.1.tar.gz", hash = "sha256:c415256474b89ad0e11db6afcb742022757bfb6a6f3195018985682199c54162"},
+    {file = "Pint_Pandas-0.1-py2.py3-none-any.whl", hash = "sha256:2a5bf5ad94bae40051126ebd8abed2f18a7bbb03f6f3a81a7cfafcb378ef15fc"},
 ]
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
