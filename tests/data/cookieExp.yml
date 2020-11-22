@@ -1,4 +1,5 @@
 project_slug: testCookie
+outdir: "./"
 project_name: cookie_test
 desc: An example of a meta generator
 author: Rohit
