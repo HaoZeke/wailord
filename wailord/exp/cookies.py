@@ -7,7 +7,7 @@ from konfik import Konfik
 
 from wailord.utils import get_project_root
 
-TEMPLATE_DIR = get_project_root() / "templates"
+TEMPLATE_DIR = get_project_root() / "wailord_templates"
 
 
 def gen_base(template="basicExperiment", absolute=False, filen=None):
