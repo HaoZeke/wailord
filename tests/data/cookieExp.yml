@@ -1,0 +1,9 @@
+project_slug: testCookie
+project_name: cookie_test
+desc: An example of a meta generator
+author: Rohit
+year: "2020"
+license: MIT
+orca_root: "/home/via9/orca_4_2_1_linux_x86-64_openmpi314/"
+orca_yml: "/home/haozeke/Git/Github/Python/wailord/tests/data/orcaSinglet.yml"
+inp_xyz: "/home/haozeke/Git/Github/Python/wailord/tests/data/h2mol.xyz"
