@@ -2,15 +2,38 @@
 import sys
 import click
 
+from wailord.exp import cookies
+
 
 @click.command()
-def main(args=None):
+# @click.option('--count', default=1, help='Number of greetings.')
+# @click.option('--conf', prompt='Input file',
+#               help='Configuration file in TOML, YAML, DOTENV or JSON')
+@click.option(
+    "--conf", default=None, help="Configuration file in TOML, YAML, DOTENV or JSON"
+)
+@click.option(
+    "--experiment",
+    default="basicExperiment",
+    help="Which experiment should be generated?",
+)
+def main(conf, experiment):
     """Console script for wailord."""
-    click.echo("Replace this message by putting your code into "
-               "wailord.cli.main")
-    click.echo("See click documentation at https://click.palletsprojects.com/")
+    cookies.gen_base(experiment, absolute=False, filen=conf)
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover
+
+# @click.command()
+# @click.option('--count', default=1, help='Number of greetings.')
+# @click.option('--name', prompt='Your name',
+#               help='The person to greet.')
+# def hello(count, name):
+#     """Simple program that greets NAME for a total of COUNT times."""
+#     for x in range(count):
+#         click.echo('Hello %s!' % name)
+
+# if __name__ == '__main__':
+#     hello()
