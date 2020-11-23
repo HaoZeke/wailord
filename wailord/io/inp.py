@@ -30,6 +30,8 @@ from operator import itemgetter
 
 from konfik import Konfik
 
+SCAN_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
+
 
 class inpParser:
     def __init__(self, filename):
@@ -64,9 +66,14 @@ class inpParser:
         if "scan" in geom:
             textlines.append(f"\n\tScan\n")
             for scanthing in geom.scan.keys():
-                textlines.append(
-                    self.geom_scan(geom.scan[f"{scanthing}"], scantype=scanthing)
-                )
+                if scanthing.capitalize() in SCAN_TYPES.values():
+                    textlines.append(
+                        self.geom_scan(geom.scan[f"{scanthing}"], scantype=scanthing)
+                    )
+                else:
+                    raise TypeError(
+                        f"Only dihedral, bond and angle scan types are supported, got {scanthing} instead"
+                    )
             textlines.append(f"\tend\n")
         textlines.append("end\n")
         return "".join(textlines)
@@ -91,10 +98,14 @@ class inpParser:
         """Generate a comment line, or raise an error"""
         outtmp = []
         tmp = list(map(int, between.split()))
-        possibletypes = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
-        thiskey = possibletypes[f"{scantype}"]
+        thiskey = SCAN_TYPES[f"{scantype}"]
         for i in tmp:
-            outtmp.append(f"{self.xyz.xyzdat.atom_types[i]}{i}")
+            try:
+                outtmp.append(f"{self.xyz.xyzdat.atom_types[i]}{i}")
+            except:
+                raise SyntaxError(
+                    "Trying to use an atom which does not exist, check indices"
+                )
         gencom = "--".join(outtmp)
         return f"{thiskey} scan for {gencom}"
 
