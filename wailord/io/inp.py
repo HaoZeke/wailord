@@ -39,6 +39,7 @@ class inpParser:
         self.spin = None
         self.extra = None
         self.conf_path = filename
+        self.geomlines = None
         self.konfik = Konfik(config_path=filename)
         self.scripts = []
 
@@ -47,7 +48,6 @@ class inpParser:
 
     def read_yml(self):
         """ Returns the overall output. """
-        print("Populating items")
         self.qc, self.xyzpath, self.spin = itemgetter("qc", "xyz", "spin")(
             self.konfik.config
         )
@@ -56,6 +56,47 @@ class inpParser:
             self.extra = self.konfik.config.extra
         else:
             print("Consider using None in the yml file for extra")
+
+    def parse_geom(self, geom):
+        """Rework the geometry into output"""
+        textlines = []
+        textlines.append("%geom")
+        if "scan" in geom:
+            textlines.append(f"\n\tScan\n")
+            for scanthing in geom.scan.keys():
+                textlines.append(
+                    self.geom_scan(geom.scan[f"{scanthing}"], scantype=scanthing)
+                )
+            textlines.append(f"\tend\n")
+        textlines.append("end\n")
+        return "".join(textlines)
+
+    def geom_scan(self, thing, scantype):
+        """Handles scans"""
+        linesthing = []
+        scantype = scantype[0][0].upper()
+        for thingline in thing:
+            btwn, fromto, points = itemgetter(
+                "between",
+                "range",
+                "points",
+            )(thingline)
+            comment = self.scan_comment(btwn, scantype)
+            linesthing.append(
+                f"\t\t{scantype} {btwn} = {fromto[0]}, {fromto[1]}, {points} # {comment}\n"
+            )
+        return "".join(linesthing)
+
+    def scan_comment(self, between, scantype):
+        """Generate a comment line, or raise an error"""
+        outtmp = []
+        tmp = list(map(int, between.split()))
+        possibletypes = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
+        thiskey = possibletypes[f"{scantype}"]
+        for i in tmp:
+            outtmp.append(f"{self.xyz.xyzdat.atom_types[i]}{i}")
+        gencom = "--".join(outtmp)
+        return f"{thiskey} scan for {gencom}"
 
     def parse_yml(self):
         """Handle the various options"""
@@ -66,6 +107,10 @@ class inpParser:
             self.xyz = waio.xyz.xyzIO(self.conf_path.parent / self.konfik.config.xyz)
         if self.qc.active == True:
             self.parse_qc()
+        # Geometry
+        if "geom" in self.konfik.config.keys():
+            self.geomlines = self.parse_geom(self.konfik.config.geom)
+            print(self.geomlines)
 
     def genharness(self, basename, slow=False):
         """
@@ -94,7 +139,6 @@ class inpParser:
                         op.write("sleep 30s\n")
 
     def parse_qc(self):
-        print("Parsing QC")
         qcList = list(
             itertt.chain(self.qc.style, self.qc.calculations, self.qc.basis_sets)
         )
@@ -179,6 +223,10 @@ class inpParser:
             if extralines != None:
                 op.write("\n")
                 op.writelines(extralines)
+                op.write("\n")
+            if self.geomlines != None:
+                op.write("\n")
+                op.writelines(self.geomlines)
                 op.write("\n")
             op.write(f"*xyz {spin}")
             op.write("\n")

@@ -1,0 +1,25 @@
+qc:
+    active: True
+    style: ["RHF"]
+    calculations: ["OPT"]
+    basis_sets:
+        - 6-31G
+        - 6-311G
+xyz: "inp.xyz"
+spin:
+    - "0 1"
+extra: Null
+geom:
+    scan:
+        bond:
+            - between: "0 1"
+              range: [0.40, 2.00]
+              points: 17
+            - between: "0 2"
+              range: [0.30, 1.00]
+              points: 13
+        dihedral:
+            - between: "0 1"
+              range: [60, 80]
+              points: 39
+jobscript: "basejob.sh"
