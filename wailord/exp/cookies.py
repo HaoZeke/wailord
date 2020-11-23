@@ -17,7 +17,6 @@ def gen_base(template="basicExperiment", absolute=False, filen=None):
     else:
         template = str(TEMPLATE_DIR / template)
     if filen != None:
-        print(filen)
         konfik = Konfik(config_path=filen)
         config = konfik.config
         cookiecutter(
@@ -25,7 +24,7 @@ def gen_base(template="basicExperiment", absolute=False, filen=None):
             no_input=True,
             overwrite_if_exists=True,
             extra_context=config,
-            output_dir=config.outdir,
+            output_dir=Path(config.outdir),
         )
     else:
         # Create project from the basic template
