@@ -31,6 +31,7 @@ from operator import itemgetter
 from konfik import Konfik
 
 SCAN_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
+AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
 
 class inpParser:
@@ -42,6 +43,8 @@ class inpParser:
         self.extra = None
         self.conf_path = filename
         self.geomlines = None
+        self.xyzlines = None
+        self.paramlines = None
         self.konfik = Konfik(config_path=filename)
         self.scripts = []
 
@@ -94,6 +97,11 @@ class inpParser:
             )
         return "".join(linesthing)
 
+    def param_comment(
+        self,
+    ):
+        """Generate a paramline comment"""
+
     def scan_comment(self, between, scantype):
         """Generate a comment line, or raise an error"""
         outtmp = []
@@ -116,12 +124,63 @@ class inpParser:
             self.read_yml()
         if self.xyz == None:
             self.xyz = waio.xyz.xyzIO(self.conf_path.parent / self.konfik.config.xyz)
+            self.xyzlines = self.xyz.xyzdat.coord_block
         if self.qc.active == True:
             self.parse_qc()
         # Geometry
         if "geom" in self.konfik.config.keys():
             self.geomlines = self.parse_geom(self.konfik.config.geom)
-            print(self.geomlines)
+            # print(self.geomlines)
+        # Paramter Blocks
+        if "params" in self.konfik.config.keys():
+            self.paramlines = self.parse_params(self.konfik.config.params)
+            # print(self.paramlines)
+
+    def parse_params(self, params):
+        """Rework the parameters into output. Recall that these do not require
+        relaxation, and can also take fixed variables. On the other hand, these
+        need more information to set up."""
+        textlines = []
+        textlines.append("%paras\n")
+        for param in params:
+            if param.get("value"):
+                param["slot"]["name"] = param["name"]
+                self.xyzlines, comment = self.params_slot(param["slot"])
+                textlines.append(self.params_value(param, comment))
+            elif param.get("range"):
+                param["slot"]["name"] = param["name"]
+                self.xyzlines, comment = self.params_slot(param["slot"])
+                textlines.append(self.params_range(param, comment))
+            else:
+                raise TypeError(
+                    f"Currently only value and range variables are supported"
+                )
+        textlines.append("end\n")
+        return "".join(textlines)
+
+    def params_slot(self, thing):
+        if not "xyz" in thing or thing["xyz"] != True:
+            raise TypeError("Currently only supports xyz")
+        # print(self.xyzlines)
+        atype, anum, axis, name = itemgetter("atype", "anum", "axis", "name")(thing)
+        xyztmp = self.xyzlines.split("\n")
+        aline = xyztmp[anum].split()
+        if aline[0] == atype:
+            aline[AXIS_PROXY[axis]] = f"{{{name}}}".ljust(15, " ")
+            xyztmp[anum] = "    ".join(aline)
+        # print("\n".join(xyztmp))
+        xyzblock = "\n".join(xyztmp)
+        comment = f"# {axis}-axis of {atype}{anum}"
+        return xyzblock, comment
+
+    def params_value(self, thing, comment):
+        name, val = itemgetter("name", "value")(thing)
+        return f"\t{name} = {val} {comment}\n"
+
+    def params_range(self, thing, comment):
+        """Handles variables with range"""
+        name, lrange, points = itemgetter("name", "range", "points")(thing)
+        return f"\t{name} = {lrange[0]}, {lrange[1]}, {points} {comment}\n"
 
     def genharness(self, basename, slow=False):
         """
@@ -235,11 +294,15 @@ class inpParser:
                 op.write("\n")
                 op.writelines(extralines)
                 op.write("\n")
+            if self.paramlines != None:
+                op.write("\n")
+                op.writelines(self.paramlines)
+                op.write("\n")
             if self.geomlines != None:
                 op.write("\n")
                 op.writelines(self.geomlines)
                 op.write("\n")
             op.write(f"*xyz {spin}")
             op.write("\n")
-            op.write(self.xyz.xyzdat.coord_block)
+            op.write(self.xyzlines)
             op.write("*")
