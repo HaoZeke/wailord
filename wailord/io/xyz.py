@@ -65,7 +65,12 @@ class xyzVisitor(NodeVisitor):
 
     def visit_coord_block(self, node, visited_children):
         """ Makes a dict of the section (as key) and the key/value pairs. """
-        self.coord_block = node.text
+        cb = node.text.split("\n")
+        for i, aline in enumerate(cb):
+            each = aline.split()
+            cb[i] = "    ".join(each)
+        self.coord_block = "\n".join(cb)
+        # Could have also just returned and assigned node.text
         return node.text
 
     def visit_cline(self, node, visited_children):
