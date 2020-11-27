@@ -118,13 +118,13 @@ class xyzIO:
 
     @property
     def comment_line(self):
-        return self.__comment_line
+        return self._comment_line
 
     @comment_line.setter
     def comment_line(self, cl):
         if len(cl.split("\n")) > 1:
             cl.replace("\n", " ")
-        self.__comment_line = cl
+        self._comment_line = cl
 
     def write(self, outname):
         with open(outname, "w") as op:
