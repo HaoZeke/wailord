@@ -240,3 +240,21 @@ class orcaVis:
             data=zip(xaxis, yaxis), columns=["bond_length", "mdci_energy"]
         )
         return edat
+
+    def mdci_e_mtrip(self, npoints):
+        xaxis = []
+        yaxis = []
+        with open(self.ofile) as of:
+            flines = of.readlines()
+            for lnum, line in enumerate(flines):
+                if OUT_REGEX["mdci_no_trip"].search(line):
+                    offset = lnum + 1
+                    for i in range(npoints):
+                        # breakpoint()
+                        x, y = flines[offset + i].split()
+                        xaxis.append(x)
+                        yaxis.append(y)
+        edat = pd.DataFrame(
+            data=zip(xaxis, yaxis), columns=["bond_length", "mdci_no_triples"]
+        )
+        return edat
