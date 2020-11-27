@@ -60,7 +60,7 @@ OUT_REGEX = {
     "final_single_point_e": re.compile(r"(?<=FINAL SINGLE POINT ENERGY)\s*-\d*.?\d*"),
     "basis_set": re.compile(r"Orbital\s*basis\s*set\s*information"),
     "mdci_surf": re.compile(
-        r"The\s*Calculated\s*Surface\s*using\s*the\s*MDCI\s*energy\s*"
+        r"The\s*Calculated\s*Surface\s*using\s*the\s*MDCI\s*energy\n"
     ),
     "mdci_no_trip": re.compile(
         r"The Calculated Surface using the MDCI energy minus triple correction\s*"
