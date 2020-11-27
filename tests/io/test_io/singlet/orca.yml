@@ -1,0 +1,24 @@
+qc:
+  # Enable or disable
+  active: True
+  # RHF by default can be ["RHF", "UHF", "Both"]
+  # Multiple keys generate more inputs
+  style: ["RHF"]
+  # Used to generate a series of input files
+  # Each key is a new file
+  calculations: ["OPT"]
+  basis_sets:
+    - 3-21G
+    - 6-31G
+    - 6-311G
+    - 6-311G*
+    - 6-311G**
+    - 6-311++G**
+    - 6-311++G(2d,2p)
+    - 6-311++G(2df,2pd)
+    - 6-311++G(3df,3pd)
+xyz: "inp.xyz"
+spin:
+  - "0 1"
+extra: Null
+jobscript: "basejob.sh"

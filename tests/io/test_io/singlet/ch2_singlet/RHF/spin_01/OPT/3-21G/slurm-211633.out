@@ -1,0 +1,28 @@
+/bin/bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+compute-2-0
+Job execution start: Sun Nov 22 18:31:09 GMT 2020
+Slurm Job ID is: 211633
+slurm Job name is: 3-21G_RHF
+Scratchdir is: /scratch/rog32/ORCA__211633-PGQE
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+cp: cannot stat '/scratch/rog32/ORCA__211633-PGQE/*.molden': No such file or directory
+cp: cannot stat '/scratch/rog32/ORCA__211633-PGQE/*.scfp': No such file or directory
