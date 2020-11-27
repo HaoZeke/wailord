@@ -22,10 +22,13 @@ Todo:
 
 """
 
+import wailord.io as waio
+import wailord.utils as wau
 
 import re, itertools, sys, os
 from pathlib import Path
 from collections import namedtuple
+from operator import itemgetter
 from pandas.api.types import CategoricalDtype
 
 from pint import UnitRegistry
@@ -52,13 +55,25 @@ ORDERED_BASIS = [
     "6-311++G(3df,3pd)",
 ]
 
+OUT_REGEX = {
+    "cartesian_coord": re.compile(r"CARTESIAN\s*COORDINATES\s*\(ANGSTROEM\)\s*"),
+    "final_single_point_e": re.compile(r"(?<=FINAL SINGLE POINT ENERGY)\s*-\d*.?\d*"),
+    "basis_set": re.compile(r"Orbital\s*basis\s*set\s*information"),
+    "mdci_surf": re.compile(
+        r"The\s*Calculated\s*Surface\s*using\s*the\s*MDCI\s*energy\s*"
+    ),
+    "mdci_no_trip": re.compile(
+        r"The Calculated Surface using the MDCI energy minus triple correction\s*"
+    ),
+}
+
 
 def parseOut(filename, plotter=False):
     """Handles orca outputs with regex for energy and coordinates"""
-    intcreg = re.compile(r"CARTESIAN\s*COORDINATES\s*\(ANGSTROEM\)\s*")
-    fsp_ereg = re.compile(r"(?<=FINAL SINGLE POINT ENERGY)\s*-\d*.?\d*")
+    intcreg, fsp_ereg, get_basis = itemgetter(
+        "cartesian_coord", "final_single_point_e", "basis_set"
+    )(OUT_REGEX)
     get_spec = re.compile(r"Number\s*of\s*atoms\s*.*\s*\d*")
-    get_basis = re.compile(r"Orbital\s*basis\s*set\s*information")
     with open(filename) as f:
         fInp = f.read()
         fin_energ = float(fsp_ereg.findall(fInp)[-1].split()[-1]) * ureg.hartree
@@ -178,3 +193,50 @@ def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASI
     else:
         outdat.drop(["filename", "fGeom"], axis=1, inplace=True)
     return outdat
+
+
+class orcaExp:
+    def __init__(self, inpfile, outfolder):
+        self.inpconf = Konfik(config_path=inpfile)
+
+    def __repr__(self):
+        return f"{self.meta}"
+
+    def visit_meta(self, node, visited_children):
+        """ Returns the overall output. """
+        self.meta = node.text
+        return node.text
+
+    def visit_coord_block(self, node, visited_children):
+        """ Makes a dict of the section (as key) and the key/value pairs. """
+        cb = node.text.split("\n")
+        for i, aline in enumerate(cb):
+            each = aline.split()
+            cb[i] = "    ".join(each)
+        self.coord_block = "\n".join(cb)
+        # Could have also just returned and assigned node.text
+        return node.text
+
+
+class orcaVis:
+    def __init__(self, ofile):
+        self.scf = None
+        self.ofile = ofile
+
+    def mdci_e(self, npoints):
+        xaxis = []
+        yaxis = []
+        with open(self.ofile) as of:
+            flines = of.readlines()
+            for lnum, line in enumerate(flines):
+                if OUT_REGEX["mdci_surf"].search(line):
+                    offset = lnum + 1
+                    for i in range(npoints):
+                        # breakpoint()
+                        x, y = flines[offset + i].split()
+                        xaxis.append(x)
+                        yaxis.append(y)
+        edat = pd.DataFrame(
+            data=zip(xaxis, yaxis), columns=["bond_length", "mdci_energy"]
+        )
+        return edat
