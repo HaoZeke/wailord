@@ -289,7 +289,7 @@ class orcaVis:
 
         """
         if etype not in OUT_REGEX:
-            raise (NotImplementedError, f"{etype} has not been implemented yet")
+            raise (NotImplementedError(f"{etype} has not been implemented yet"))
         if npoints == None:
             npoints = self.eeval
         xaxis = []
