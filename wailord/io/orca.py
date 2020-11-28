@@ -236,6 +236,7 @@ class orcaExp:
         rfparts = runf.parts
         for num, od in enumerate(runinf, start=1):
             runinf[od] = rfparts[-num]
+        runinf["basis"] = runinf["basis"].replace("PP", "++").replace("8", "*")
         return dict(runinf)
 
     def visit_meta(self, node, visited_children):
