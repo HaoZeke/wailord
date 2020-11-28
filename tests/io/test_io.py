@@ -1,8 +1,6 @@
-import pandas as pd
 import wailord.io as waio
-import filecmp, difflib, sys, pytest
-from pprint import pprint as ppp
-from wailord.utils import get_project_root
+import pytest
+import warnings
 
 from pint import UnitRegistry
 
@@ -63,5 +61,12 @@ def test_get_energy_surface_shape(datadir):
     assert len(edat[edat.isin(["3-21G"]).any(axis=1)]) == 3 * 33  #: 3 levels of theory
     assert len(edat[edat.isin(["UHF"]).any(axis=1)]) == 9 * 33  #: 9 basis sets
     assert edat.shape == (891, 7)  #: Rows = basis (9) * theory (3) * npoints (33)
-    breakpoint()
+    pass
+
+
+@pytest.mark.filterwarnings("ignore::UserWarning")
+def test_get_energy_surface_empty(datadir):
+    expt = waio.orca.orcaExp(expfolder=datadir / "h2")
+    with pytest.raises(ValueError):
+        expt.get_energy_surface(etype=["MDCI", "Actual Energy"])
     pass

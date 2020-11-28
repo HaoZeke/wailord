@@ -1,9 +1,8 @@
 import wailord.io as waio
 import pandas as pd
 import numpy as np
-import filecmp, difflib, sys, pytest
-from pprint import pprint as ppp
-from wailord.utils import get_project_root
+import warnings
+import pytest
 
 from pint import UnitRegistry
 
@@ -16,22 +15,34 @@ Q_ = ureg.Quantity
 
 
 def test_orca_mdci_e_bounds(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     with pytest.raises(ValueError):
         sEnerg.single_energy_surface(npoints=34)
     pass
 
 
 def test_orca_energ_error(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     with pytest.raises(NotImplementedError):
         sEnerg.single_energy_surface(etype="Squid")
     pass
 
 
+def test_orca_energ_empty(datadir):
+    warnings.filterwarnings("ignore")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_uhf.out")
+    with pytest.warns(UserWarning, match="MDCI surface not found, will throw"):
+        sEnerg.single_energy_surface("MDCI", 33)
+    with pytest.warns(
+        UserWarning, match="MDCI w/o Triples surface not found, will throw"
+    ):
+        sEnerg.single_energy_surface("MDCI w/o Triples")
+    pass
+
+
 def test_orca_mdci_e_xvals(datadir):
     """Ensure the bond scan is correct for the MDCI surface"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI", 33)
     blength = eDat.bond_length.to_numpy(dtype=float)
     np.testing.assert_almost_equal(
@@ -43,7 +54,7 @@ def test_orca_mdci_e_xvals(datadir):
 
 def test_orca_mdci_e_yvals(datadir):
     """Ensure the energy is correct for the MDCI surface"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI", 33)
     energy = eDat["MDCI"].to_numpy(dtype=float)
     exp_e = np.array(
@@ -92,7 +103,7 @@ def test_orca_mdci_e_yvals(datadir):
 
 def test_orca_mdci_e_mtrip_xvals(datadir):
     """Ensure the bond scan is correct for MDCI without triples"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
     blength = eDat.bond_length.to_numpy(dtype=float)
     np.testing.assert_almost_equal(
@@ -104,7 +115,7 @@ def test_orca_mdci_e_mtrip_xvals(datadir):
 
 def test_orca_mdci_e_mtrip_energy_evals(datadir):
     """Ensure that the number of evaluations matches the number parsed"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface(npoints=33)
     eDat1 = sEnerg.single_energy_surface()
     pd.testing.assert_frame_equal(eDat, eDat1)
@@ -113,7 +124,7 @@ def test_orca_mdci_e_mtrip_energy_evals(datadir):
 
 def test_orca_mdci_e_mtrip_yvals(datadir):
     """Ensure the energy is correct for MDCI without triples"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
     energy = eDat["MDCI w/o Triples"].to_numpy(dtype=float)
     exp_e = np.array(
@@ -166,7 +177,7 @@ def test_orca_mdci_e_mtrip_yvals(datadir):
 
 
 def test_mult_energy_surf(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
     eDatMDCI = sEnerg.single_energy_surface("MDCI")
     eDatAll = sEnerg.mult_energy_surface()
@@ -177,7 +188,7 @@ def test_mult_energy_surf(datadir):
 
 
 def test_mult_energy_surf_subset(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDatAll = sEnerg.mult_energy_surface(etype=["MDCI", "SCF Energy"])
     assert "Actual Energy" not in eDatAll.columns
     assert "MDCI" in eDatAll.columns
@@ -186,7 +197,7 @@ def test_mult_energy_surf_subset(datadir):
 
 
 def test_mult_energy_surf_single(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDatSingleL = sEnerg.mult_energy_surface(etype=["MDCI"])
     eDatMDCI = sEnerg.single_energy_surface("MDCI")
     pd.testing.assert_frame_equal(eDatMDCI, eDatSingleL)
