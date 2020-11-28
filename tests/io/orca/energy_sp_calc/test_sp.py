@@ -17,6 +17,12 @@ def test_orca_mdci_e_bounds(datadir):
         sEnerg.energy_surface(npoints=34)
 
 
+def test_orca_energ_error(datadir):
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    with pytest.raises(NotImplementedError):
+        sEnerg.energy_surface(etype="Squid")
+
+
 def test_orca_mdci_e_xvals(datadir):
     """Ensure the bond scan is correct for the MDCI surface"""
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
