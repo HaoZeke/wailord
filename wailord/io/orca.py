@@ -15,6 +15,8 @@ Todo:
     * Make grammar
     * Make classes
     * Test the experiments more
+    * Pass a list of experiments to ignore
+    * Test the ordering of variables
     * Propagate exceptions instead of passing the buck with warnings
     * Setup proper logging
     * Document more things (e.g. SP -> Single point calculation a.k.a. energy
@@ -47,6 +49,15 @@ Q_ = ureg.Quantity
 
 inpcart = namedtuple("inpcart", "atype x y z")
 orcaout = namedtuple("orcaout", "final_energy fGeom basis filename system")
+
+ORDERED_THEORY = [
+    "HF",
+    "UHF",
+    "QCISD",
+    "CCSD",
+    "QCISD(T)",
+    "CCSD(T)"
+]
 
 ORDERED_BASIS = [
     "STO-3G",
@@ -209,7 +220,7 @@ class orcaExp:
     generates. Remember to use `df.round()` for pretty printing!
     """
 
-    def __init__(self, expfolder, deci=3, order_basis=ORDERED_BASIS):
+    def __init__(self, expfolder, deci=3, order_basis=ORDERED_BASIS, order_theory=ORDERED_THEORY):
         """Initializes base parameters
 
 
@@ -217,10 +228,14 @@ class orcaExp:
             expfolder (:obj:`Path`): Output path to the generated wailord experiment
             order_basis (:obj:`list`, optional): An ordered list for the basis
                 sets. Defaults to `ORDERED_BASIS`
+            order_theory (:obj:`list`, optional): An ordered list for the basis
+                sets. Defaults to `ORDERED_THEORY`. Unlike `order_basis` is can
+                vary significantly across experiments.
         """
         self.inpconf = None  #: Populated by `handle_exp`
         self.orclist = None  #: Populated by `handle_exp`
         self.order_basis = order_basis
+        self.order_theory = order_theory
         self.handle_exp(expfolder)
 
     def __repr__(self):
@@ -277,8 +292,10 @@ class orcaExp:
         edat = pd.concat(edatl, axis=0)
         edat = edat.drop_duplicates()
         basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
+        theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
         edat["basis"] = edat["basis"].astype(basis_type)
-        edat.sort_values(by=["basis"], ignore_index=True, inplace=True)
+        edat["theory"] = edat["theory"].astype(theory_type)
+        edat.sort_values(by=["theory", "basis", "bond_length"], ignore_index=True, inplace=True)
         return edat
 
     def get_runinfo_path(self, runf):

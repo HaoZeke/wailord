@@ -1,4 +1,5 @@
 import wailord.io as waio
+import pandas as pd
 import pytest
 import warnings
 
@@ -45,10 +46,10 @@ def test_get_energy_surface_shape(datadir):
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     edat = expt.get_energy_surface()
     assert list(edat.theory.unique()) == [
-        "QCISD(T)",
-        "QCISD",
         "UHF",
-    ]  #: Higher level of theory first
+        "QCISD",
+        "QCISD(T)",
+    ]  #: Increasing level of theory
     assert list(edat.columns) == [
         "bond_length",
         "Actual Energy",
@@ -62,7 +63,6 @@ def test_get_energy_surface_shape(datadir):
     assert len(edat[edat.isin(["UHF"]).any(axis=1)]) == 9 * 33  #: 9 basis sets
     assert edat.shape == (891, 7)  #: Rows = basis (9) * theory (3) * npoints (33)
     pass
-
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_get_energy_surface_empty(datadir):
