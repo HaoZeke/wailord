@@ -36,3 +36,32 @@ def test_orca_genEBDA(datadir):
     sEnerg = waio.orca.genEBASet(datadir / "singlet")
     assert list(sEnerg.final_energy.apply(lambda x: x.magnitude)) == magnitude
     assert list(sEnerg.angle.apply(lambda x: x.magnitude)) == angles
+
+
+##############################
+# Energy Surface Evaluations #
+##############################
+
+
+def test_get_energy_surface_shape(datadir):
+    expt = waio.orca.orcaExp(expfolder=datadir / "h2")
+    edat = expt.get_energy_surface()
+    assert list(edat.theory.unique()) == [
+        "QCISD(T)",
+        "QCISD",
+        "UHF",
+    ]  #: Higher level of theory first
+    assert list(edat.columns) == [
+        "bond_length",
+        "Actual Energy",
+        "SCF Energy",
+        "basis",
+        "calc",
+        "spin",
+        "theory",
+    ]
+    assert len(edat[edat.isin(["3-21G"]).any(axis=1)]) == 3 * 33  #: 3 levels of theory
+    assert len(edat[edat.isin(["UHF"]).any(axis=1)]) == 9 * 33  #: 9 basis sets
+    assert edat.shape == (891, 7)  #: Rows = basis (9) * theory (3) * npoints (33)
+    breakpoint()
+    pass
