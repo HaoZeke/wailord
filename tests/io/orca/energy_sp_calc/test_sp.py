@@ -154,3 +154,13 @@ def test_orca_mdci_e_mtrip_yvals(datadir):
         exp_e,
     )
     pass
+
+
+def test_mult_energy_surf(datadir):
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
+    eDatMDCI = sEnerg.single_energy_surface("MDCI")
+    eDatAll = sEnerg.mult_energy_surface()
+    pd.testing.assert_frame_equal(eDat, eDatAll[["bond_length", "MDCI w/o Triples"]])
+    pd.testing.assert_frame_equal(eDatMDCI, eDatAll[["bond_length", "MDCI"]])
+    pass
