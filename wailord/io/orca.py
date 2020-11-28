@@ -15,6 +15,8 @@ Todo:
     * Make grammar
     * Make classes
     * Test the experiments more
+    * Propagate exceptions instead of passing the buck with warnings
+    * Setup proper logging
     * Document more things (e.g. SP -> Single point calculation a.k.a. energy
       calculation)
     * Return interesting things
@@ -27,7 +29,7 @@ Todo:
 import wailord.io as waio
 import wailord.utils as wau
 
-import re, itertools, sys, os
+import re, itertools, sys, os, warnings
 from pathlib import Path
 from functools import reduce
 from collections import namedtuple, OrderedDict
@@ -250,7 +252,7 @@ class orcaExp:
         calls to the base orcaVis class.
 
         Args:
-            etype (:obj:`list` of :obj:`str`): This is passed to the base
+            etype (:obj:`list` of :obj:`str`, optional): This is passed to the base
             `OrcaVis` class call
 
         Returns:
@@ -260,9 +262,15 @@ class orcaExp:
         if type(etype) == str:
             etype = [etype]
         edatl = []
-        for run in self.orclist:
-            runinf = self.get_runinfo_path(run.parent)
-            runsurf = orcaVis(run).mult_energy_surface(etype=etype)
+        for runf in self.orclist:
+            runinf = self.get_runinfo_path(runf.parent)
+            runsurf = orcaVis(runf).mult_energy_surface(etype=etype)
+            if runsurf.empty:
+                raise (
+                    ValueError(
+                        f"{etype} surface not found for {runinf['theory']}, see warning."
+                    )
+                )
             for key in runinf.keys():
                 runsurf[key] = runinf[key]
                 edatl.append(runsurf)
@@ -429,4 +437,6 @@ class orcaVis:
         edat = pd.DataFrame(
             data=zip(xaxis, yaxis), columns=["bond_length", etype], dtype="float64"
         )
+        if edat.empty:
+            warnings.warn(f"{etype} surface not found, will throw", UserWarning)
         return edat
