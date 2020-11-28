@@ -202,19 +202,74 @@ class orcaExp:
     """The class meant to handle experiments generated with wailord.
 
     The general concept is that this is meant to work with the setup wailord
-    generates.
+    generates. Remember to use `df.round()` for pretty printing!
     """
 
-    def __init__(self, inpfile, outfolder, deci=3, order_basis=ORDERED_BASIS):
-        self.inpconf = Konfik(config_path=inpfile)
-        self.ofolder = outfolder
-        self.deci = deci
+    def __init__(self, expfolder, deci=3, order_basis=ORDERED_BASIS):
+        """Initializes base parameters
+
+
+        Args:
+            expfolder (:obj:`Path`): Output path to the generated wailord experiment
+            order_basis (:obj:`list`, optional): An ordered list for the basis
+                sets. Defaults to `ORDERED_BASIS`
+        """
+        self.inpconf = None  #: Populated by `handle_exp`
+        self.orclist = None  #: Populated by `handle_exp`
+        self.order_basis = order_basis
+        self.handle_exp(expfolder)
 
     def __repr__(self):
         return f"Experiment with {self.inpconf}, and outputs {self.ofolder}"
 
-    def get_energy_surface(self):
+    def handle_exp(self, efol):
+        """Populates the internal file variables from the path
+
+        Alert:
+             This is *not* meant to be called by the user!!!!
+
+        Args:
+            efol (:obj:`Path`): Output path
+
+        """
+        fnames = []
+        self.inpconf = Konfik(config_path=efol / "orca.yml").config
+        for root, dirs, files in os.walk(efol.resolve()):
+            for filename in files:
+                if "out" in filename and "slurm" not in filename:
+                    fnames.append(Path(f"{root}/{filename}"))
+        self.orclist = fnames
         return
+
+    def get_energy_surface(self, etype=["Actual Energy", "SCF Energy"]):
+        """Populates an energy surface dataframe
+
+        This essentially walks over the generated set of files, and fills out
+        calls to the base orcaVis class.
+
+        Args:
+            etype (:obj:`list` of :obj:`str`): This is passed to the base
+            `OrcaVis` class call
+
+        Returns:
+            pd.DataFrame: Returns a data frame of bond_length and mdci_energy
+
+        """
+        if type(etype) == str:
+            etype = [etype]
+        edatl = []
+        for run in self.orclist:
+            runinf = self.get_runinfo_path(run.parent)
+            runsurf = orcaVis(run).mult_energy_surface(etype=etype)
+            for key in runinf.keys():
+                runsurf[key] = runinf[key]
+                edatl.append(runsurf)
+        edat = pd.concat(edatl, axis=0)
+        edat = edat.drop_duplicates()
+        basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
+        edat["basis"] = edat["basis"].astype(basis_type)
+        edat.sort_values(by=["basis"], ignore_index=True, inplace=True)
+        return edat
 
     def get_runinfo_path(self, runf):
         """Determines the runtime parameters from the output path
