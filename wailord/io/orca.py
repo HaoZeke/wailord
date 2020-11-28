@@ -27,11 +27,13 @@ import wailord.utils as wau
 
 import re, itertools, sys, os
 from pathlib import Path
+from functools import reduce
 from collections import namedtuple, OrderedDict
 from operator import itemgetter
 from pandas.api.types import CategoricalDtype
 
 from pint import UnitRegistry
+from konfik import Konfik
 import numpy as np
 import pandas as pd
 import vg
@@ -287,8 +289,46 @@ class orcaVis:
                     self.eeval = int(line.split()[3])
         return
 
-    def energy_surface(self, etype="Actual Energy", npoints=None):
-        """Energy surface dataframe generator
+    def mult_energy_surface(
+        self,
+        etype=["Actual Energy", "MDCI", "MDCI w/o Triples", "SCF Energy"],
+        npoints=None,
+    ):
+        """Multiple Energy surface dataframe generator
+
+        This is a helper function to obtain a dataframe which contains multiple
+        energy surfaces. The implementation leverages the `reduce` function from
+        `functools` to merge a list of dataframes generated from the
+        `single_energy_surface` calls.
+
+        Args:
+            etype (str,optional): The type of calculated energy surface to
+                return. Defaults to `["Actual Energy", "MDCI", "MDCI w/o Triples",
+                "SCF Energy"]` but can be any valid subset of the same.
+            npoints (int,optional): The number of points over which a scan has
+                taken place. Defaults to the number of evaluations calculated in
+                the output file.
+
+        Returns:
+            pd.DataFrame: Returns a data frame of bond_length and energies
+
+        .. _MDCI:
+            https://www.its.hku.hk/services/research/hpc/software/orca
+
+        """
+        if type(etype) == str or len(etype) == 1:
+            return self.single_energy_surface(
+                etype=str(etype)
+            )  #: Short circuit if single type is requested
+        elist = []
+        for et in etype:
+            runsurf = self.single_energy_surface(etype=et)
+            elist.append(runsurf)
+        eDat_all = reduce(lambda df1, df2: pd.merge(df1, df2, on="bond_length"), elist)
+        return eDat_all
+
+    def single_energy_surface(self, etype="Actual Energy", npoints=None):
+        """Single energy surface dataframe generator
 
         For say, QCISD(T), this is essentially the same as a QCISD calculation.
 
@@ -304,7 +344,7 @@ class orcaVis:
                 the output file.
 
         Returns:
-            pd.DataFrame: Returns a data frame of bond_length and mdci_energy
+            pd.DataFrame: Returns a data frame of bond_length and energies
 
         .. _MDCI:
             https://www.its.hku.hk/services/research/hpc/software/orca
