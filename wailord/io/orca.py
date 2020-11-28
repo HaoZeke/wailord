@@ -369,5 +369,7 @@ class orcaVis:
                         x, y = flines[offset + i].split()
                         xaxis.append(x)
                         yaxis.append(y)
-        edat = pd.DataFrame(data=zip(xaxis, yaxis), columns=["bond_length", etype])
+        edat = pd.DataFrame(
+            data=zip(xaxis, yaxis), columns=["bond_length", etype], dtype="float64"
+        )
         return edat
