@@ -14,6 +14,6 @@ if "{{cookiecutter.orca_yml}}" != "orca.yml":
     shutil.copy("{{cookiecutter.orca_yml}}", "orca.yml")
 if "{{cookiecutter.inp_xyz}}" != "inp.xyz":
     shutil.copy("{{cookiecutter.inp_xyz}}", "inp.xyz")
-ymlt = waio.inp.inpParser(CUR / "orca.yml")
+ymlt = waio.inp.inpGenerator(CUR / "orca.yml")
 ymlt.parse_yml()
 ymlt.gendir_qc(basename=Path("{{cookiecutter.project_name}}"))

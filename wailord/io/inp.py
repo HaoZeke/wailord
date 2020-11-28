@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-"""An orca input generator
+"""An orca input generator and reader
 
 This module reads in a configuration file and generates the requisite input
-files
+files. It also reads existing configuration files and returns interesting
+things.
 
 Example:
     See the tests for more
@@ -14,6 +15,7 @@ Some more details.
 Todo:
     * Make tests
     * Return interesting things
+    * Parse wailord generated input files
     * You have to also use ``sphinx.ext.todo`` extension
 
 .. _Google Python Style Guide:
@@ -34,7 +36,7 @@ SCAN_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
 AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
 
-class inpParser:
+class inpGenerator:
     def __init__(self, filename):
         self.qc = None
         self.xyz = None
