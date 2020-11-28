@@ -87,6 +87,14 @@ def test_orca_mdci_e_mtrip_xvals(datadir):
     )
 
 
+def test_orca_mdci_e_mtrip_energy_evals(datadir):
+    """Ensure that the number of evaluations matches the number parsed"""
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    eDat = sEnerg.mdci_e_mtrip(33)
+    eDat1 = sEnerg.mdci_e_mtrip()
+    pd.testing.assert_frame_equal(eDat, eDat1)
+
+
 def test_orca_mdci_e_mtrip_yvals(datadir):
     """Ensure the energy is correct for MDCI without triples"""
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
