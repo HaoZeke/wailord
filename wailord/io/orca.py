@@ -14,8 +14,10 @@ Some more details.
 Todo:
     * Make grammar
     * Make classes
+    * Test the experiments more
+    * Document more things (e.g. SP -> Single point calculation a.k.a. energy
+      calculation)
     * Return interesting things
-    * You have to also use ``sphinx.ext.todo`` extension
 
 .. _Google Python Style Guide:
    http://google.github.io/styleguide/pyguide.html
