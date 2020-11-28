@@ -10,6 +10,10 @@ from pint import UnitRegistry
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
 
+#############################
+# Single Energy Evaluations #
+#############################
+
 
 def test_orca_mdci_e_bounds(datadir):
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
@@ -154,6 +158,11 @@ def test_orca_mdci_e_mtrip_yvals(datadir):
         exp_e,
     )
     pass
+
+
+###############################
+# Multiple Energy Evaluations #
+###############################
 
 
 def test_mult_energy_surf(datadir):
