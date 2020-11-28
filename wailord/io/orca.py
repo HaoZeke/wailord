@@ -262,19 +262,19 @@ class orcaVis:
             flines = of.readlines()
             for line in flines:
                 if OUT_REGEX["energy_evals"].search(line):
-                    self.eeval = line.split()[3]
+                    self.eeval = int(line.split()[3])
         return
 
-    def mdci_e(self, npoints):
+    def mdci_e(self, npoints=None):
         """Full MDCI energy surface
 
         Note:
             `MDCI`_ is meant to work with single reference correlation methods
 
         Args:
-            npoints (int): The number of points over which a scan has taken
-                place.  This is meant to be generated from the input file
-                typically.
+            npoints (int,optional): The number of points over which a scan has
+                taken place. Defaults to the number of evaluations calculated in
+                the output file.
 
         Returns:
             pd.DataFrame: Returns a data frame of bond_length and mdci_energy
@@ -283,6 +283,8 @@ class orcaVis:
             https://www.its.hku.hk/services/research/hpc/software/orca
 
         """
+        if npoints == None:
+            npoints = self.eeval
         xaxis = []
         yaxis = []
         with open(self.ofile) as of:
@@ -299,14 +301,15 @@ class orcaVis:
         )
         return edat
 
-    def mdci_e_mtrip(self, npoints):
+    def mdci_e_mtrip(self, npoints=None):
         """MDCI energy surface without the triple correction
 
         For say, QCISD(T), this is essentially the same as a QCISD calculation.
 
         Args:
-            npoints (int): The number of points over which a scan has taken
-                place.
+            npoints (int,optional): The number of points over which a scan has
+                taken place. Defaults to the number of evaluations calculated in
+                the output file.
 
         Returns:
             pd.DataFrame: Returns a data frame of bond_length and mdci_no_triples
@@ -315,6 +318,8 @@ class orcaVis:
             https://www.its.hku.hk/services/research/hpc/software/orca
 
         """
+        if npoints == None:
+            npoints = self.eeval
         xaxis = []
         yaxis = []
         with open(self.ofile) as of:
