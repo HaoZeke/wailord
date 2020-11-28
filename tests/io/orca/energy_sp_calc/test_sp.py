@@ -172,6 +172,7 @@ def test_mult_energy_surf(datadir):
     eDatAll = sEnerg.mult_energy_surface()
     pd.testing.assert_frame_equal(eDat, eDatAll[["bond_length", "MDCI w/o Triples"]])
     pd.testing.assert_frame_equal(eDatMDCI, eDatAll[["bond_length", "MDCI"]])
+    assert len(eDatAll) == len(eDat)
     pass
 
 
