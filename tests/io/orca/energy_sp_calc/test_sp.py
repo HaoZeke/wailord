@@ -164,3 +164,22 @@ def test_mult_energy_surf(datadir):
     pd.testing.assert_frame_equal(eDat, eDatAll[["bond_length", "MDCI w/o Triples"]])
     pd.testing.assert_frame_equal(eDatMDCI, eDatAll[["bond_length", "MDCI"]])
     pass
+
+
+def test_mult_energy_surf_subset(datadir):
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    eDatAll = sEnerg.mult_energy_surface(etype=["MDCI", "SCF Energy"])
+    assert "Actual Energy" not in eDatAll.columns
+    assert "MDCI" in eDatAll.columns
+    assert "SCF Energy" in eDatAll.columns
+    pass
+
+
+def test_mult_energy_surf_single(datadir):
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
+    eDatSingleL = sEnerg.mult_energy_surface(etype=["MDCI"])
+    eDatMDCI = sEnerg.single_energy_surface("MDCI")
+    pd.testing.assert_frame_equal(eDatMDCI, eDatSingleL)
+    eDatSingle = sEnerg.mult_energy_surface(etype="MDCI")
+    pd.testing.assert_frame_equal(eDatMDCI, eDatSingle)
+    pass

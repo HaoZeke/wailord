@@ -317,8 +317,10 @@ class orcaVis:
 
         """
         if type(etype) == str or len(etype) == 1:
+            if type(etype) == list:
+                etype = etype[0]
             return self.single_energy_surface(
-                etype=str(etype)
+                etype=etype
             )  #: Short circuit if single type is requested
         elist = []
         for et in etype:
