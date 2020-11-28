@@ -64,6 +64,7 @@ OUT_REGEX = {
         r"The Calculated Surface using the MDCI energy minus triple correction\s*"
     ),
     "Actual Energy": re.compile(r"The Calculated Surface using the 'Actual Energy'"),
+    "SCF Energy": re.compile(r"The Calculated Surface using the SCF energy"),
     "energy_evals": re.compile(r"There will be\s*\d* energy evaluations"),
 }
 
@@ -275,7 +276,7 @@ class orcaVis:
 
         Args:
             etype (str,optional): The type of calculated energy surface to
-            return. Defaults to 'Actual Energy' and can be any of `["Actual Energy", "MDCI", "MDCI w/o Triples"]`
+            return. Defaults to 'Actual Energy' and can be any of `["Actual Energy", "MDCI", "MDCI w/o Triples", "SCF Energy"]`
             npoints (int,optional): The number of points over which a scan has
                 taken place. Defaults to the number of evaluations calculated in
                 the output file.
@@ -287,6 +288,8 @@ class orcaVis:
             https://www.its.hku.hk/services/research/hpc/software/orca
 
         """
+        if etype not in OUT_REGEX:
+            raise (NotImplementedError, f"{etype} has not been implemented yet")
         if npoints == None:
             npoints = self.eeval
         xaxis = []
