@@ -14,30 +14,33 @@ Q_ = ureg.Quantity
 def test_orca_mdci_e_bounds(datadir):
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
     with pytest.raises(ValueError):
-        sEnerg.energy_surface(npoints=34)
+        sEnerg.single_energy_surface(npoints=34)
+    pass
 
 
 def test_orca_energ_error(datadir):
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
     with pytest.raises(NotImplementedError):
-        sEnerg.energy_surface(etype="Squid")
+        sEnerg.single_energy_surface(etype="Squid")
+    pass
 
 
 def test_orca_mdci_e_xvals(datadir):
     """Ensure the bond scan is correct for the MDCI surface"""
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
-    eDat = sEnerg.energy_surface("MDCI", 33)
+    eDat = sEnerg.single_energy_surface("MDCI", 33)
     blength = eDat.bond_length.to_numpy(dtype=float)
     np.testing.assert_almost_equal(
         blength,
         np.linspace(0.4, 2, 33),
     )
+    pass
 
 
 def test_orca_mdci_e_yvals(datadir):
     """Ensure the energy is correct for the MDCI surface"""
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
-    eDat = sEnerg.energy_surface("MDCI", 33)
+    eDat = sEnerg.single_energy_surface("MDCI", 33)
     energy = eDat["MDCI"].to_numpy(dtype=float)
     exp_e = np.array(
         [
@@ -80,31 +83,34 @@ def test_orca_mdci_e_yvals(datadir):
         energy,
         exp_e,
     )
+    pass
 
 
 def test_orca_mdci_e_mtrip_xvals(datadir):
     """Ensure the bond scan is correct for MDCI without triples"""
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
-    eDat = sEnerg.energy_surface("MDCI w/o Triples", 33)
+    eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
     blength = eDat.bond_length.to_numpy(dtype=float)
     np.testing.assert_almost_equal(
         blength,
         np.linspace(0.4, 2, 33),
     )
+    pass
 
 
 def test_orca_mdci_e_mtrip_energy_evals(datadir):
     """Ensure that the number of evaluations matches the number parsed"""
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
-    eDat = sEnerg.energy_surface(npoints=33)
-    eDat1 = sEnerg.energy_surface()
+    eDat = sEnerg.single_energy_surface(npoints=33)
+    eDat1 = sEnerg.single_energy_surface()
     pd.testing.assert_frame_equal(eDat, eDat1)
+    pass
 
 
 def test_orca_mdci_e_mtrip_yvals(datadir):
     """Ensure the energy is correct for MDCI without triples"""
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_energy.out")
-    eDat = sEnerg.energy_surface("MDCI w/o Triples", 33)
+    eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
     energy = eDat["MDCI w/o Triples"].to_numpy(dtype=float)
     exp_e = np.array(
         [
@@ -147,3 +153,4 @@ def test_orca_mdci_e_mtrip_yvals(datadir):
         energy,
         exp_e,
     )
+    pass
