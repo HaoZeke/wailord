@@ -27,7 +27,7 @@ import wailord.utils as wau
 
 import re, itertools, sys, os
 from pathlib import Path
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from operator import itemgetter
 from pandas.api.types import CategoricalDtype
 
@@ -213,6 +213,28 @@ class orcaExp:
 
     def get_energy_surface(self):
         return
+
+    def get_runinfo_path(self, runf):
+        """Determines the runtime parameters from the output path
+
+        The implementation uses an ordered dictionary to ensure that the path
+        fragments are matched to the correct keys.
+
+        Note:
+            This will only work with wailord experiments at the moment
+
+        Args:
+            run (:obj:`Path`): Runtime output path
+        Returns:
+            runinf (:obj:`dict`): A simple unordered dictionary of paramters
+        """
+        runinf = OrderedDict(
+            {"basis": None, "calc": None, "spin": None, "theory": None}
+        )
+        rfparts = runf.parts
+        for num, od in enumerate(runinf, start=1):
+            runinf[od] = rfparts[-num]
+        return dict(runinf)
 
     def visit_meta(self, node, visited_children):
         """ Returns the overall output. """
