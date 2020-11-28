@@ -59,12 +59,11 @@ OUT_REGEX = {
     "cartesian_coord": re.compile(r"CARTESIAN\s*COORDINATES\s*\(ANGSTROEM\)\s*"),
     "final_single_point_e": re.compile(r"(?<=FINAL SINGLE POINT ENERGY)\s*-\d*.?\d*"),
     "basis_set": re.compile(r"Orbital\s*basis\s*set\s*information"),
-    "mdci_surf": re.compile(
-        r"The\s*Calculated\s*Surface\s*using\s*the\s*MDCI\s*energy\n"
-    ),
-    "mdci_no_trip": re.compile(
+    "MDCI": re.compile(r"The\s*Calculated\s*Surface\s*using\s*the\s*MDCI\s*energy\n"),
+    "MDCI w/o Triples": re.compile(
         r"The Calculated Surface using the MDCI energy minus triple correction\s*"
     ),
+    "Actual Energy": re.compile(r"The Calculated Surface using the 'Actual Energy'"),
     "energy_evals": re.compile(r"There will be\s*\d* energy evaluations"),
 }
 
@@ -265,13 +264,18 @@ class orcaVis:
                     self.eeval = int(line.split()[3])
         return
 
-    def mdci_e(self, npoints=None):
-        """Full MDCI energy surface
+    def energy_surface(self, etype="Actual Energy", npoints=None):
+        """Energy surface dataframe generator
+
+        For say, QCISD(T), this is essentially the same as a QCISD calculation.
 
         Note:
-            `MDCI`_ is meant to work with single reference correlation methods
+            `MDCI`_ types are meant to work with single reference correlation
+            methods
 
         Args:
+            etype (str,optional): The type of calculated energy surface to
+            return. Defaults to 'Actual Energy' and can be any of `["Actual Energy", "MDCI", "MDCI w/o Triples"]`
             npoints (int,optional): The number of points over which a scan has
                 taken place. Defaults to the number of evaluations calculated in
                 the output file.
@@ -287,51 +291,15 @@ class orcaVis:
             npoints = self.eeval
         xaxis = []
         yaxis = []
+        sregexp = OUT_REGEX[etype]
         with open(self.ofile) as of:
             flines = of.readlines()
             for lnum, line in enumerate(flines):
-                if OUT_REGEX["mdci_surf"].search(line):
+                if sregexp.search(line):
                     offset = lnum + 1
                     for i in range(npoints):
                         x, y = flines[offset + i].split()
                         xaxis.append(x)
                         yaxis.append(y)
-        edat = pd.DataFrame(
-            data=zip(xaxis, yaxis), columns=["bond_length", "mdci_energy"]
-        )
-        return edat
-
-    def mdci_e_mtrip(self, npoints=None):
-        """MDCI energy surface without the triple correction
-
-        For say, QCISD(T), this is essentially the same as a QCISD calculation.
-
-        Args:
-            npoints (int,optional): The number of points over which a scan has
-                taken place. Defaults to the number of evaluations calculated in
-                the output file.
-
-        Returns:
-            pd.DataFrame: Returns a data frame of bond_length and mdci_no_triples
-
-        .. _MDCI:
-            https://www.its.hku.hk/services/research/hpc/software/orca
-
-        """
-        if npoints == None:
-            npoints = self.eeval
-        xaxis = []
-        yaxis = []
-        with open(self.ofile) as of:
-            flines = of.readlines()
-            for lnum, line in enumerate(flines):
-                if OUT_REGEX["mdci_no_trip"].search(line):
-                    offset = lnum + 1
-                    for i in range(npoints):
-                        x, y = flines[offset + i].split()
-                        xaxis.append(x)
-                        yaxis.append(y)
-        edat = pd.DataFrame(
-            data=zip(xaxis, yaxis), columns=["bond_length", "mdci_no_triples"]
-        )
+        edat = pd.DataFrame(data=zip(xaxis, yaxis), columns=["bond_length", etype])
         return edat
