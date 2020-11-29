@@ -19,6 +19,7 @@ Todo:
     * Add MNDO and other semi-empirical methods, which employ a minimal basis by
       default and do not need a basis set in the input
     * Add more explicit support for "simple input lines"
+    * Test Visualizer modifications
     * Add more explicit support for the "block input structure"
     * Parse wailord generated input files
 
@@ -32,6 +33,7 @@ import wailord.io as waio
 import wailord.utils as wau
 
 import shutil
+import textwrap
 import itertools as itertt
 from pathlib import Path
 from operator import itemgetter
@@ -282,6 +284,11 @@ class inpGenerator:
             "to": [slug],
         }
         wau.repkey(scriptname, rep_obj)
+        if self.konfik.config.viz.chemcraft == True:
+            with open(scriptname, "a") as script:
+                script.writelines(textwrap.dedent("""
+                cd $SLURM_SUBMIT_DIR
+                $orcadir/orca_2mkl orca -molden"""))
         self.scripts.append(scriptname)
         pass
 
@@ -305,6 +312,15 @@ class inpGenerator:
             if extralines != None:
                 op.write("\n")
                 op.writelines(extralines)
+                op.write("\n")
+            if self.konfik.config.viz.chemcraft == True:
+                op.write("\n")
+                op.writelines(textwrap.dedent("""
+                %output
+                Print[ P_Basis ] 2
+                Print[ P_MOs ] 1
+                end
+                """))
                 op.write("\n")
             if self.paramlines != None:
                 op.write("\n")
