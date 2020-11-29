@@ -3,23 +3,29 @@
 
 This module reads in a configuration file and generates the requisite input
 files. It also reads existing configuration files and returns interesting
-things.
+things. A short description of the input types is at the `ORCA input
+description`_ page.
 
 Example:
     See the tests for more
 
-        $ poetry run
+        $ pytest
 
 Some more details.
 
 Todo:
     * Make tests
     * Return interesting things
+    * Add MNDO and other semi-empirical methods, which employ a minimal basis by
+      default and do not need a basis set in the input
+    * Add more explicit support for "simple input lines"
+    * Add more explicit support for the "block input structure"
     * Parse wailord generated input files
-    * You have to also use ``sphinx.ext.todo`` extension
 
 .. _Google Python Style Guide:
    http://google.github.io/styleguide/pyguide.html
+.. _ORCA input description:
+   https://sites.google.com/site/orcainputlibrary/generalinput
 
 """
 import wailord.io as waio
@@ -99,11 +105,6 @@ class inpGenerator:
             )
         return "".join(linesthing)
 
-    def param_comment(
-        self,
-    ):
-        """Generate a paramline comment"""
-
     def scan_comment(self, between, scantype):
         """Generate a comment line, or raise an error"""
         outtmp = []
@@ -137,6 +138,7 @@ class inpGenerator:
         if "params" in self.konfik.config.keys():
             self.paramlines = self.parse_params(self.konfik.config.params)
             # print(self.paramlines)
+        pass
 
     def parse_params(self, params):
         """Rework the parameters into output. Recall that these do not require
@@ -209,12 +211,14 @@ class inpGenerator:
                     if num % 10 == 0:
                         op.write('echo("Slowing down!")\n')
                         op.write("sleep 30s\n")
+        pass
 
     def parse_qc(self):
         qcList = list(
             itertt.chain(self.qc.style, self.qc.calculations, self.qc.basis_sets)
         )
         self.qcopts = qcList
+        pass
 
     def gendir_qc(self, basename=Path("wailordFold"), extra=None):
         """Function to generate QC folder structure recursively"""
@@ -224,17 +228,20 @@ class inpGenerator:
         for styl in self.konfik.config.qc.style:
             self.gendir_qcspin(basename / styl)
         self.genharness(basename)
+        pass
 
     def gendir_qcspin(self, path):
         """Generates the style folders"""
         for sp in self.spin:
             sp = sp.replace(" ", "")
             self.gendir_qccalc(path / Path(f"spin_{sp}"))
+        pass
 
     def gendir_qccalc(self, path):
         """Generates set of calculation folders"""
         for cal in self.konfik.config.qc.calculations:
             self.gendir_qcbasis(path / cal)
+        pass
 
     def gendir_qcbasis(self, path):
         """Generates the final of input files. Note that the folders will have +
@@ -243,6 +250,7 @@ class inpGenerator:
             bas = base.replace("+", "P").replace("*", "8")
             Path.mkdir(path / bas, parents=True, exist_ok=True)
             self.geninp(path / bas)
+        pass
 
     def geninp(self, path):
         """Uses the path to generate details for an input file"""
@@ -263,6 +271,7 @@ class inpGenerator:
             from_loc=self.conf_path.parent / self.konfik.config.jobscript,
             slug=f"{tmpconf['basis']}_{tmpconf['style']}",
         )
+        pass
 
     def putscript(self, from_loc, to_loc, slug):
         """Copies the jobscript"""
@@ -274,6 +283,7 @@ class inpGenerator:
         }
         wau.repkey(scriptname, rep_obj)
         self.scripts.append(scriptname)
+        pass
 
     def writeinp(self, confobj, extralines=None):
         """Writes an input file. Minimally should have:
@@ -308,3 +318,4 @@ class inpGenerator:
             op.write("\n")
             op.write(self.xyzlines)
             op.write("*")
+        pass
