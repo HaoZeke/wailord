@@ -1,5 +1,5 @@
 """
-A file for rendering cookiecutter templates
+A set of functions for rendering cookiecutter templates
 """
 from cookiecutter.main import cookiecutter
 from pathlib import Path
