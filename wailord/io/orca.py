@@ -17,6 +17,8 @@ Todo:
     * Test the experiments more
     * Pass a list of experiments to ignore
     * Test the ordering of variables
+    * Make classes for the order
+    * Handle split jobs
     * Propagate exceptions instead of passing the buck with warnings
     * Setup proper logging
     * Document more things (e.g. SP -> Single point calculation a.k.a. energy

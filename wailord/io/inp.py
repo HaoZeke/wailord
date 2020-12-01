@@ -19,8 +19,10 @@ Todo:
     * Add MNDO and other semi-empirical methods, which employ a minimal basis by
       default and do not need a basis set in the input
     * Add more explicit support for "simple input lines"
-    * Test Visualizer modifications
     * Add more explicit support for the "block input structure"
+    * Add support for "sequential" jobs
+    * Support multiple xyz files
+    * Test Visualizer modifications
     * Parse wailord generated input files
 
 .. _Google Python Style Guide:
