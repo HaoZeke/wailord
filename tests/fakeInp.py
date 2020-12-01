@@ -8,9 +8,16 @@ CONF_DIR = (
     / "{{cookiecutter.project_slug}}"
 )
 
-ymlt = waio.inp.inpParser(CONF_DIR / "orca.yml")
+DATA_DIR = get_project_root() / "tests" / "data"
+
+# ymlt = waio.inp.inpGenerator(CONF_DIR / "orca.yml")
+# ymlt.parse_yml()
+# ymlt.gendir_qc()
+
+ymlt = waio.inp.inpGenerator(DATA_DIR / "orcaGeom.yml")
 ymlt.parse_yml()
 ymlt.gendir_qc()
+
 # # Make this more general
 # sx = waio.xyz.xyzIO(DATA_DIR / "h2mol.xyz")
 # print(sx.comment_line)
