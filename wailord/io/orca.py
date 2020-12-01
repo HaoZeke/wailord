@@ -31,7 +31,7 @@ Todo:
 import wailord.io as waio
 import wailord.utils as wau
 
-import re, itertools, sys, os, warnings
+import re, sys, os, warnings
 from pathlib import Path
 from functools import reduce
 from collections import namedtuple, OrderedDict
@@ -42,13 +42,14 @@ from pint import UnitRegistry
 from konfik import Konfik
 import numpy as np
 import pandas as pd
+import itertools as itertt
 import vg
 
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
 
 inpcart = namedtuple("inpcart", "atype x y z")
-orcaout = namedtuple("orcaout", "final_energy fGeom basis filename system")
+orcaout = namedtuple("orcaout", "final_energy fGeom basis filename system spin theory")
 
 ORDERED_THEORY = [
     "HF",
@@ -115,13 +116,20 @@ def parseOut(filename, plotter=False):
                         z=float(p[3]) * ureg.angstrom,
                     )
                     allAtoms.append(myAtom)
+    runinfo = getRunInfo(Path(filename).parent)
+    if runinfo['spin'] == "spin_01":
+        spin="singlet"
+    elif runinfo['spin'] == "spin_03":
+        spin="triplet"
+    else:
+        raise(NotImplementedError(f"Not yet implemented {ruinfo['spin']}"))
     finGeom = []
     for i in reversed(range(1, num_species + 1)):
         finGeom.append(allAtoms[-i])
     #  Creates a dictionary of the system H num O num
     systr = pd.DataFrame(finGeom).atype.value_counts().to_dict()
     # Flattens the dictionary to a list
-    listdict = list(itertools.chain.from_iterable(systr.items()))
+    listdict = list(itertt.chain.from_iterable(systr.items()))
     # Flattens the list to a single string
     liststr = "".join(map(str, listdict))
     oout = orcaout(
@@ -130,6 +138,8 @@ def parseOut(filename, plotter=False):
         basis=basis,
         filename=filename,
         system=liststr,
+        spin = spin,
+        theory = runinfo['theory']
     )
     if plotter == True:
         return oout, energ
@@ -174,10 +184,10 @@ def getBA(dat, x, y, z, indi=[0, 1, 2]):
     return Q_(vg.angle(v12, v13, units="deg"), "degrees")
 
 
-def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASIS):
+def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASIS, order_theory=ORDERED_THEORY):
     """Takes in a Path object, and typically returns bond angles and energies.
     Optionally returns a TeX table or a full dataset with the filenames and
-    geometries"""
+    geometries. Depreciate this eventually."""
     outs = []
     for root, dirs, files in os.walk(rootdir.resolve()):
         for filename in files:
@@ -185,7 +195,9 @@ def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASI
                 outs.append(parseOut(f"{root}/{filename}"))
     outdat = pd.DataFrame(data=outs)
     basis_type = CategoricalDtype(categories=order_basis, ordered=True)
+    theory_type = CategoricalDtype(categories=order_theory, ordered=True)
     outdat["basis"] = outdat["basis"].astype(basis_type)
+    outdat["theory"] = outdat["theory"].astype(theory_type)
     # print(outdat.basis[0])
     # print(pd.DataFrame(outdat.fGeom[0]))
     outdat["angle"] = outdat.fGeom.apply(
@@ -197,7 +209,7 @@ def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASI
             [0, 1, 2],
         )
     )
-    outdat.sort_values(by=["basis"], ignore_index=True, inplace=True)
+    outdat.sort_values(by=["theory","basis"], ignore_index=True, inplace=True)
     outdat.final_energy = outdat.final_energy.apply(
         lambda x: np.around(x, decimals=deci)
     )
@@ -212,6 +224,16 @@ def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASI
         outdat.drop(["filename", "fGeom"], axis=1, inplace=True)
     return outdat
 
+def getRunInfo(runf):
+    """Probably should only be in the class"""
+    runinf = OrderedDict(
+        {"basis": None, "calc": None, "spin": None, "theory": None}
+    )
+    rfparts = runf.parts
+    for num, od in enumerate(runinf, start=1):
+        runinf[od] = rfparts[-num]
+        runinf["basis"] = runinf["basis"].replace("PP", "++").replace("8", "*")
+    return dict(runinf)
 
 class orcaExp:
     """The class meant to handle experiments generated with wailord.
