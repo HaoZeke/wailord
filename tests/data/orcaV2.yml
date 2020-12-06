@@ -1,0 +1,19 @@
+jobs_matrix:
+    - key: "Quantum Chemistry"
+      theory: qc
+      xyz: "inp.xyz"
+      simple:
+          split: False
+          vals:
+              - "NUMGRAD"
+      block:
+          split: False
+          vals:
+              - name: "SCF"
+      matrix:
+          style: ["RHF", "QCISD(T)"]
+          calculations: ["SP", "OPT"]
+          spin:
+              orbitcoupling: ["R", "U"]
+              multiplicities:
+                  - "0 1"

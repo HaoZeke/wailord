@@ -1,0 +1,16 @@
+!UHF MP2 6-311++G(3df,3pd) ENERGY
+
+
+%scf
+    BrokenSym 1, 1
+end
+
+
+%paras
+	R = 2.0, 0.4, 33 # x-axis of H1
+end
+
+*xyz 0 1
+H    0.0000000    0.0000000    0.0000000
+H    {R}                0.0000000    0.0000000
+*

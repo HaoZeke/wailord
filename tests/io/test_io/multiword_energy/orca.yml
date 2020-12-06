@@ -1,0 +1,26 @@
+qc:
+  # Enable or disable
+  active: True
+  style: ["UHF MP2", "RHF MP2", "UHF", "RHF", "QCISD(T)"]
+  calculations: ["ENERGY"] # Same as single point or SP
+  basis_sets:
+    - 6-311++G(3df,3pd)
+xyz: "inp.xyz"
+spin:
+  - "0 1"
+scf:
+  brokensym:
+    more_unpaired: 1
+    less_unpaired: 1
+params:
+  # No gradient calculation required, things are not relaxed
+  - name: R
+    range: [2.00, 0.4]
+    points: 33
+    slot:
+      xyz: True
+      atype: "H"
+      anum: 1 # Start from 0
+      axis: "x"
+extra: Null
+jobscript: "basejob.sh"
