@@ -1,0 +1,16 @@
+qc:
+    active: True
+    style: ["RHF", "UHF", "UHF MP2", "QCISD(T)"]
+    calculations: ["SP", "OPT"]
+    basis_sets:
+        - 6-31G
+        - 6-311G
+xyz: "inp.xyz"
+spin:
+    - "0 1"
+scf:
+    brokensym:
+        more_unpaired: 1
+        less_unpaired: 1
+extra: Null
+jobscript: "basejob.sh"
