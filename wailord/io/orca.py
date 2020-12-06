@@ -33,7 +33,7 @@ Todo:
 import wailord.io as waio
 import wailord.utils as wau
 
-import re, sys, os, warnings
+import re, sys, os, warnings, textwrap
 from pathlib import Path
 from functools import reduce
 from collections import namedtuple, OrderedDict
@@ -263,7 +263,12 @@ class orcaExp:
         self.handle_exp(expfolder)
 
     def __repr__(self):
-        return f"Experiment with {self.inpconf}, and outputs {self.ofolder}"
+        return textwrap.dedent(f"""
+        Experiment: {self.inpconf}
+        Outputs: {self.orclist}
+        Ordered Theory: {self.order_theory}
+        Ordered Basis: {self.order_basis}
+        """)
 
     def handle_exp(self, efol):
         """Populates the internal file variables from the path
@@ -343,6 +348,7 @@ class orcaExp:
         for num, od in enumerate(runinf, start=1):
             runinf[od] = rfparts[-num]
         runinf["basis"] = runinf["basis"].replace("PP", "++").replace("8", "*")
+        runinf["theory"]=runinf["theory"].replace("_", " ")
         return dict(runinf)
 
     def visit_meta(self, node, visited_children):
