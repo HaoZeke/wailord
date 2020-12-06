@@ -165,7 +165,7 @@ class inpGenerator:
         return textwrap.dedent(f"""
 
         %scf
-            BrokenSym {scf.brokensym.more_unpaired} {scf.brokensym.less_unpaired}
+            BrokenSym {scf.brokensym.more_unpaired}, {scf.brokensym.less_unpaired}
         end
 
         """)
@@ -256,6 +256,7 @@ class inpGenerator:
             print("Overwriting extra from yml file")
             self.extra = extra
         for styl in self.konfik.config.qc.style:
+            styl = styl.replace(" ","_")
             self.gendir_qcspin(basename / styl)
         self.genharness(basename)
         pass
@@ -292,7 +293,7 @@ class inpGenerator:
             "spin": " ".join(
                 list(itertt.chain.from_iterable(tmpstr[-3].replace("spin_", "")))
             ),
-            "style": tmpstr[-4],
+            "style": tmpstr[-4].replace("_", " "),
             "name": path / "orca.inp",
             "unrestricted": False
         }
@@ -311,6 +312,7 @@ class inpGenerator:
         """Copies the jobscript"""
         shutil.copy(from_loc, to_loc)
         scriptname = to_loc / self.konfik.config.jobscript
+        slug = slug.replace(" ","_")
         rep_obj = {
             "prev": ["ORCA_CALCULATION"],
             "to": [slug],
