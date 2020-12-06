@@ -22,6 +22,7 @@ Todo:
     * Add more explicit support for the "block input structure"
     * Add support for "sequential" jobs
     * Support multiple xyz files
+    * Test and expand brokensym
     * Test Visualizer modifications
     * Parse wailord generated input files
 
@@ -45,7 +46,6 @@ from konfik import Konfik
 SCAN_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
 AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
-
 class inpGenerator:
     def __init__(self, filename):
         self.qc = None
@@ -56,6 +56,8 @@ class inpGenerator:
         self.conf_path = filename
         self.geomlines = None
         self.xyzlines = None
+        self.scf = None
+        self.viz = None
         self.paramlines = None
         self.konfik = Konfik(config_path=filename)
         self.scripts = []
@@ -137,12 +139,36 @@ class inpGenerator:
         # Geometry
         if "geom" in self.konfik.config.keys():
             self.geomlines = self.parse_geom(self.konfik.config.geom)
-            # print(self.geomlines)
         # Paramter Blocks
         if "params" in self.konfik.config.keys():
             self.paramlines = self.parse_params(self.konfik.config.params)
-            # print(self.paramlines)
+        if "scf" in self.konfik.config.keys():
+            self.scf = self.parse_scf(self.konfik.config.scf)
+        if "viz" in self.konfik.config.keys():
+            self.viz = self.parse_viz(self.konfik.config.viz)
         pass
+
+    def parse_viz(self, viz):
+        if viz.chemcraft == True:
+            return textwrap.dedent("""
+
+            %output
+            Print[ P_Basis ] 2
+            Print[ P_MOs ] 1
+            end
+
+            """)
+
+    def parse_scf(self, scf):
+        if "brokensym" not in scf.keys():
+            raise(KeyError("Only brokensym is supported"))
+        return textwrap.dedent(f"""
+
+        %scf
+            BrokenSym {scf.brokensym.more_unpaired} {scf.brokensym.less_unpaired}
+        end
+
+        """)
 
     def parse_params(self, params):
         """Rework the parameters into output. Recall that these do not require
@@ -268,7 +294,11 @@ class inpGenerator:
             ),
             "style": tmpstr[-4],
             "name": path / "orca.inp",
+            "unrestricted": False
         }
+        if self.scf !=None:
+            if tmpconf["style"].find("UKS") != -1  or tmpconf["style"].find("UHF") != -1:
+                tmpconf["unrestricted"] = True
         self.writeinp(tmpconf)
         self.putscript(
             to_loc=path,
@@ -286,11 +316,12 @@ class inpGenerator:
             "to": [slug],
         }
         wau.repkey(scriptname, rep_obj)
-        if self.konfik.config.viz.chemcraft == True:
-            with open(scriptname, "a") as script:
-                script.writelines(textwrap.dedent("""
-                cd $SLURM_SUBMIT_DIR
-                $orcadir/orca_2mkl orca -molden"""))
+        if self.viz != None:
+            if self.viz.chemcraft == True:
+                with open(scriptname, "a") as script:
+                    script.writelines(textwrap.dedent("""
+                    cd $SLURM_SUBMIT_DIR
+                    $orcadir/orca_2mkl orca -molden"""))
         self.scripts.append(scriptname)
         pass
 
@@ -301,12 +332,13 @@ class inpGenerator:
         """
         if extralines == None:
             extralines = self.extra
-        basis, calc, spin, style, name = itemgetter(
+        basis, calc, spin, style, name, unrestricted = itemgetter(
             "basis",
             "calc",
             "spin",
             "style",
             "name",
+            "unrestricted"
         )(confobj)
         with open(name, "w") as op:
             op.write(f"!{style} {basis} {calc}")
@@ -315,15 +347,10 @@ class inpGenerator:
                 op.write("\n")
                 op.writelines(extralines)
                 op.write("\n")
-            if self.konfik.config.viz.chemcraft == True:
-                op.write("\n")
-                op.writelines(textwrap.dedent("""
-                %output
-                Print[ P_Basis ] 2
-                Print[ P_MOs ] 1
-                end
-                """))
-                op.write("\n")
+            if unrestricted == True:
+                op.writelines(self.scf)
+            if self.viz != None:
+                op.writelines(self.viz)
             if self.paramlines != None:
                 op.write("\n")
                 op.writelines(self.paramlines)
@@ -337,3 +364,38 @@ class inpGenerator:
             op.write(self.xyzlines)
             op.write("*")
         pass
+
+class simpleInput:
+    """ Base class for representing the simple input line"""
+    def __init__(self, data):
+        self.contents = None
+        return
+    def __repr__(self):
+        return f"!{contents}"
+
+class blockInput:
+    """Base class representing block inputs"""
+    def __init__(self, data):
+        self.keyword = None
+        self.lines = None
+        return
+    def __repr__(self):
+        return textwrap.dedent(f"""
+        %block {keyword}
+            {lines}
+        end
+        """)
+
+class coordBlock:
+    """Base class for the coordinate block"""
+    def __init__(self, data):
+        self.keyword = None
+        self.lines = None
+        return
+    def __repr__(self):
+        return textwrap.dedent(f"""
+        *block {keyword}
+            {lines}
+        *
+        """)
+
