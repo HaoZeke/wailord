@@ -1,5 +1,6 @@
 import wailord.io as waio
 import pandas as pd
+import numpy as np
 import pytest
 import warnings
 
@@ -69,4 +70,31 @@ def test_get_energy_surface_empty(datadir):
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     with pytest.raises(ValueError):
         expt.get_energy_surface(etype=["MDCI", "Actual Energy"])
+    pass
+
+def test_get_energy_surface_shape(datadir):
+    otheory=["RHF", "RHF MP2", "UHF", "UHF MP2", "QCISD(T)" ]
+    expt = waio.orca.orcaExp(expfolder=datadir / "multiword_energy",
+                             order_theory=otheory)
+    edat = expt.get_energy_surface()
+    assert list(edat.theory.unique()) == [
+        "RHF",
+        "RHF MP2",
+        "UHF",
+        "UHF MP2",
+        "QCISD(T)",
+    ]  #: Increasing level of theory
+    assert list(edat.columns) == [
+        "bond_length",
+        "Actual Energy",
+        "SCF Energy",
+        "basis",
+        "calc",
+        "spin",
+        "theory",
+    ]
+    np.testing.assert_equal(
+        edat.theory.value_counts().to_numpy(),
+        np.repeat(33,5),
+    )
     pass
