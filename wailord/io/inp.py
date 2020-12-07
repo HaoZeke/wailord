@@ -53,7 +53,7 @@ class inpGenerator:
         self.xyzpath = None
         self.spin = None
         self.extra = None
-        self.conf_path = filename
+        self.conf_path = Path(filename)
         self.geomlines = None
         self.xyzlines = None
         self.scf = None
@@ -79,9 +79,9 @@ class inpGenerator:
     def parse_geom(self, geom):
         """Rework the geometry into output"""
         textlines = []
-        textlines.append("%geom")
+        textlines.append("\n%geom\n")
         if "scan" in geom:
-            textlines.append(f"\n\tScan\n")
+            textlines.append(f"  Scan\n")
             for scanthing in geom.scan.keys():
                 if scanthing.capitalize() in SCAN_TYPES.values():
                     textlines.append(
@@ -91,8 +91,12 @@ class inpGenerator:
                     raise TypeError(
                         f"Only dihedral, bond and angle scan types are supported, got {scanthing} instead"
                     )
-            textlines.append(f"\tend\n")
-        textlines.append("end\n")
+            textlines.append(f"  end")
+        if "maxiter" in geom:
+            textlines.append(textwrap.dedent(f"""
+            maxiter {geom.maxiter}
+            """))
+        textlines.append("\nend\n")
         return "".join(textlines)
 
     def geom_scan(self, thing, scantype):
@@ -107,7 +111,7 @@ class inpGenerator:
             )(thingline)
             comment = self.scan_comment(btwn, scantype)
             linesthing.append(
-                f"\t\t{scantype} {btwn} = {fromto[0]}, {fromto[1]}, {points} # {comment}\n"
+                f"    {scantype} {btwn} = {fromto[0]}, {fromto[1]}, {points} # {comment}\n"
             )
         return "".join(linesthing)
 
@@ -319,7 +323,7 @@ class inpGenerator:
         }
         wau.repkey(scriptname, rep_obj)
         if self.viz != None:
-            if self.viz.chemcraft == True:
+            if self.konfik.config.viz.chemcraft == True:
                 with open(scriptname, "a") as script:
                     script.writelines(textwrap.dedent("""
                     cd $SLURM_SUBMIT_DIR
