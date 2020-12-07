@@ -234,7 +234,8 @@ def getRunInfo(runf):
     rfparts = runf.parts
     for num, od in enumerate(runinf, start=1):
         runinf[od] = rfparts[-num]
-        runinf["basis"] = runinf["basis"].replace("PP", "++").replace("8", "*")
+    runinf["basis"] = runinf["basis"].replace("PP", "++").replace("8", "*")
+    runinf["theory"]=runinf["theory"].replace("_", " ")
     return dict(runinf)
 
 class orcaExp:
