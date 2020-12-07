@@ -50,6 +50,8 @@ import vg
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
 
+ureg.define('kcal_mol = kcal / 6.02214076e+23 = kcm')
+
 inpcart = namedtuple("inpcart", "atype x y z")
 orcaout = namedtuple("orcaout", "final_energy fGeom basis filename system spin theory")
 
