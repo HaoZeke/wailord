@@ -24,6 +24,7 @@ Todo:
     * Support multiple xyz files
     * Test and expand brokensym
     * Test Visualizer modifications
+    * Validate scans and constraints
     * Parse wailord generated input files
 
 .. _Google Python Style Guide:
@@ -37,6 +38,7 @@ import wailord.utils as wau
 
 import shutil
 import textwrap
+import warnings
 import itertools as itertt
 from pathlib import Path
 from operator import itemgetter
@@ -44,6 +46,7 @@ from operator import itemgetter
 from konfik import Konfik
 
 SCAN_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
+CONSTRAINT_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle", "C": "Cartesian"}
 AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
 class inpGenerator:
@@ -79,9 +82,9 @@ class inpGenerator:
     def parse_geom(self, geom):
         """Rework the geometry into output"""
         textlines = []
-        textlines.append("\n%geom\n")
+        textlines.append("\n%geom")
         if "scan" in geom:
-            textlines.append(f"  Scan\n")
+            textlines.append(f"\n  Scan\n")
             for scanthing in geom.scan.keys():
                 if scanthing.capitalize() in SCAN_TYPES.values():
                     textlines.append(
@@ -92,6 +95,18 @@ class inpGenerator:
                         f"Only dihedral, bond and angle scan types are supported, got {scanthing} instead"
                     )
             textlines.append(f"  end")
+        if "constrain" in geom:
+            textlines.append(f"\n  Constraints\n")
+            for consthing in geom.constrain.keys():
+                if consthing.capitalize() in CONSTRAINT_TYPES.values():
+                    textlines.append(
+                        self.geom_constrain(geom.constrain[f"{consthing}"], constype=consthing)
+                    )
+                else:
+                    raise TypeError(
+                        f"Only dihedral, bond, angle, and cartesian constraints are supported, got {consthing} instead"
+                    )
+            textlines.append(f"  end")
         if "maxiter" in geom:
             textlines.append(textwrap.dedent(f"""
             maxiter {geom.maxiter}
@@ -99,6 +114,29 @@ class inpGenerator:
         textlines.append("\nend\n")
         return "".join(textlines)
 
+    def geom_constrain(self, cons, constype):
+        """Handles constraints"""
+        linesthing = []
+        constype = constype[0][0].upper()
+        for constraint in cons:
+            btwn = constraint["between"]
+            if "value" in constraint.keys():
+                value = float(constraint["value"])
+            else:
+                value = ""
+            if constype!="C":
+                btwn_num = btwn.split(" ")
+                # TODO Handle the other types as tuples (B,2)
+                comment = self.scan_comment(btwn, thistype=constype, use_types=CONSTRAINT_TYPES, usage="constraint on")
+                # if constype == 'B' and len(btwn_num) == 2:
+            else:
+                warnings.warn(f"Cartesian comments have not been implemented", UserWarning)
+                comment = ""
+            linesthing.append(
+                f"    {{ {constype} {btwn} {value} C }} # {comment}\n"
+            )
+        return "".join(linesthing)
+        
     def geom_scan(self, thing, scantype):
         """Handles scans"""
         linesthing = []
@@ -115,11 +153,11 @@ class inpGenerator:
             )
         return "".join(linesthing)
 
-    def scan_comment(self, between, scantype):
+    def scan_comment(self, between, thistype, use_types=SCAN_TYPES, usage="scan for"):
         """Generate a comment line, or raise an error"""
         outtmp = []
         tmp = list(map(int, between.split()))
-        thiskey = SCAN_TYPES[f"{scantype}"]
+        thiskey = use_types[f"{thistype}"]
         for i in tmp:
             try:
                 outtmp.append(f"{self.xyz.xyzdat.atom_types[i]}{i}")
@@ -128,7 +166,7 @@ class inpGenerator:
                     "Trying to use an atom which does not exist, check indices"
                 )
         gencom = "--".join(outtmp)
-        return f"{thiskey} scan for {gencom}"
+        return f"{thiskey} {usage} {gencom}"
 
     def parse_yml(self):
         """Handle the various options"""
@@ -164,15 +202,16 @@ class inpGenerator:
             """)
 
     def parse_scf(self, scf):
-        if "brokensym" not in scf.keys():
-            raise(KeyError("Only brokensym is supported"))
-        return textwrap.dedent(f"""
-
-        %scf
-            BrokenSym {scf.brokensym.more_unpaired}, {scf.brokensym.less_unpaired}
-        end
-
-        """)
+        textlines = []
+        textlines.append("\n%scf\n")
+        if "brokensym" in scf:
+            textlines.append(f"  BrokenSym {scf.brokensym.more_unpaired}, {scf.brokensym.less_unpaired}  end")
+        if "maxiter" in scf:
+            textlines.append(textwrap.dedent(f"""
+            maxiter {scf.maxiter}
+            """))
+        textlines.append("\nend\n")
+        return "".join(textlines)
 
     def parse_params(self, params):
         """Rework the parameters into output. Recall that these do not require
@@ -355,6 +394,7 @@ class inpGenerator:
                 op.write("\n")
             if unrestricted == True:
                 op.writelines(self.scf)
+                op.write("\n")
             if self.viz != None:
                 op.writelines(self.viz)
             if self.paramlines != None:
