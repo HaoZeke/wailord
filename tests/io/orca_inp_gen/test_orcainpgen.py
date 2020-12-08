@@ -11,6 +11,38 @@ from pathlib import Path
 from konfik import Konfik
 from shutil import copyfile
 
+def test_geom_constraint(datadir):
+    expect = textwrap.dedent(
+    f"""
+    %geom
+      Scan
+        B 0 1 = 0.4, 2.0, 17 # Bond scan for C0--H1
+        B 0 2 = 0.3, 1.0, 13 # Bond scan for C0--H2
+        D 0 1 = 60, 80, 39 # Dihedral scan for C0--H1
+        A 0 1 2 = 30, 80, 62 # Angle scan for C0--H1--H2
+      end
+      Constraints
+        {{ B 0 1 30.0 C }} # Bond constraint on C0--H1
+        {{ B 0 2  C }} # Bond constraint on C0--H2
+      end
+      maxiter = 300
+    end
+    """)
+    with open(f"{datadir}/orcaGeom.yml") as baseyml:
+        t = yaml.full_load(baseyml)
+        t['geom'].update({'maxiter':300})
+        tmpyml = tempfile.NamedTemporaryFile('w', suffix = '.yml', delete=False)
+        try:
+            with tmpyml:
+                yaml.dump(t, tmpyml)
+                ymlt = waio.inp.inpGenerator(f"{tmpyml.name}")
+                copyfile(f"{datadir}/inp.xyz","/tmp/inp.xyz")
+                copyfile(f"{datadir}/basejob.sh","/tmp/basejob.sh")
+                ymlt.parse_yml()
+                ymlt.geomlines == expect
+        finally:
+            os.unlink(tmpyml.name)
+    pass
 
 def test_geom_scaniter(datadir):
     expect = textwrap.dedent(
@@ -27,6 +59,7 @@ def test_geom_scaniter(datadir):
     """)
     with open(f"{datadir}/orcaGeom.yml") as baseyml:
         t = yaml.full_load(baseyml)
+        t.pop('constraints', None)
         t['geom'].update({'maxiter':300})
         tmpyml = tempfile.NamedTemporaryFile('w', suffix = '.yml', delete=False)
         try:
@@ -102,6 +135,10 @@ def test_geom_scans(datadir):
         B 0 2 = 0.3, 1.0, 13 # Bond scan for C0--H2
         D 0 1 = 60, 80, 39 # Dihedral scan for C0--H1
         A 0 1 2 = 30, 80, 62 # Angle scan for C0--H1--H2
+      end
+      Constraints
+        {{ B 0 1 30.0 C }} # Bond constraint on C0--H1
+        {{ B 0 2  C }} # Bond constraint on C0--H2
       end
     end
     """)
