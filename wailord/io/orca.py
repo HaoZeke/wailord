@@ -90,6 +90,7 @@ OUT_REGEX = {
     "energy_evals": re.compile(r"There will be\s*\d* energy evaluations"),
 }
 
+# ------------ Refactor
 
 def parseOut(filename, plotter=False):
     """Handles orca outputs with regex for energy and coordinates"""
@@ -228,6 +229,8 @@ def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASI
         outdat.drop(["filename", "fGeom"], axis=1, inplace=True)
     return outdat
 
+# ------------- Keep ------------------
+
 def getRunInfo(runf):
     """Determines the runtime parameters from the output path
 
@@ -322,17 +325,8 @@ class orcaExp:
             etype = [etype]
         edatl = []
         for runf in self.orclist:
-            runinf = getRunInfo(runf.parent)
             runsurf = orcaVis(runf).mult_energy_surface(etype=etype)
-            if runsurf.empty:
-                raise (
-                    ValueError(
-                        f"{etype} surface not found for {runinf['theory']}, see warning."
-                    )
-                )
-            for key in runinf.keys():
-                runsurf[key] = runinf[key]
-                edatl.append(runsurf)
+            edatl.append(runsurf)
         edat = pd.concat(edatl, axis=0)
         edat = edat.drop_duplicates()
         basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
@@ -341,30 +335,6 @@ class orcaExp:
         edat["theory"] = edat["theory"].astype(theory_type)
         edat.sort_values(by=["theory", "basis", "bond_length"], ignore_index=True, inplace=True)
         return edat
-
-    def get_runinfo_path(self, runf):
-        """Determines the runtime parameters from the output path
-
-        The implementation uses an ordered dictionary to ensure that the path
-        fragments are matched to the correct keys.
-
-        Note:
-            This will only work with wailord experiments at the moment
-
-        Args:
-            run (:obj:`Path`): Runtime output path
-        Returns:
-            runinf (:obj:`dict`): A simple unordered dictionary of paramters
-        """
-        runinf = OrderedDict(
-            {"basis": None, "calc": None, "spin": None, "theory": None}
-        )
-        rfparts = runf.parts
-        for num, od in enumerate(runinf, start=1):
-            runinf[od] = rfparts[-num]
-        runinf["basis"] = runinf["basis"].replace("PP", "++").replace("8", "*")
-        runinf["theory"]=runinf["theory"].replace("_", " ")
-        return dict(runinf)
 
     def visit_meta(self, node, visited_children):
         """ Returns the overall output. """
@@ -404,6 +374,8 @@ class orcaVis:
         """
         self.eeval = None
         self.ofile = ofile
+        self.fin_sp_e = None
+        self.runinfo = getRunInfo(self.ofile.parent)
         self.get_evals(self.ofile)
 
     def __repr__(self):
@@ -447,14 +419,17 @@ class orcaVis:
         if type(etype) == str or len(etype) == 1:
             if type(etype) == list:
                 etype = etype[0]
-            return self.single_energy_surface(
-                etype=etype
-            )  #: Short circuit if single type is requested
+            single = self.single_energy_surface(etype=etype)  #: Short circuit if single type is requested
+            for key in self.runinfo.keys():
+                single[key] = self.runinfo[key]
+            return single
         elist = []
         for et in etype:
             runsurf = self.single_energy_surface(etype=et)
             elist.append(runsurf)
         eDat_all = reduce(lambda df1, df2: pd.merge(df1, df2, on="bond_length"), elist)
+        for key in self.runinfo.keys():
+            eDat_all[key] = self.runinfo[key]
         return eDat_all
 
     def single_energy_surface(self, etype="Actual Energy", npoints=None):
@@ -474,7 +449,7 @@ class orcaVis:
                 the output file.
 
         Returns:
-            pd.DataFrame: Returns a data frame of bond_length and energies
+            pd.DataFrame: Returns a data frame of energy surfaces
 
         .. _MDCI:
             https://www.its.hku.hk/services/research/hpc/software/orca
@@ -500,5 +475,5 @@ class orcaVis:
             data=zip(xaxis, yaxis), columns=["bond_length", etype], dtype="float64"
         )
         if edat.empty:
-            warnings.warn(f"{etype} surface not found, will throw", UserWarning)
+            raise(ValueError(f"{etype} surface not found for {self.runinfo['theory']}"))
         return edat

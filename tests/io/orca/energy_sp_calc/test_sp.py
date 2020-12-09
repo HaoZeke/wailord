@@ -31,11 +31,9 @@ def test_orca_energ_error(datadir):
 def test_orca_energ_empty(datadir):
     warnings.filterwarnings("ignore")
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_uhf.out")
-    with pytest.warns(UserWarning, match="MDCI surface not found, will throw"):
+    with pytest.raises(ValueError):
         sEnerg.single_energy_surface("MDCI", 33)
-    with pytest.warns(
-        UserWarning, match="MDCI w/o Triples surface not found, will throw"
-    ):
+    with pytest.raises(ValueError):
         sEnerg.single_energy_surface("MDCI w/o Triples")
     pass
 
@@ -200,7 +198,7 @@ def test_mult_energy_surf_single(datadir):
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     eDatSingleL = sEnerg.mult_energy_surface(etype=["MDCI"])
     eDatMDCI = sEnerg.single_energy_surface("MDCI")
-    pd.testing.assert_frame_equal(eDatMDCI, eDatSingleL)
+    pd.testing.assert_frame_equal(eDatMDCI, eDatSingleL.loc[:, ["bond_length", "MDCI"]])
     eDatSingle = sEnerg.mult_energy_surface(etype="MDCI")
-    pd.testing.assert_frame_equal(eDatMDCI, eDatSingle)
+    pd.testing.assert_frame_equal(eDatMDCI, eDatSingle.loc[:, ["bond_length", "MDCI"]])
     pass
