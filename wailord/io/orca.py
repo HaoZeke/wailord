@@ -229,7 +229,19 @@ def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASI
     return outdat
 
 def getRunInfo(runf):
-    """Probably should only be in the class"""
+    """Determines the runtime parameters from the output path
+
+        The implementation uses an ordered dictionary to ensure that the path
+        fragments are matched to the correct keys.
+
+        Note:
+            This will only work with wailord experiments at the moment
+
+        Args:
+            run (:obj:`Path`): Runtime output path
+        Returns:
+            runinf (:obj:`dict`): A simple unordered dictionary of paramters
+   """
     runinf = OrderedDict(
         {"basis": None, "calc": None, "spin": None, "theory": None}
     )
@@ -303,14 +315,14 @@ class orcaExp:
             `OrcaVis` class call
 
         Returns:
-            pd.DataFrame: Returns a data frame of bond_length and mdci_energy
+            pd.DataFrame: Returns a data frame of etype energies
 
         """
         if type(etype) == str:
             etype = [etype]
         edatl = []
         for runf in self.orclist:
-            runinf = self.get_runinfo_path(runf.parent)
+            runinf = getRunInfo(runf.parent)
             runsurf = orcaVis(runf).mult_energy_surface(etype=etype)
             if runsurf.empty:
                 raise (
