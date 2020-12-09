@@ -37,6 +37,25 @@ def test_orca_genEBDA(datadir):
     assert list(sEnerg.final_energy.apply(lambda x: x.magnitude)) == magnitude
     assert list(sEnerg.angle.apply(lambda x: x.magnitude)) == angles
 
+######################
+# Final Energy Tests #
+######################
+
+def test_get_final_sp_energy(datadir):
+    expt = waio.orca.orcaExp(expfolder=datadir / "h2")
+    fse = expt.get_final_sp_energy()
+    fse.shape == (27,6)
+    fse.final_sp_energy.min() == -1.020894275845
+    min_e = fse[fse.final_sp_energy == fse.final_sp_energy.min()] 
+    max_e = fse[fse.final_sp_energy == fse.final_sp_energy.max()] 
+    np.testing.assert_equal(min_e.values,
+                            np.array([['6-311++G(3df,3pd)', 'ENERGY', 'spin_01', 'QCISD',
+                                       -1.020894275845, 'hartree'],
+                                      ['6-311++G(3df,3pd)', 'ENERGY', 'spin_01', 'QCISD(T)',
+                                       -1.020894275845, 'hartree']], dtype=object)
+                            )
+    np.testing.assert_equal(max_e.values[0], np.array(['3-21G', 'ENERGY', 'spin_01', 'UHF', -0.907804773703, 'hartree'], dtype=object))
+    pass
 
 ##############################
 # Energy Surface Evaluations #

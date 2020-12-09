@@ -307,6 +307,29 @@ class orcaExp:
         self.orclist = fnames
         return
 
+    def get_final_sp_energy(self):
+        """Returns a datframe of only the final single point energies
+
+        Proxies calls to the base orcaVis class over a series of generated files
+
+        Args:
+            None
+
+        Returns:
+            pd.DataFrame: Returns a data frame of final energies
+        """
+        edatl = []
+        for runf in self.orclist:
+            runorc = orcaVis(runf).final_sp_e()
+            edatl.append(runorc)
+        fe = pd.DataFrame(edatl)
+        basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
+        theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
+        fe["basis"] = fe["basis"].astype(basis_type)
+        fe["theory"] = fe["theory"].astype(theory_type)
+        fe.sort_values(by=["theory", "basis", "final_sp_energy"], ignore_index=True, inplace=True)
+        return fe
+
     def get_energy_surface(self, etype=["Actual Energy", "SCF Energy"]):
         """Populates an energy surface dataframe
 
@@ -374,9 +397,10 @@ class orcaVis:
         """
         self.eeval = None
         self.ofile = ofile
-        self.fin_sp_e = None
         self.runinfo = getRunInfo(self.ofile.parent)
+        self.fin_sp_e = None
         self.get_evals(self.ofile)
+        self.get_final_e()
 
     def __repr__(self):
         return f"{self.ofile}"
@@ -388,6 +412,21 @@ class orcaVis:
                 if OUT_REGEX["energy_evals"].search(line):
                     self.eeval = int(line.split()[3])
         return
+
+    def get_final_e(self, dat=False):
+        with open(self.ofile) as of:
+            fInp = of.read()
+            try:
+                self.fin_sp_e = float(OUT_REGEX["final_single_point_e"].findall(fInp)[-1].split()[-1]) * ureg.hartree
+            except:
+                raise(ValueError(f"Final single point energy not found for {self.ofile}"))
+        pass
+
+    def final_sp_e(self):
+        erow = self.runinfo
+        erow['final_sp_energy']=self.fin_sp_e.m
+        erow['unit']=self.fin_sp_e.u
+        return erow
 
     def mult_energy_surface(
         self,

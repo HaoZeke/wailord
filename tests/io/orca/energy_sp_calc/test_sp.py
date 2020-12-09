@@ -5,13 +5,30 @@ import warnings
 import pytest
 
 from pint import UnitRegistry
+from pathlib import Path
 
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
+ureg.define('kcal_mol = kcal / 6.02214076e+23 = kcm')
 
-#############################
-# Single Energy Evaluations #
-#############################
+#######################
+# Single Energy Tests #
+#######################
+
+def test_orca_get_sp_e(datadir):
+    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    np.testing.assert_almost_equal(sEnerg.fin_sp_e.m, -1.01010039)
+    pass
+
+def test_orca_runinfo(datadir):
+    se = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    se.runinfo = waio.orca.getRunInfo(Path("QCISD/spin_01/ENERGY/3-21G/"))
+    assert se.runinfo == {'basis': '3-21G', 'calc': 'ENERGY', 'spin': 'spin_01', 'theory': 'QCISD'}
+    pass
+
+##########################
+# Single Energy Surfaces #
+##########################
 
 
 def test_orca_mdci_e_bounds(datadir):
@@ -169,9 +186,9 @@ def test_orca_mdci_e_mtrip_yvals(datadir):
     pass
 
 
-###############################
-# Multiple Energy Evaluations #
-###############################
+############################
+# Multiple Energy Surfaces #
+############################
 
 
 def test_mult_energy_surf(datadir):
