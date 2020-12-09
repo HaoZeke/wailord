@@ -333,38 +333,27 @@ class orcaExp:
             for key in runinf.keys():
                 runsurf[key] = runinf[key]
                 edatl.append(runsurf)
-        edat = pd.concat(edatl, axis=0)
-        edat = edat.drop_duplicates()
-        basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
-        theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
-        edat["basis"] = edat["basis"].astype(basis_type)
-        edat["theory"] = edat["theory"].astype(theory_type)
-        edat.sort_values(by=["theory", "basis", "bond_length"], ignore_index=True, inplace=True)
+        edat = self.gen_dataframe(edatl)
         return edat
 
-    def get_runinfo_path(self, runf):
-        """Determines the runtime parameters from the output path
-
-        The implementation uses an ordered dictionary to ensure that the path
-        fragments are matched to the correct keys.
-
-        Note:
-            This will only work with wailord experiments at the moment
+    def gen_dataframe(self, orcv_list):
+        """Helper output function
+        Used only internally. Generates a dataframe from a list of file output dataframes
 
         Args:
-            run (:obj:`Path`): Runtime output path
+            orcv_list (:obj:`list` of :obj:`orcaVis`): The list of outputs (typically orcaVis calls) to concatenate 
+
         Returns:
-            runinf (:obj:`dict`): A simple unordered dictionary of paramters
+            pd.DataFrame: Returns a data frame of etype energies
         """
-        runinf = OrderedDict(
-            {"basis": None, "calc": None, "spin": None, "theory": None}
-        )
-        rfparts = runf.parts
-        for num, od in enumerate(runinf, start=1):
-            runinf[od] = rfparts[-num]
-        runinf["basis"] = runinf["basis"].replace("PP", "++").replace("8", "*")
-        runinf["theory"]=runinf["theory"].replace("_", " ")
-        return dict(runinf)
+        orcv = pd.concat(orcv_list, axis=0)
+        orcv = orcv.drop_duplicates()
+        basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
+        theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
+        orcv["basis"] = orcv["basis"].astype(basis_type)
+        orcv["theory"] = orcv["theory"].astype(theory_type)
+        orcv.sort_values(by=["theory", "basis"], ignore_index=True, inplace=True)
+        return orcv
 
     def visit_meta(self, node, visited_children):
         """ Returns the overall output. """
