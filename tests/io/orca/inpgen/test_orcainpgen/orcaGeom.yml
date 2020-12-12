@@ -1,0 +1,59 @@
+qc:
+    active: True
+    style: ["RHF", "QCISD(T)"]
+    calculations: ["SP", "OPT"]
+    basis_sets:
+        - 6-31G
+        - 6-311G
+xyz: "inp.xyz"
+spin:
+    - "0 1"
+extra: Null
+geom:
+    # Other degrees relaxed before usage, requires a gradient
+    scan:
+        bond:
+            - between: "0 1"
+              range: [0.40, 2.00]
+              points: 17
+            - between: "0 2"
+              range: [0.30, 1.00]
+              points: 13
+        dihedral:
+            - between: "0 1"
+              range: [60, 80]
+              points: 39
+        angle:
+            - between: "0 1 2"
+              range: [30, 80]
+              points: 62
+    constrain:
+        bond:
+            - between: "0 1"
+              value: 30
+            - between: "0 2"
+params:
+    # No gradient calculation required, things are not relaxed
+    # Can also take variables
+    - name: Rtwenty
+      value: 12.8
+      slot:
+          # Support other kinds later
+          xyz: True
+          # Atom type
+          atype:
+              "C"
+              # Number
+          anum:
+              0
+              # Axis, or slot
+          axis: "x"
+    - name: Rtwo
+      range: [0.4, 2]
+      points: 17
+      slot:
+          xyz: True
+          atype: "H"
+          anum: 2
+          axis: "z"
+jobscript: "basejob.sh"

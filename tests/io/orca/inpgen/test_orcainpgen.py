@@ -11,9 +11,9 @@ from pathlib import Path
 from konfik import Konfik
 from shutil import copyfile
 
+
 def test_geom_constraint(datadir):
-    expect = textwrap.dedent(
-    f"""
+    string = f"""
     %geom
       Scan
         B 0 1 = 0.4, 2.0, 17 # Bond scan for C0--H1
@@ -27,26 +27,27 @@ def test_geom_constraint(datadir):
       end
       maxiter = 300
     end
-    """)
+    """
+    expect = textwrap.dedent(string)
     with open(f"{datadir}/orcaGeom.yml") as baseyml:
         t = yaml.full_load(baseyml)
-        t['geom'].update({'maxiter':300})
-        tmpyml = tempfile.NamedTemporaryFile('w', suffix = '.yml', delete=False)
+        t["geom"].update({"maxiter": 300})
+        tmpyml = tempfile.NamedTemporaryFile("w", suffix=".yml", delete=False)
         try:
             with tmpyml:
                 yaml.dump(t, tmpyml)
                 ymlt = waio.inp.inpGenerator(f"{tmpyml.name}")
-                copyfile(f"{datadir}/inp.xyz","/tmp/inp.xyz")
-                copyfile(f"{datadir}/basejob.sh","/tmp/basejob.sh")
+                copyfile(f"{datadir}/inp.xyz", "/tmp/inp.xyz")
+                copyfile(f"{datadir}/basejob.sh", "/tmp/basejob.sh")
                 ymlt.parse_yml()
                 ymlt.geomlines == expect
         finally:
             os.unlink(tmpyml.name)
     pass
 
+
 def test_geom_scaniter(datadir):
-    expect = textwrap.dedent(
-    f"""
+    string = f"""
     %geom
       Scan
         B 0 1 = 0.4, 2.0, 17 # Bond scan for C0--H1
@@ -56,79 +57,90 @@ def test_geom_scaniter(datadir):
       end
       maxiter = 300
     end
-    """)
+    """
+    expect = textwrap.dedent(string)
     with open(f"{datadir}/orcaGeom.yml") as baseyml:
         t = yaml.full_load(baseyml)
-        t.pop('constraints', None)
-        t['geom'].update({'maxiter':300})
-        tmpyml = tempfile.NamedTemporaryFile('w', suffix = '.yml', delete=False)
+        t.pop("constraints", None)
+        t["geom"].update({"maxiter": 300})
+        tmpyml = tempfile.NamedTemporaryFile("w", suffix=".yml", delete=False)
         try:
             with tmpyml:
                 yaml.dump(t, tmpyml)
                 ymlt = waio.inp.inpGenerator(f"{tmpyml.name}")
-                copyfile(f"{datadir}/inp.xyz","/tmp/inp.xyz")
-                copyfile(f"{datadir}/basejob.sh","/tmp/basejob.sh")
+                copyfile(f"{datadir}/inp.xyz", "/tmp/inp.xyz")
+                copyfile(f"{datadir}/basejob.sh", "/tmp/basejob.sh")
                 ymlt.parse_yml()
                 ymlt.geomlines == expect
         finally:
             os.unlink(tmpyml.name)
     pass
 
+
 def test_geom_maxiter(datadir):
-    expect = textwrap.dedent(
-    f"""
+    string = f"""
     %geom
       maxiter = 300
     end
-    """)
+    """
+    expect = textwrap.dedent(string)
     with open(f"{datadir}/basic.yml") as baseyml:
         t = yaml.full_load(baseyml)
-        t['geom'] = {'maxiter':300}
-        tmpyml = tempfile.NamedTemporaryFile('w', suffix = '.yml', delete=False)
+        t["geom"] = {"maxiter": 300}
+        tmpyml = tempfile.NamedTemporaryFile("w", suffix=".yml", delete=False)
         try:
             with tmpyml:
                 yaml.dump(t, tmpyml)
                 ymlt = waio.inp.inpGenerator(f"{tmpyml.name}")
-                copyfile(f"{datadir}/inp.xyz","/tmp/inp.xyz")
-                copyfile(f"{datadir}/basejob.sh","/tmp/basejob.sh")
+                copyfile(f"{datadir}/inp.xyz", "/tmp/inp.xyz")
+                copyfile(f"{datadir}/basejob.sh", "/tmp/basejob.sh")
                 ymlt.parse_yml()
                 ymlt.geomlines == expect
         finally:
             os.unlink(tmpyml.name)
     pass
 
+
 def test_brokensym(datadir):
-    waex.cookies.gen_base(
-        template="basicExperiment",
-        absolute=False,
-        filen=f"{datadir}/expbrsym.yml",
-    )
+    with open(f"{datadir}/expbrsym.yml") as brsym:
+        t = yaml.full_load(brsym)
+        t["orca_yml"] = f"{datadir}/{t['orca_yml']}"
+        t["inp_xyz"] = f"{datadir}/{t['inp_xyz']}"
+        tmpyml = tempfile.NamedTemporaryFile("w", suffix=".yml", delete=False)
+        try:
+            with tmpyml:
+                yaml.dump(t, tmpyml)
+                waex.cookies.gen_base(f"{tmpyml.name}")
+        finally:
+            os.unlink(tmpyml.name)
     pass
+
 
 def test_nobrsym(datadir):
     """Uses temp to rewrite parts of the file"""
     konfik = Konfik(config_path=f"{datadir}/expbrsym.yml")
     config = konfik.config
-    config['orca_yml']= config['orca_yml'].replace("brokensym","basic")
+    config["orca_yml"] = config["orca_yml"].replace("brokensym", "basic")
+    config["orca_yml"] = f"{datadir}/{config['orca_yml']}"
+    config["inp_xyz"] = f"{datadir}/{config['inp_xyz']}"
     # w is needed for it to be recognized as a file pointer
-    tmpyml = tempfile.NamedTemporaryFile('w', suffix = '.yml', delete=False)
+    tmpyml = tempfile.NamedTemporaryFile("w", suffix=".yml", delete=False)
     try:
         with tmpyml:
             yaml.dump(dict(config), tmpyml)
-        waex.cookies.gen_base(
-            filen=f"{tmpyml.name}"
-            )
+        waex.cookies.gen_base(f"{tmpyml.name}")
     finally:
-        os.unlink(tmpyml.name) # delete
+        os.unlink(tmpyml.name)  # delete
     pass
+
 
 def test_viz(datadir):
     pass
 
+
 def test_geom_scans(datadir):
     ymlt = waio.inp.inpGenerator(datadir / "orcaGeom.yml")
-    expect = textwrap.dedent(
-    f"""
+    string = f"""
     %geom
       Scan
         B 0 1 = 0.4, 2.0, 17 # Bond scan for C0--H1
@@ -141,6 +153,7 @@ def test_geom_scans(datadir):
         {{ B 0 2  C }} # Bond constraint on C0--H2
       end
     end
-    """)
+    """
+    expect = textwrap.dedent(string)
     ymlt.parse_yml()
     assert ymlt.geomlines == expect
