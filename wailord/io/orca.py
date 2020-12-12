@@ -50,19 +50,12 @@ import vg
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
 
-ureg.define('kcal_mol = kcal / 6.02214076e+23 = kcm')
+ureg.define("kcal_mol = kcal / 6.02214076e+23 = kcm")
 
 inpcart = namedtuple("inpcart", "atype x y z")
 orcaout = namedtuple("orcaout", "final_energy fGeom basis filename system spin theory")
 
-ORDERED_THEORY = [
-    "HF",
-    "UHF",
-    "QCISD",
-    "CCSD",
-    "QCISD(T)",
-    "CCSD(T)"
-]
+ORDERED_THEORY = ["HF", "UHF", "QCISD", "CCSD", "QCISD(T)", "CCSD(T)"]
 
 ORDERED_BASIS = [
     "STO-3G",
@@ -91,6 +84,7 @@ OUT_REGEX = {
 }
 
 # ------------ Refactor
+
 
 def parseOut(filename, plotter=False):
     """Handles orca outputs with regex for energy and coordinates"""
@@ -122,12 +116,12 @@ def parseOut(filename, plotter=False):
                     )
                     allAtoms.append(myAtom)
     runinfo = getRunInfo(Path(filename).parent)
-    if runinfo['spin'] == "spin_01":
-        spin="singlet"
-    elif runinfo['spin'] == "spin_03":
-        spin="triplet"
+    if runinfo["spin"] == "spin_01":
+        spin = "singlet"
+    elif runinfo["spin"] == "spin_03":
+        spin = "triplet"
     else:
-        raise(NotImplementedError(f"Not yet implemented {ruinfo['spin']}"))
+        raise (NotImplementedError(f"Not yet implemented {ruinfo['spin']}"))
     finGeom = []
     for i in reversed(range(1, num_species + 1)):
         finGeom.append(allAtoms[-i])
@@ -143,8 +137,8 @@ def parseOut(filename, plotter=False):
         basis=basis,
         filename=filename,
         system=liststr,
-        spin = spin,
-        theory = runinfo['theory']
+        spin=spin,
+        theory=runinfo["theory"],
     )
     if plotter == True:
         return oout, energ
@@ -189,7 +183,14 @@ def getBA(dat, x, y, z, indi=[0, 1, 2]):
     return Q_(vg.angle(v12, v13, units="deg"), "degrees")
 
 
-def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASIS, order_theory=ORDERED_THEORY):
+def genEBASet(
+    rootdir,
+    deci=3,
+    latex=False,
+    full=False,
+    order_basis=ORDERED_BASIS,
+    order_theory=ORDERED_THEORY,
+):
     """Takes in a Path object, and typically returns bond angles and energies.
     Optionally returns a TeX table or a full dataset with the filenames and
     geometries. Depreciate this eventually."""
@@ -214,7 +215,7 @@ def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASI
             [0, 1, 2],
         )
     )
-    outdat.sort_values(by=["theory","basis"], ignore_index=True, inplace=True)
+    outdat.sort_values(by=["theory", "basis"], ignore_index=True, inplace=True)
     outdat.final_energy = outdat.final_energy.apply(
         lambda x: np.around(x, decimals=deci)
     )
@@ -229,31 +230,32 @@ def genEBASet(rootdir, deci=3, latex=False, full=False, order_basis=ORDERED_BASI
         outdat.drop(["filename", "fGeom"], axis=1, inplace=True)
     return outdat
 
+
 # ------------- Keep ------------------
+
 
 def getRunInfo(runf):
     """Determines the runtime parameters from the output path
 
-        The implementation uses an ordered dictionary to ensure that the path
-        fragments are matched to the correct keys.
+    The implementation uses an ordered dictionary to ensure that the path
+    fragments are matched to the correct keys.
 
-        Note:
-            This will only work with wailord experiments at the moment
+    Note:
+        This will only work with wailord experiments at the moment
 
-        Args:
-            run (:obj:`Path`): Runtime output path
-        Returns:
-            runinf (:obj:`dict`): A simple unordered dictionary of paramters
-   """
-    runinf = OrderedDict(
-        {"basis": None, "calc": None, "spin": None, "theory": None}
-    )
+    Args:
+        run (:obj:`Path`): Runtime output path
+    Returns:
+        runinf (:obj:`dict`): A simple unordered dictionary of paramters
+    """
+    runinf = OrderedDict({"basis": None, "calc": None, "spin": None, "theory": None})
     rfparts = runf.parts
     for num, od in enumerate(runinf, start=1):
         runinf[od] = rfparts[-num]
     runinf["basis"] = runinf["basis"].replace("PP", "++").replace("8", "*")
-    runinf["theory"]=runinf["theory"].replace("_", " ")
+    runinf["theory"] = runinf["theory"].replace("_", " ")
     return dict(runinf)
+
 
 class orcaExp:
     """The class meant to handle experiments generated with wailord.
@@ -262,7 +264,9 @@ class orcaExp:
     generates. Remember to use `df.round()` for pretty printing!
     """
 
-    def __init__(self, expfolder, deci=3, order_basis=ORDERED_BASIS, order_theory=ORDERED_THEORY):
+    def __init__(
+        self, expfolder, deci=3, order_basis=ORDERED_BASIS, order_theory=ORDERED_THEORY
+    ):
         """Initializes base parameters
 
 
@@ -281,12 +285,13 @@ class orcaExp:
         self.handle_exp(expfolder)
 
     def __repr__(self):
-        return textwrap.dedent(f"""
+        string = f"""
         Experiment: {self.inpconf}
         Outputs: {self.orclist}
         Ordered Theory: {self.order_theory}
         Ordered Basis: {self.order_basis}
-        """)
+        """
+        return textwrap.dedent(string)
 
     def handle_exp(self, efol):
         """Populates the internal file variables from the path
@@ -327,7 +332,9 @@ class orcaExp:
         theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
         fe["basis"] = fe["basis"].astype(basis_type)
         fe["theory"] = fe["theory"].astype(theory_type)
-        fe.sort_values(by=["theory", "basis", "final_sp_energy"], ignore_index=True, inplace=True)
+        fe.sort_values(
+            by=["theory", "basis", "final_sp_energy"], ignore_index=True, inplace=True
+        )
         return fe
 
     def get_energy_surface(self, etype=["Actual Energy", "SCF Energy"]):
@@ -356,7 +363,9 @@ class orcaExp:
         theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
         edat["basis"] = edat["basis"].astype(basis_type)
         edat["theory"] = edat["theory"].astype(theory_type)
-        edat.sort_values(by=["theory", "basis", "bond_length"], ignore_index=True, inplace=True)
+        edat.sort_values(
+            by=["theory", "basis", "bond_length"], ignore_index=True, inplace=True
+        )
         return edat
 
     def visit_meta(self, node, visited_children):
@@ -417,15 +426,22 @@ class orcaVis:
         with open(self.ofile) as of:
             fInp = of.read()
             try:
-                self.fin_sp_e = float(OUT_REGEX["final_single_point_e"].findall(fInp)[-1].split()[-1]) * ureg.hartree
+                self.fin_sp_e = (
+                    float(
+                        OUT_REGEX["final_single_point_e"].findall(fInp)[-1].split()[-1]
+                    )
+                    * ureg.hartree
+                )
             except:
-                raise(ValueError(f"Final single point energy not found for {self.ofile}"))
+                raise (
+                    ValueError(f"Final single point energy not found for {self.ofile}")
+                )
         pass
 
     def final_sp_e(self):
         erow = self.runinfo
-        erow['final_sp_energy']=self.fin_sp_e.m
-        erow['unit']=self.fin_sp_e.u
+        erow["final_sp_energy"] = self.fin_sp_e.m
+        erow["unit"] = self.fin_sp_e.u
         return erow
 
     def mult_energy_surface(
@@ -458,7 +474,9 @@ class orcaVis:
         if type(etype) == str or len(etype) == 1:
             if type(etype) == list:
                 etype = etype[0]
-            single = self.single_energy_surface(etype=etype)  #: Short circuit if single type is requested
+            single = self.single_energy_surface(
+                etype=etype
+            )  #: Short circuit if single type is requested
             for key in self.runinfo.keys():
                 single[key] = self.runinfo[key]
             return single
@@ -514,5 +532,7 @@ class orcaVis:
             data=zip(xaxis, yaxis), columns=["bond_length", etype], dtype="float64"
         )
         if edat.empty:
-            raise(ValueError(f"{etype} surface not found for {self.runinfo['theory']}"))
+            raise (
+                ValueError(f"{etype} surface not found for {self.runinfo['theory']}")
+            )
         return edat
