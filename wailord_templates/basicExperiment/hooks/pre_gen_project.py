@@ -6,10 +6,7 @@ import sys
 
 def main():
     try:
-        print(sys.version)
         import wailord
-
-        print("Found wailord")
     except ImportError as error:
         # Output expected ImportErrors.
         print(error.__class__.__name__ + ": " + error.message)
