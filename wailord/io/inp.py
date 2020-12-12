@@ -49,6 +49,7 @@ SCAN_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
 CONSTRAINT_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle", "C": "Cartesian"}
 AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
+
 class inpGenerator:
     def __init__(self, filename):
         self.qc = None
@@ -100,7 +101,9 @@ class inpGenerator:
             for consthing in geom.constrain.keys():
                 if consthing.capitalize() in CONSTRAINT_TYPES.values():
                     textlines.append(
-                        self.geom_constrain(geom.constrain[f"{consthing}"], constype=consthing)
+                        self.geom_constrain(
+                            geom.constrain[f"{consthing}"], constype=consthing
+                        )
                     )
                 else:
                     raise TypeError(
@@ -108,9 +111,10 @@ class inpGenerator:
                     )
             textlines.append(f"  end")
         if "maxiter" in geom:
-            textlines.append(textwrap.dedent(f"""
+            string = f"""
             maxiter {geom.maxiter}
-            """))
+            """
+            textlines.append(textwrap.dedent(string))
         textlines.append("\nend\n")
         return "".join(textlines)
 
@@ -124,19 +128,24 @@ class inpGenerator:
                 value = float(constraint["value"])
             else:
                 value = ""
-            if constype!="C":
+            if constype != "C":
                 btwn_num = btwn.split(" ")
                 # TODO Handle the other types as tuples (B,2)
-                comment = self.scan_comment(btwn, thistype=constype, use_types=CONSTRAINT_TYPES, usage="constraint on")
+                comment = self.scan_comment(
+                    btwn,
+                    thistype=constype,
+                    use_types=CONSTRAINT_TYPES,
+                    usage="constraint on",
+                )
                 # if constype == 'B' and len(btwn_num) == 2:
             else:
-                warnings.warn(f"Cartesian comments have not been implemented", UserWarning)
+                warnings.warn(
+                    f"Cartesian comments have not been implemented", UserWarning
+                )
                 comment = ""
-            linesthing.append(
-                f"    {{ {constype} {btwn} {value} C }} # {comment}\n"
-            )
+            linesthing.append(f"    {{ {constype} {btwn} {value} C }} # {comment}\n")
         return "".join(linesthing)
-        
+
     def geom_scan(self, thing, scantype):
         """Handles scans"""
         linesthing = []
@@ -192,24 +201,28 @@ class inpGenerator:
 
     def parse_viz(self, viz):
         if viz.chemcraft == True:
-            return textwrap.dedent("""
+            string = """
 
             %output
             Print[ P_Basis ] 2
             Print[ P_MOs ] 1
             end
 
-            """)
+            """
+            return textwrap.dedent(string)
 
     def parse_scf(self, scf):
         textlines = []
         textlines.append("\n%scf\n")
         if "brokensym" in scf:
-            textlines.append(f"  BrokenSym {scf.brokensym.more_unpaired}, {scf.brokensym.less_unpaired}  end")
+            textlines.append(
+                f"  BrokenSym {scf.brokensym.more_unpaired}, {scf.brokensym.less_unpaired}  end"
+            )
         if "maxiter" in scf:
-            textlines.append(textwrap.dedent(f"""
+            string = f"""
             maxiter {scf.maxiter}
-            """))
+            """
+            textlines.append(textwrap.dedent(string))
         textlines.append("\nend\n")
         return "".join(textlines)
 
@@ -299,7 +312,7 @@ class inpGenerator:
             print("Overwriting extra from yml file")
             self.extra = extra
         for styl in self.konfik.config.qc.style:
-            styl = styl.replace(" ","_")
+            styl = styl.replace(" ", "_")
             self.gendir_qcspin(basename / styl)
         self.genharness(basename)
         pass
@@ -318,7 +331,7 @@ class inpGenerator:
         pass
 
     def gendir_qcbasis(self, path):
-        """Generates the final of input files. Note that the folders will have +
+        """Generates the directory of input files. Note that the folders will have +
         replaced by P and * by 8"""
         for base in self.konfik.config.qc.basis_sets:
             bas = base.replace("+", "P").replace("*", "8")
@@ -338,10 +351,10 @@ class inpGenerator:
             ),
             "style": tmpstr[-4].replace("_", " "),
             "name": path / "orca.inp",
-            "unrestricted": False
+            "unrestricted": False,
         }
-        if self.scf !=None:
-            if tmpconf["style"].find("UKS") != -1  or tmpconf["style"].find("UHF") != -1:
+        if self.scf != None:
+            if tmpconf["style"].find("UKS") != -1 or tmpconf["style"].find("UHF") != -1:
                 tmpconf["unrestricted"] = True
         self.writeinp(tmpconf)
         self.putscript(
@@ -355,7 +368,7 @@ class inpGenerator:
         """Copies the jobscript"""
         shutil.copy(from_loc, to_loc)
         scriptname = to_loc / self.konfik.config.jobscript
-        slug = slug.replace(" ","_")
+        slug = slug.replace(" ", "_")
         rep_obj = {
             "prev": ["ORCA_CALCULATION"],
             "to": [slug],
@@ -364,9 +377,10 @@ class inpGenerator:
         if self.viz != None:
             if self.konfik.config.viz.chemcraft == True:
                 with open(scriptname, "a") as script:
-                    script.writelines(textwrap.dedent("""
+                    string = """
                     cd $SLURM_SUBMIT_DIR
-                    $orcadir/orca_2mkl orca -molden"""))
+                    $orcadir/orca_2mkl orca -molden"""
+                    script.writelines(textwrap.dedent(string))
         self.scripts.append(scriptname)
         pass
 
@@ -378,12 +392,7 @@ class inpGenerator:
         if extralines == None:
             extralines = self.extra
         basis, calc, spin, style, name, unrestricted = itemgetter(
-            "basis",
-            "calc",
-            "spin",
-            "style",
-            "name",
-            "unrestricted"
+            "basis", "calc", "spin", "style", "name", "unrestricted"
         )(confobj)
         with open(name, "w") as op:
             op.write(f"!{style} {basis} {calc}")
@@ -411,37 +420,47 @@ class inpGenerator:
             op.write("*")
         pass
 
+
 class simpleInput:
     """ Base class for representing the simple input line"""
+
     def __init__(self, data):
         self.contents = None
         return
+
     def __repr__(self):
         return f"!{contents}"
 
+
 class blockInput:
     """Base class representing block inputs"""
+
     def __init__(self, data):
         self.keyword = None
         self.lines = None
         return
+
     def __repr__(self):
-        return textwrap.dedent(f"""
+        string = f"""
         %block {keyword}
             {lines}
         end
-        """)
+        """
+        return textwrap.dedent(string)
+
 
 class coordBlock:
     """Base class for the coordinate block"""
+
     def __init__(self, data):
         self.keyword = None
         self.lines = None
         return
+
     def __repr__(self):
-        return textwrap.dedent(f"""
+        string = f"""
         *block {keyword}
             {lines}
         *
-        """)
-
+        """
+        return textwrap.dedent(string)
