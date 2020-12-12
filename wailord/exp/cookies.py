@@ -10,7 +10,7 @@ from wailord.utils import get_project_root
 TEMPLATE_DIR = get_project_root() / "wailord_templates"
 
 
-def gen_base(template="basicExperiment", absolute=False, filen=None):
+def gen_base(filen=None, /, template="basicExperiment", *, absolute=False):
     """Generate a base template"""
     if absolute == True:
         template = str(template)
@@ -19,6 +19,9 @@ def gen_base(template="basicExperiment", absolute=False, filen=None):
     if filen != None:
         konfik = Konfik(config_path=filen)
         config = konfik.config
+        if absolute == False:
+            config.orca_yml = Path(config.orca_yml).resolve()
+            config.inp_xyz = Path(config.inp_xyz).resolve()
         cookiecutter(
             template,
             no_input=True,
