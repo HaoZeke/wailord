@@ -471,8 +471,8 @@ class orcaVis:
             https://www.its.hku.hk/services/research/hpc/software/orca
 
         """
-        if type(etype) == str or len(etype) == 1:
-            if type(etype) == list:
+        if isinstance(etype, str) or len(etype) == 1:
+            if isinstance(etype, list):
                 etype = etype[0]
             single = self.single_energy_surface(
                 etype=etype

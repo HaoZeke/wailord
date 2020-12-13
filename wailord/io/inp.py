@@ -200,7 +200,7 @@ class inpGenerator:
         pass
 
     def parse_viz(self, viz):
-        if viz.chemcraft == True:
+        if viz.chemcraft is True:
             string = """
 
             %output
@@ -249,9 +249,8 @@ class inpGenerator:
         return "".join(textlines)
 
     def params_slot(self, thing):
-        if not "xyz" in thing or thing["xyz"] != True:
+        if not "xyz" in thing or thing["xyz"] is not True:
             raise TypeError("Currently only supports xyz")
-        # print(self.xyzlines)
         atype, anum, axis, name = itemgetter("atype", "anum", "axis", "name")(thing)
         xyztmp = self.xyzlines.split("\n")
         aline = xyztmp[anum].split()
@@ -293,7 +292,7 @@ class inpGenerator:
                 op.write("\n")
                 op.write("cd $cur_dir\n")
                 op.write("\n")
-                if slow == True:
+                if slow is True:
                     if num % 10 == 0:
                         op.write('echo("Slowing down!")\n')
                         op.write("sleep 30s\n")
@@ -308,7 +307,7 @@ class inpGenerator:
 
     def gendir_qc(self, basename=Path("wailordFold"), extra=None):
         """Function to generate QC folder structure recursively"""
-        if extra != None:
+        if extra is not None:
             print("Overwriting extra from yml file")
             self.extra = extra
         for styl in self.konfik.config.qc.style:
@@ -353,7 +352,7 @@ class inpGenerator:
             "name": path / "orca.inp",
             "unrestricted": False,
         }
-        if self.scf != None:
+        if self.scf is not None:
             if tmpconf["style"].find("UKS") != -1 or tmpconf["style"].find("UHF") != -1:
                 tmpconf["unrestricted"] = True
         self.writeinp(tmpconf)
@@ -374,8 +373,8 @@ class inpGenerator:
             "to": [slug],
         }
         wau.repkey(scriptname, rep_obj)
-        if self.viz != None:
-            if self.konfik.config.viz.chemcraft == True:
+        if self.viz is not None:
+            if self.konfik.config.viz.chemcraft is True:
                 with open(scriptname, "a") as script:
                     string = """
                     cd $SLURM_SUBMIT_DIR
@@ -389,7 +388,7 @@ class inpGenerator:
         basis, calc, spin, style, name
         extralines: Optional set of lines to write out before the coordinate block
         """
-        if extralines == None:
+        if extralines is None:
             extralines = self.extra
         basis, calc, spin, style, name, unrestricted = itemgetter(
             "basis", "calc", "spin", "style", "name", "unrestricted"
@@ -397,20 +396,20 @@ class inpGenerator:
         with open(name, "w") as op:
             op.write(f"!{style} {basis} {calc}")
             op.write("\n")
-            if extralines != None:
+            if extralines is not None:
                 op.write("\n")
                 op.writelines(extralines)
                 op.write("\n")
-            if unrestricted == True:
+            if unrestricted is True:
                 op.writelines(self.scf)
                 op.write("\n")
-            if self.viz != None:
+            if self.viz is not None:
                 op.writelines(self.viz)
-            if self.paramlines != None:
+            if self.paramlines is not None:
                 op.write("\n")
                 op.writelines(self.paramlines)
                 op.write("\n")
-            if self.geomlines != None:
+            if self.geomlines is not None:
                 op.write("\n")
                 op.writelines(self.geomlines)
                 op.write("\n")
