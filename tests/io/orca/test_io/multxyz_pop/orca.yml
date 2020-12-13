@@ -1,0 +1,18 @@
+qc:
+  active: True
+  style: ["UHF", "UKS BLYP", "UKS B3LYP"]
+  calculations: ["OPT"] # Same as single point or SP
+  basis_sets:
+    - aug-cc-pVTZ
+xyz: "../../xyz/ch3f_diss/"
+spin:
+  - "0 1"
+scf:
+  maxiter: 1800
+geom:
+  # Other degrees relaxed before usage, requires a gradient
+  constrain:
+    bond:
+      - between: "0 4"
+extra: "!veryslowconv"
+jobscript: "basejob.sh"
