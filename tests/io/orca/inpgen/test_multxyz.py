@@ -1,4 +1,5 @@
 import wailord.io as waio
+import wailord.exp as waex
 import pytest
 import yaml
 import shutil
@@ -20,17 +21,33 @@ def mult_xyz(tmpdir_factory):
     return fn
 
 
+@pytest.fixture(scope="session")
+def exp_inpgen(tmpdir_factory):
+    """Copies folders and fixes input file paths"""
+    dat = tmpdir_factory.mktemp("data")
+    shutil.copytree(DATADIR, dat, dirs_exist_ok=True)
+    with open(f"{dat}/expmult.yml") as fid:
+        emult = yaml.full_load(fid)
+        emult["outdir"] = f"{dat}/{emult['outdir']}"
+        emult["orca_yml"] = f"{dat}/{emult['orca_yml']}"
+        emult["inp_xyz"] = f"{dat}/{emult['inp_xyz']}"
+    emultsym = Path(f"{dat}/expbrsym.yml")
+    emultsym.write_text(yaml.dump(emult))
+    return emultsym
+
+
 def test_multxyz_num(mult_xyz):
     """Checks the number of xyz files"""
     ymlt = waio.inp.inpGenerator(mult_xyz)
     ymlt.parse_yml()
-    # Move generated files
-    shutil.move("wailordFold", mult_xyz.parent)
-    shutil.move("harness.sh", mult_xyz.parent)
+    # Kill generated files
+    shutil.move("harness.sh", "wailordFold")
+    shutil.rmtree("wailordFold")
     assert len(ymlt.xyz) == 4
     assert len(ymlt.xyzlines) == 4
     pass
 
 
-def test_multxyz_struct(mult_xyz):
+def test_multxyz_struct(exp_inpgen):
+    waex.cookies.gen_base(f"{exp_inpgen}")
     pass
