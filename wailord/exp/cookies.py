@@ -16,10 +16,10 @@ def gen_base(filen=None, /, template="basicExperiment", *, absolute=False):
         template = str(template)
     else:
         template = str(TEMPLATE_DIR / template)
-    if filen != None:
+    if filen is not None:
         konfik = Konfik(config_path=filen)
         config = konfik.config
-        if absolute == False:
+        if absolute is False:
             config.orca_yml = Path(config.orca_yml).resolve()
             config.inp_xyz = Path(config.inp_xyz).resolve()
         cookiecutter(

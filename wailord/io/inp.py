@@ -36,6 +36,7 @@ Todo:
 import wailord.io as waio
 import wailord.utils as wau
 
+import os
 import shutil
 import textwrap
 import warnings
@@ -53,13 +54,14 @@ AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 class inpGenerator:
     def __init__(self, filename):
         self.qc = None
-        self.xyz = None
+        self.xyz = []
         self.xyzpath = None
         self.spin = None
         self.extra = None
         self.conf_path = Path(filename)
         self.geomlines = None
-        self.xyzlines = None
+        self.xyzlines = []
+        self.prjname = "wailordFold"
         self.scf = None
         self.viz = None
         self.paramlines = None
@@ -169,7 +171,7 @@ class inpGenerator:
         thiskey = use_types[f"{thistype}"]
         for i in tmp:
             try:
-                outtmp.append(f"{self.xyz.xyzdat.atom_types[i]}{i}")
+                outtmp.append(f"{self.xyz[-1].xyzdat.atom_types[i]}{i}")
             except:
                 raise SyntaxError(
                     "Trying to use an atom which does not exist, check indices"
@@ -177,15 +179,33 @@ class inpGenerator:
         gencom = "--".join(outtmp)
         return f"{thiskey} {usage} {gencom}"
 
+    def parse_xyz(self):
+        """Generate folder structure for each system"""
+        self.xyzpath = Path(self.xyzpath)
+        if not self.xyzpath.is_dir():
+            self.xyz.append(
+                waio.xyz.xyzIO(self.conf_path.parent / self.konfik.config.xyz)
+            )
+            self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
+            self.gendir_qc(extra=None)
+        else:
+            for root, dirs, files in os.walk(self.xyzpath.resolve()):
+                for filename in files:
+                    if Path(filename).suffix == ".xyz":
+                        self.xyz.append(
+                            waio.xyz.xyzIO(self.conf_path.parent / f"{root}/{filename}")
+                        )
+                        self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
+                        self.gendir_qc(extra=None)
+        pass
+
     def parse_yml(self):
         """Handle the various options"""
-        if self.spin == None:
+        if self.spin is None:
             # Deal with parsing the basic structure
             self.read_yml()
-        if self.xyz == None:
-            self.xyz = waio.xyz.xyzIO(self.conf_path.parent / self.konfik.config.xyz)
-            self.xyzlines = self.xyz.xyzdat.coord_block
-        if self.qc.active == True:
+        self.parse_xyz()
+        if self.qc.active is True:
             self.parse_qc()
         # Geometry
         if "geom" in self.konfik.config.keys():
@@ -235,11 +255,11 @@ class inpGenerator:
         for param in params:
             if param.get("value"):
                 param["slot"]["name"] = param["name"]
-                self.xyzlines, comment = self.params_slot(param["slot"])
+                self.xyzlines[-1], comment = self.params_slot(param["slot"])
                 textlines.append(self.params_value(param, comment))
             elif param.get("range"):
                 param["slot"]["name"] = param["name"]
-                self.xyzlines, comment = self.params_slot(param["slot"])
+                self.xyzlines[-1], comment = self.params_slot(param["slot"])
                 textlines.append(self.params_range(param, comment))
             else:
                 raise TypeError(
@@ -252,7 +272,7 @@ class inpGenerator:
         if not "xyz" in thing or thing["xyz"] is not True:
             raise TypeError("Currently only supports xyz")
         atype, anum, axis, name = itemgetter("atype", "anum", "axis", "name")(thing)
-        xyztmp = self.xyzlines.split("\n")
+        xyztmp = self.xyzlines[-1].split("\n")
         aline = xyztmp[anum].split()
         if aline[0] == atype:
             aline[AXIS_PROXY[axis]] = f"{{{name}}}".ljust(15, " ")
@@ -281,7 +301,7 @@ class inpGenerator:
         Returns:
             Nothing: This generates a file, and nothing else
         """
-        with open(f"{basename.parent}/harness.sh", "w") as op:
+        with open(f"{basename.parent.parent}/harness.sh", "w") as op:
             op.write("#!/usr/bin/env bash\n")
             op.write("export cur_file=$(realpath $0) \n")
             op.write('export cur_dir=$(dirname "${cur_file}")\n')
@@ -305,8 +325,10 @@ class inpGenerator:
         self.qcopts = qcList
         pass
 
-    def gendir_qc(self, basename=Path("wailordFold"), extra=None):
+    def gendir_qc(self, basename=None, extra=None):
         """Function to generate QC folder structure recursively"""
+        if basename is None:
+            basename = Path(f"{self.prjname}/{self.xyz[-1].slug}")
         if extra is not None:
             print("Overwriting extra from yml file")
             self.extra = extra
@@ -415,7 +437,7 @@ class inpGenerator:
                 op.write("\n")
             op.write(f"*xyz {spin}")
             op.write("\n")
-            op.write(self.xyzlines)
+            op.write(self.xyzlines[-1])
             op.write("*")
         pass
 
