@@ -21,8 +21,10 @@ Todo:
     * Add more explicit support for "simple input lines"
     * Add more explicit support for the "block input structure"
     * Add support for "sequential" jobs
-    * Support multiple xyz files
+    * Support multiple xyz files [DONE]
+    * Clean up geometry, add gen_dirs back
     * Test and expand brokensym
+    * Test number in harness
     * Test Visualizer modifications
     * Validate scans and constraints
     * Parse wailord generated input files
@@ -187,6 +189,16 @@ class inpGenerator:
                 waio.xyz.xyzIO(self.conf_path.parent / self.konfik.config.xyz)
             )
             self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
+            # Geometry
+            if "geom" in self.konfik.config.keys():
+                self.geomlines = self.parse_geom(self.konfik.config.geom)
+            # Paramter Blocks
+            if "params" in self.konfik.config.keys():
+                self.paramlines = self.parse_params(self.konfik.config.params)
+            if "scf" in self.konfik.config.keys():
+                self.scf = self.parse_scf(self.konfik.config.scf)
+            if "viz" in self.konfik.config.keys():
+                self.viz = self.parse_viz(self.konfik.config.viz)
             self.gendir_qc(extra=None)
         else:
             for root, dirs, files in os.walk(self.xyzpath.resolve()):
@@ -196,6 +208,18 @@ class inpGenerator:
                             waio.xyz.xyzIO(self.conf_path.parent / f"{root}/{filename}")
                         )
                         self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
+                        # Geometry
+                        if "geom" in self.konfik.config.keys():
+                            self.geomlines = self.parse_geom(self.konfik.config.geom)
+                            # Paramter Blocks
+                        if "params" in self.konfik.config.keys():
+                            self.paramlines = self.parse_params(
+                                self.konfik.config.params
+                            )
+                        if "scf" in self.konfik.config.keys():
+                            self.scf = self.parse_scf(self.konfik.config.scf)
+                        if "viz" in self.konfik.config.keys():
+                            self.viz = self.parse_viz(self.konfik.config.viz)
                         self.gendir_qc(extra=None)
         pass
 
@@ -207,16 +231,6 @@ class inpGenerator:
         self.parse_xyz()
         if self.qc.active is True:
             self.parse_qc()
-        # Geometry
-        if "geom" in self.konfik.config.keys():
-            self.geomlines = self.parse_geom(self.konfik.config.geom)
-        # Paramter Blocks
-        if "params" in self.konfik.config.keys():
-            self.paramlines = self.parse_params(self.konfik.config.params)
-        if "scf" in self.konfik.config.keys():
-            self.scf = self.parse_scf(self.konfik.config.scf)
-        if "viz" in self.konfik.config.keys():
-            self.viz = self.parse_viz(self.konfik.config.viz)
         pass
 
     def parse_viz(self, viz):
