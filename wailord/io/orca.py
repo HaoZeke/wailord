@@ -372,6 +372,34 @@ class orcaExp:
         )
         return edat
 
+    def get_population(self, poptype=["Mulliken", "Loewdin"], /):
+        """Populates a population dataframe
+
+        This essentially walks over the generated set of files, and fills out
+        calls to the base orcaVis class.
+
+        Args:
+            poptype (:obj:`list` of :obj:`str`, optional): This is passed to the base
+            `OrcaVis` class call
+
+        Returns:
+            pd.DataFrame: Returns a data frame of etype energies
+
+        """
+        if type(poptype) == str:
+            poptype = [poptype]
+        popdatl = []
+        for runf in self.orclist:
+            runsurf = orcaVis(runf).mult_population_analysis(poptype)
+            popdatl.append(runsurf)
+        popdat = pd.concat(popdatl, axis=0)
+        basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
+        theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
+        popdat["basis"] = popdat["basis"].astype(basis_type)
+        popdat["theory"] = popdat["theory"].astype(theory_type)
+        popdat.sort_values(by=["theory", "basis"], ignore_index=True, inplace=True)
+        return popdat
+
     def visit_meta(self, node, visited_children):
         """ Returns the overall output. """
         self.meta = node.text

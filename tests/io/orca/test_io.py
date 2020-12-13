@@ -159,3 +159,36 @@ def test_get_energy_surface_shape_more(datadir):
         np.repeat(33, 5),
     )
     pass
+
+
+#######################
+# Population Analysis #
+#######################
+
+
+def test_get_pop(datadir):
+    oth = ["UHF", "UKS BLYP", "UKS B3LYP"]
+    expt = waio.orca.orcaExp(expfolder=datadir / "multxyz_pop", order_theory=oth)
+    popdat = expt.get_population()
+    assert list(popdat.theory.unique()) == [
+        "UHF",
+        "UKS BLYP",
+        "UKS B3LYP",
+    ]  #: Increasing level of theory
+    assert list(popdat.columns) == [
+        "anum",
+        "atype",
+        "pcharge",
+        "pspin",
+        "population",
+        "basis",
+        "calc",
+        "spin",
+        "theory",
+        "slug",
+    ]
+    np.testing.assert_equal(
+        popdat.theory.value_counts().to_numpy(),
+        np.array([30, 30, 20]),
+    )
+    pass
