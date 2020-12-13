@@ -1,6 +1,7 @@
 import wailord.io as waio
 import wailord.exp as waex
 import pytest
+import os
 import textwrap
 import yaml
 from pathlib import Path
@@ -25,6 +26,7 @@ def prep_inpgen(tmpdir_factory):
     # Create a file without broken symmetry
     with open(f"{dat}/expbrsym.yml") as fid:
         nebr = yaml.full_load(fid)
+        nebr["project_slug"] = "nbr"
         nebr["orca_yml"] = nebr["orca_yml"].replace("brokensym", "basic")
     nbasic = Path(dat / "nbrsym.yml")
     nbasic.write_text(yaml.dump(nebr))
@@ -55,6 +57,9 @@ def test_geom_constraint(prep_inpgen):
         tyml.write_text(yaml.dump(t))
         ymlt = waio.inp.inpGenerator(tyml)
         ymlt.parse_yml()
+        # Kill generated files
+        shutil.move("harness.sh", "wailordFold")
+        shutil.rmtree("wailordFold")
         ymlt.geomlines == expect
     pass
 
@@ -80,6 +85,9 @@ def test_geom_scaniter(prep_inpgen):
         tyml.write_text(yaml.dump(t))
         ymlt = waio.inp.inpGenerator(tyml)
         ymlt.parse_yml()
+        # Kill generated files
+        shutil.move("harness.sh", "wailordFold")
+        shutil.rmtree("wailordFold")
         ymlt.geomlines == expect
     pass
 
@@ -134,4 +142,7 @@ def test_geom_scans(datadir):
     """
     expect = textwrap.dedent(string)
     ymlt.parse_yml()
+    # Kill generated
+    shutil.move("harness.sh", "wailordFold")
+    shutil.rmtree("wailordFold")
     assert ymlt.geomlines == expect
