@@ -585,6 +585,36 @@ class orcaVis:
                         accumulate.append(c)
                         i = i + 1
         popdat = pd.DataFrame(accumulate)
+        popdat["population"] = poptype
         if popdat.empty:
             raise (ValueError(f"{poptype} not found for {self.runinfo['theory']}"))
+        return popdat
+
+    def mult_population_analysis(self, poptype=["Mulliken", "Loewdin"], /):
+        """Multiple population analysis dataframe generator
+
+        This is a helper function to obtain a dataframe which contains multiple
+        population analysis outputs. The implementation is similar to the energy surface helper.
+
+        Args:
+            poptype (str,optional): The type of calculated energy surface to
+                return.
+
+        Returns:
+            pd.DataFrame: Returns a data frame of population analysis types
+        """
+        if isinstance(poptype, str) or len(poptype) == 1:
+            if isinstance(poptype, list):
+                poptype = poptype[0]
+            single = self.single_population_surface(poptype)
+            for key in self.runinfo.keys():
+                single[key] = self.runinfo[key]
+            return single
+        poplist = []
+        for pt in poptype:
+            runsurf = self.single_population_analysis(pt)
+            poplist.append(runsurf)
+        popdat = reduce(lambda df1, df2: pd.concat([df1, df2]), poplist)
+        for key in self.runinfo.keys():
+            popdat[key] = self.runinfo[key]
         return popdat

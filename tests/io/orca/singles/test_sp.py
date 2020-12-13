@@ -235,47 +235,46 @@ def test_mult_energy_surf_single(datadir):
 ##############################
 
 
-def test_orca_single_chargepop_loewdin(datadir):
+def test_orca_single_chargepop(datadir):
     spop = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
-    sdat = spop.single_population_analysis()
-    assert sdat.shape == (2, 3)
-    np.testing.assert_equal(sdat.pcharge.to_numpy(), np.array([0, 0]))
-    sdat2 = spop.single_population_analysis("Loewdin")
-    assert sdat2.shape == (2, 3)
-    np.testing.assert_equal(sdat2.pcharge.to_numpy(), np.array([0, 0]))
-    pass
-
-
-def test_orca_single_fullpop_loewdin(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "orca_uhf.out")
     sdat = spop.single_population_analysis()
     assert sdat.shape == (2, 4)
     np.testing.assert_equal(sdat.pcharge.to_numpy(), np.array([0, 0]))
-    np.testing.assert_equal(sdat.pspin.to_numpy(), np.array([0, 0]))
     sdat2 = spop.single_population_analysis("Loewdin")
     assert sdat2.shape == (2, 4)
     np.testing.assert_equal(sdat2.pcharge.to_numpy(), np.array([0, 0]))
     pass
 
 
-def test_orca_single_chargepop_mulliken(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+def test_orca_single_fullpop(datadir):
+    spop = waio.orca.orcaVis(ofile=datadir / "orca_uhf.out")
     sdat = spop.single_population_analysis()
-    assert sdat.shape == (2, 3)
+    assert sdat.shape == (2, 5)
     np.testing.assert_equal(sdat.pcharge.to_numpy(), np.array([0, 0]))
-    sdat2 = spop.single_population_analysis("Mulliken")
-    assert sdat2.shape == (2, 3)
+    np.testing.assert_equal(sdat.pspin.to_numpy(), np.array([0, 0]))
+    sdat2 = spop.single_population_analysis("Loewdin")
+    assert sdat2.shape == (2, 5)
     np.testing.assert_equal(sdat2.pcharge.to_numpy(), np.array([0, 0]))
     pass
 
 
-def test_orca_single_fullpop_mulliken(datadir):
+################################
+# Multiple Population Analysis #
+################################
+
+
+def test_orca_mult_chargepop(datadir):
+    spop = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sdat = spop.mult_population_analysis()
+    assert sdat.shape == (4, 9)
+    np.testing.assert_equal(sdat.pcharge.to_numpy(), np.array([0, 0, 0, 0]))
+    pass
+
+
+def test_orca_mult_fullpop(datadir):
     spop = waio.orca.orcaVis(ofile=datadir / "orca_uhf.out")
-    sdat = spop.single_population_analysis()
-    assert sdat.shape == (2, 4)
-    np.testing.assert_equal(sdat.pcharge.to_numpy(), np.array([0, 0]))
-    np.testing.assert_equal(sdat.pspin.to_numpy(), np.array([0, 0]))
-    sdat2 = spop.single_population_analysis("Mulliken")
-    assert sdat2.shape == (2, 4)
-    np.testing.assert_equal(sdat2.pcharge.to_numpy(), np.array([0, 0]))
+    sdat = spop.mult_population_analysis()
+    assert sdat.shape == (4, 10)
+    np.testing.assert_equal(sdat.pcharge.to_numpy(), np.array([0, 0, 0, 0]))
+    np.testing.assert_equal(sdat.pspin.to_numpy(), np.array([0, 0, 0, 0]))
     pass
