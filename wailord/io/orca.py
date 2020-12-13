@@ -248,7 +248,9 @@ def getRunInfo(runf):
     Returns:
         runinf (:obj:`dict`): A simple unordered dictionary of paramters
     """
-    runinf = OrderedDict({"basis": None, "calc": None, "spin": None, "theory": None})
+    runinf = OrderedDict(
+        {"basis": None, "calc": None, "spin": None, "theory": None, "slug": None}
+    )
     rfparts = runf.parts
     for num, od in enumerate(runinf, start=1):
         runinf[od] = rfparts[-num]
