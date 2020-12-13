@@ -81,6 +81,8 @@ OUT_REGEX = {
     "Actual Energy": re.compile(r"The Calculated Surface using the 'Actual Energy'"),
     "SCF Energy": re.compile(r"The Calculated Surface using the SCF energy"),
     "energy_evals": re.compile(r"There will be\s*\d* energy evaluations"),
+    "Mulliken": re.compile(r"MULLIKEN ATOMIC CHARGES"),
+    "Loewdin": re.compile(r"LOEWDIN ATOMIC CHARGES"),
 }
 
 # ------------ Refactor
@@ -538,3 +540,51 @@ class orcaVis:
                 ValueError(f"{etype} surface not found for {self.runinfo['theory']}")
             )
         return edat
+
+    def single_population_analysis(self, poptype="Mulliken", /):
+        """Single population analysis dataframe generator
+
+        Args:
+            poptype (str,optional): The type of population analysis to
+            return. Defaults to 'Mulliken'.
+
+        Returns:
+            pd.DataFrame: Returns a data frame of the population analysis
+
+        """
+        if poptype not in OUT_REGEX:
+            raise (NotImplementedError(f"{poptype} has not been implemented yet"))
+        sregexp = OUT_REGEX[poptype]
+        chargepop = namedtuple("chargepop", "anum atype pcharge")
+        fullpop = namedtuple("fullpop", "anum atype pcharge pspin")
+        with open(self.ofile) as of:
+            flines = of.readlines()
+            for lnum, line in enumerate(flines):
+                if sregexp.search(line):
+                    offset = lnum + 2
+                    i = 0
+                    accumulate = []
+                    while (
+                        "Sum" not in flines[offset + i]
+                        and "--" not in flines[offset + i + 1]
+                    ):
+                        raw = flines[offset + i].split()
+                        if "SPIN" in line:
+                            c = fullpop(
+                                anum=raw[0],
+                                atype=raw[1],
+                                pcharge=float(raw[-2]),
+                                pspin=float(raw[-1]),
+                            )
+                        else:
+                            c = chargepop(
+                                anum=raw[0],
+                                atype=raw[1],
+                                pcharge=float(raw[-1]),
+                            )
+                        accumulate.append(c)
+                        i = i + 1
+        popdat = pd.DataFrame(accumulate)
+        if popdat.empty:
+            raise (ValueError(f"{poptype} not found for {self.runinfo['theory']}"))
+        return popdat
