@@ -121,7 +121,7 @@ def parseOut(filename, plotter=False):
     elif runinfo["spin"] == "spin_03":
         spin = "triplet"
     else:
-        raise (NotImplementedError(f"Not yet implemented {ruinfo['spin']}"))
+        raise (NotImplementedError(f"Not yet implemented {runinfo['spin']}"))
     finGeom = []
     for i in reversed(range(1, num_species + 1)):
         finGeom.append(allAtoms[-i])

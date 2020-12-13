@@ -250,7 +250,7 @@ class inpGenerator:
         textlines.append("\n%scf\n")
         if "brokensym" in scf:
             textlines.append(
-                f"  BrokenSym {scf.brokensym.more_unpaired}, {scf.brokensym.less_unpaired}  end"
+                f"  BrokenSym {scf.brokensym.more_unpaired}, {scf.brokensym.less_unpaired}"
             )
         if "maxiter" in scf:
             string = f"""
