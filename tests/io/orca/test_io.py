@@ -2,7 +2,6 @@ import wailord.io as waio
 import pandas as pd
 import numpy as np
 import pytest
-import warnings
 
 from pint import UnitRegistry
 
@@ -180,6 +179,7 @@ def test_get_pop(datadir):
         "atype",
         "pcharge",
         "pspin",
+        "step",
         "population",
         "basis",
         "calc",

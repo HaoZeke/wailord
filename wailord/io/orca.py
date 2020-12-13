@@ -393,6 +393,7 @@ class orcaExp:
             runsurf = orcaVis(runf).mult_population_analysis(poptype)
             popdatl.append(runsurf)
         popdat = pd.concat(popdatl, axis=0)
+        popdat = popdat.drop_duplicates()
         basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
         theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
         popdat["basis"] = popdat["basis"].astype(basis_type)
@@ -583,29 +584,29 @@ class orcaVis:
         if poptype not in OUT_REGEX:
             raise (NotImplementedError(f"{poptype} has not been implemented yet"))
         sregexp = OUT_REGEX[poptype]
-        chargepop = namedtuple("chargepop", "anum atype pcharge")
-        fullpop = namedtuple("fullpop", "anum atype pcharge pspin")
+        chargeline = namedtuple("chargeline", "anum atype pcharge")
+        fulline = namedtuple("fulline", "anum atype pcharge pspin")
+        accumulate = []
         with open(self.ofile) as of:
             flines = of.readlines()
             for lnum, line in enumerate(flines):
                 if sregexp.search(line):
                     offset = lnum + 2
                     i = 0
-                    accumulate = []
                     while (
                         "Sum" not in flines[offset + i]
                         and "--" not in flines[offset + i + 1]
                     ):
                         raw = flines[offset + i].split()
                         if "SPIN" in line:
-                            c = fullpop(
+                            c = fulline(
                                 anum=raw[0],
                                 atype=raw[1],
                                 pcharge=float(raw[-2]),
                                 pspin=float(raw[-1]),
                             )
                         else:
-                            c = chargepop(
+                            c = chargeline(
                                 anum=raw[0],
                                 atype=raw[1],
                                 pcharge=float(raw[-1]),
@@ -613,6 +614,10 @@ class orcaVis:
                         accumulate.append(c)
                         i = i + 1
         popdat = pd.DataFrame(accumulate)
+        step = popdat.anum.count() / popdat.anum.nunique()
+        popdat["step"] = np.asarray(
+            np.repeat(np.arange(1, step + 1), popdat.anum.nunique()), dtype=int
+        )
         popdat["population"] = poptype
         if popdat.empty:
             raise (ValueError(f"{poptype} not found for {self.runinfo['theory']}"))
