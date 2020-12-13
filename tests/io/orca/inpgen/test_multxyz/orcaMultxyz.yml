@@ -1,0 +1,12 @@
+qc:
+    active: True
+    style: ["RHF", "QCISD(T)"]
+    calculations: ["SP", "OPT"]
+    basis_sets:
+        - 6-31G
+        - 6-311G
+xyz: "xyzdat/"
+spin:
+    - "0 1"
+extra: Null
+jobscript: "basejob.sh"
