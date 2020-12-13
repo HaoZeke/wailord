@@ -6,5 +6,5 @@ author: Rohit
 year: "2020"
 license: MIT
 orca_root: "/home/via9/orca_4_2_1_linux_x86-64_openmpi314/"
-orca_yml: "/home/haozeke/Git/Github/Python/wailord/tests/io/orca/inpgen/test_orcainpgen/basic.yml"
-inp_xyz: "/home/haozeke/Git/Github/Python/wailord/tests/io/orca/inpgen/test_orcainpgen/h2mol.xyz"
+orca_yml: "basic.yml"
+inp_xyz: "h2mol.xyz"
