@@ -481,10 +481,11 @@ class inpGenerator:
             "basis", "calc", "spin", "style", "name", "unrestricted"
         )(confobj)
         with open(name, "w") as op:
-            op.write(f"!{style} {basis} {calc}")
-            op.write("\n")
-            if extralines is not None:
+            op.write(f"!{style} {basis} {calc}\n")
+            if self.keylines is not None:
+                op.writelines(self.keylines)
                 op.write("\n")
+            if extralines is not None:
                 op.writelines(extralines)
                 op.write("\n")
             if unrestricted is True:
@@ -493,22 +494,13 @@ class inpGenerator:
             if self.viz is not None:
                 op.writelines(self.viz)
             if self.paramlines is not None:
-                op.write("\n")
                 op.writelines(self.paramlines)
-                op.write("\n")
             if self.blocks is not None:
-                op.write("\n")
                 op.writelines(self.blocks)
-                op.write("\n")
-            if self.keylines is not None:
-                op.write("\n")
-                op.writelines(self.keylines)
-                op.write("\n")
             if self.geomlines is not None:
-                op.write("\n")
                 op.writelines(self.geomlines)
                 op.write("\n")
-            op.write(f"*xyz {spin}")
+            op.write(f"\n*xyz {spin}")
             op.write("\n")
             op.write(self.xyzlines[-1])
             op.write("*")
