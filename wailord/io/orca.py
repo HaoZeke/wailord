@@ -34,21 +34,28 @@ Todo:
 import wailord.io as waio
 import wailord.utils as wau
 
-import re, sys, os, warnings, textwrap
+import numpy as np
+import pandas as pd
+import itertools as itertt
+
+import re
+import os
+import textwrap
+import pint
+import pint_pandas
+import vg
+
 from pathlib import Path
 from functools import reduce
 from collections import namedtuple, OrderedDict
 from operator import itemgetter
 from pandas.api.types import CategoricalDtype
-
-from pint import UnitRegistry
 from konfik import Konfik
-import numpy as np
-import pandas as pd
-import itertools as itertt
-import vg
 
-ureg = UnitRegistry()
+# Pint setup
+PA_ = pint_pandas.PintArray
+ureg = pint.UnitRegistry()
+pint_pandas.PintType.ureg = ureg
 Q_ = ureg.Quantity
 
 ureg.define("kcal_mol = kcal / 6.02214076e+23 = kcm")
