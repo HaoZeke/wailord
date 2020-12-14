@@ -67,6 +67,8 @@ class inpGenerator:
         self.scf = None
         self.viz = None
         self.paramlines = None
+        self.keylines = None
+        self.blocks = None
         self.konfik = Konfik(config_path=filename)
         self.scripts = []
 
@@ -199,6 +201,10 @@ class inpGenerator:
                 self.scf = self.parse_scf(self.konfik.config.scf)
             if "viz" in self.konfik.config.keys():
                 self.viz = self.parse_viz(self.konfik.config.viz)
+            if "keywords" in self.konfik.config.keys():
+                self.keylines = self.parse_keywords(self.konfik.config.keywords)
+            if "blocks" in self.konfik.config.keys():
+                self.blocks = self.parse_blocks(self.konfik.config.blocks)
             self.gendir_qc(extra=None)
         else:
             for root, dirs, files in os.walk(self.xyzpath.resolve()):
@@ -220,8 +226,53 @@ class inpGenerator:
                             self.scf = self.parse_scf(self.konfik.config.scf)
                         if "viz" in self.konfik.config.keys():
                             self.viz = self.parse_viz(self.konfik.config.viz)
+                        if "keywords" in self.konfik.config.keys():
+                            self.keylines = self.parse_keywords(
+                                self.konfik.config.keywords
+                            )
+                        if "blocks" in self.konfik.config.keys():
+                            self.blocks = self.parse_blocks(self.konfik.config.blocks)
                         self.gendir_qc(extra=None)
         pass
+
+    def parse_blocks(self, blocks):
+        """Generic Block Handler
+
+        Consider the following:
+        blocks:
+            - method:
+                  - Z_Tol: "1e-14"
+                  - SpecialGridAtoms: "28, 29, 27"
+                  - SpecialGridIntacc: "8, 8, 8"
+
+        Which is to be mapped to:
+        %method
+          Z_Tol 1e-14
+          SpecialGridAtoms 28, 29, 27
+          SpecialGridIntacc 8, 8, 8
+        end
+
+        Args:
+            None
+        Returns:
+            blocks (`list` of `str`): The blocks to be rendered
+        """
+        blines = []
+        for bname in blocks:
+            for bid, bdat in bname.items():
+                blines.append(f"\n%{bid}\n")
+                for line in bdat:
+                    for key, value in line.items():
+                        string = f"  {key} {value}\n"
+                        blines.append(string)
+                blines.append("end\n")
+        return "".join(blines)
+
+    def parse_keywords(self, keywords):
+        keylines = []
+        for kl in keywords:
+            keylines.append(f"\n! {kl}")
+        return "".join(keylines)
 
     def parse_yml(self):
         """Handle the various options"""
@@ -444,6 +495,14 @@ class inpGenerator:
             if self.paramlines is not None:
                 op.write("\n")
                 op.writelines(self.paramlines)
+                op.write("\n")
+            if self.blocks is not None:
+                op.write("\n")
+                op.writelines(self.blocks)
+                op.write("\n")
+            if self.keylines is not None:
+                op.write("\n")
+                op.writelines(self.keylines)
                 op.write("\n")
             if self.geomlines is not None:
                 op.write("\n")

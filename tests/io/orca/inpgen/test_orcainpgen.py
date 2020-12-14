@@ -33,6 +33,42 @@ def prep_inpgen(tmpdir_factory):
     return nbasic.parent
 
 
+def test_keywords(datadir):
+    ymlt = waio.inp.inpGenerator(datadir / "orcaBlockKey.yml")
+    string = f"""
+    ! NUMGRAD
+    ! nofrozencore extremescf vpt2"""
+    expect = textwrap.dedent(string)
+    ymlt.parse_yml()
+    # Kill generated
+    shutil.move("harness.sh", "wailordFold")
+    shutil.rmtree("wailordFold")
+    assert ymlt.keylines == expect
+    pass
+
+
+def test_blocks(datadir):
+    ymlt = waio.inp.inpGenerator(datadir / "orcaBlockKey.yml")
+    string = """
+    %method
+      Z_Tol 1e-14
+      SpecialGridAtoms 28, 29, 27
+      SpecialGridIntacc 8, 8, 8
+    end
+
+    %scf
+      rotate {48, 49, 90, 1, 1} end
+    end
+    """
+    expect = textwrap.dedent(string)
+    ymlt.parse_yml()
+    # Kill generated
+    shutil.move("harness.sh", "wailordFold")
+    shutil.rmtree("wailordFold")
+    assert ymlt.blocks == expect
+    pass
+
+
 def test_geom_constraint(prep_inpgen):
     string = f"""
     %geom
