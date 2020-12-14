@@ -1,0 +1,19 @@
+qc:
+  active: True
+  style: ["HF", "MP2", "B3LYP"]
+  calculations: ["OPT"]
+  basis_sets:
+    - 6-311G**
+xyz: "../../xyz/startfreq/"
+spin:
+  - "0 1"
+scf:
+  maxiter: 1800
+blocks:
+  - method:
+      - Z_Tol: "1e-14"
+keywords:
+  - "FREQ"
+  - "nofrozencore"
+extra: Null
+jobscript: "basejob.sh"

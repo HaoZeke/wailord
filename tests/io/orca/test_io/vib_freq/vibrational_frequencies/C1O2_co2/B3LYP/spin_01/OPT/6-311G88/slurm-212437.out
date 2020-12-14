@@ -1,0 +1,30 @@
+/bin/bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+compute-2-0
+cp: cannot stat '*.xyz': No such file or directory
+Job execution start: Mon Dec 14 04:36:13 GMT 2020
+Slurm Job ID is: 212437
+slurm Job name is: 6-311G**_B3LYP
+Scratchdir is: /scratch/rog32/ORCA__212437-ZRRJ
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+[file orca_tools/Tool-Symmetry/symmain.cpp, line 3070]: Error (ORCA_SYM): TMoleculeSymmetry::CleanUp molecule is linear but not aligned to z axis!
+
+cp: cannot stat '/scratch/rog32/ORCA__212437-ZRRJ/*.molden': No such file or directory

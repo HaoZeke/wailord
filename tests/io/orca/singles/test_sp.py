@@ -300,12 +300,11 @@ def test_orca_mult_fullpop(datadir):
 def test_orca_vibf(datadir):
     spop = waio.orca.orcaVis(ofile=datadir / "b3lyp_6311g88_h2o.out")
     sdat = spop.vib_freq()
-    assert sdat.shape == (3, 6)
+    assert sdat.shape == (3, 11)
     assert sdat.T2.pint.units == "kilometer / mole"
     assert sdat.freq.pint.units == "reciprocal_centimeter"
     np.testing.assert_equal(
         sdat.freq.pint.m.to_numpy(), np.array([1639.47, 3807.28, 3903.73])
     )
-    breakpoint()
     np.testing.assert_equal(sdat.Mode.to_numpy(), np.array([6, 7, 8]))
     pass

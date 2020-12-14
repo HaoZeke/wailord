@@ -1,0 +1,22 @@
+/bin/bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+compute-2-0
+cp: cannot stat '*.xyz': No such file or directory
+Job execution start: Mon Dec 14 04:36:13 GMT 2020
+Slurm Job ID is: 212431
+slurm Job name is: 6-311G**_B3LYP
+Scratchdir is: /scratch/rog32/ORCA__212431-zVpH
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+sh: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+cp: cannot stat '/scratch/rog32/ORCA__212431-zVpH/*.molden': No such file or directory
+cp: cannot stat '/scratch/rog32/ORCA__212431-zVpH/*.scfp': No such file or directory

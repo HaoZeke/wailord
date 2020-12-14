@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from pint import UnitRegistry
+from siuba import _, filter, select, mutate
 
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
@@ -191,4 +192,18 @@ def test_get_pop(datadir):
         popdat.theory.value_counts().to_numpy(),
         np.array([60, 50, 40]),
     )
+    pass
+
+
+###########################
+# Vibrational Frequencies #
+###########################
+
+
+def test_get_vib_freq(datadir):
+    oth = ["HF", "MP2", "B3LYP"]
+    expt = waio.orca.orcaExp(expfolder=datadir / "vib_freq", order_theory=oth)
+    vdat = expt.get_vib_freq()
+    assert vdat.shape == (63, 11)
+    assert (vdat >> filter(_.slug == "O1H2_h2o")).shape == (9, 11)
     pass
