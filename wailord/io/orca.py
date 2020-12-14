@@ -21,6 +21,7 @@ Todo:
     * Handle split jobs
     * Propagate exceptions instead of passing the buck with warnings
     * Setup proper logging
+    * Scrape NIST Web book for spectra, properties https://webbook.nist.gov/cgi/cbook.cgi?ID=C71432&Mask=800#Electronic-Spec
     * Document more things (e.g. SP -> Single point calculation a.k.a. energy
       calculation)
     * Return interesting things
