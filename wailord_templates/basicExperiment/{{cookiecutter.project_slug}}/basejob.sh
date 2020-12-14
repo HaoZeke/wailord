@@ -35,6 +35,7 @@ if [ ! -d "$tdir" ]; then
 fi
 
 cp *.inp $tdir/
+cp *.xyz $tdir/
 cd $tdir
 
 echo "Job execution start: $(date)"
