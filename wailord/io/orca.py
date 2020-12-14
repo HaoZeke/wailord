@@ -91,6 +91,7 @@ OUT_REGEX = {
     "energy_evals": re.compile(r"There will be\s*\d* energy evaluations"),
     "Mulliken": re.compile(r"MULLIKEN ATOMIC CHARGES"),
     "Loewdin": re.compile(r"LOEWDIN ATOMIC CHARGES"),
+    "Vibrational Frequencies": re.compile(r"IR SPECTRUM"),
 }
 
 # ------------ Refactor
@@ -577,6 +578,42 @@ class orcaVis:
                 ValueError(f"{etype} surface not found for {self.runinfo['theory']}")
             )
         return edat
+
+    def vib_freq(self):
+        """Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for
+        intensities"""
+        sregexp = OUT_REGEX["Vibrational Frequencies"]
+        vline = namedtuple("vline", "Mode freq T2 TX TY TZ")
+        accumulate = []
+        with open(self.ofile) as of:
+            flines = of.readlines()
+            for lnum, line in enumerate(flines):
+                if sregexp.search(line):
+                    offset = lnum + 5
+                    i = 0
+                    while flines[offset + i] != "\n":
+                        raw = flines[offset + i].split()
+                        raw = [i for i in raw if i != ":" if i != "(" if i != ")"]
+                        v = vline(
+                            Mode=int(raw[0].replace(":", "")),
+                            freq=float(raw[1]),
+                            T2=float(raw[2]),
+                            TX=float(raw[3].replace("(", "")),
+                            TY=float(raw[4]),
+                            TZ=float(raw[5].replace(")", "")),
+                        )
+                        accumulate.append(v)
+                        i = i + 1
+        vdat = pd.DataFrame(accumulate)
+        vdat["T2"] = vdat["T2"].astype("pint[km/mol]")
+        vdat["freq"] = vdat["freq"].astype("pint[cm_1]")
+        if vdat.empty:
+            raise (
+                ValueError(
+                    f"Spectra not found for {self.runinfo['theory']}, did you run FREQ?"
+                )
+            )
+        return vdat
 
     def single_population_analysis(self, poptype="Mulliken", /):
         """Single population analysis dataframe generator
