@@ -350,6 +350,30 @@ class orcaExp:
         )
         return fe
 
+    def get_vib_freq(self):
+        """Returns a datframe of the vibrational frequencies
+
+        Proxies calls to the base orcaVis class over a series of generated files
+
+        Args:
+            None
+
+        Returns:
+            pd.DataFrame: Returns a data frame of frequencies
+        """
+        vdatl = []
+        for runf in self.orclist:
+            runorc = orcaVis(runf).vib_freq()
+            vdatl.append(runorc)
+        ve = pd.concat(vdatl, axis=0)
+        ve = ve.drop_duplicates()
+        basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
+        theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
+        ve["basis"] = ve["basis"].astype(basis_type)
+        ve["theory"] = ve["theory"].astype(theory_type)
+        ve.sort_values(by=["theory", "basis"], ignore_index=True, inplace=True)
+        return ve
+
     def get_energy_surface(self, etype=["Actual Energy", "SCF Energy"]):
         """Populates an energy surface dataframe
 
@@ -613,6 +637,9 @@ class orcaVis:
                     f"Spectra not found for {self.runinfo['theory']}, did you run FREQ?"
                 )
             )
+        else:
+            for key in self.runinfo.keys():
+                vdat[key] = self.runinfo[key]
         return vdat
 
     def single_population_analysis(self, poptype="Mulliken", /):
