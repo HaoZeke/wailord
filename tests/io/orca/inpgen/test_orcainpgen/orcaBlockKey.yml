@@ -1,0 +1,24 @@
+qc:
+    active: True
+    style: ["RHF", "QCISD(T)"]
+    calculations: ["SP", "OPT"]
+    basis_sets:
+        - 6-31G
+        - 6-311G
+xyz: "inp.xyz"
+spin:
+    - "0 1"
+keywords:
+    - "NUMGRAD"
+    - "nofrozencore extremescf vpt2"
+# Each block is defined by the key and value
+blocks:
+    - method:
+          - Z_Tol: "1e-14"
+          - SpecialGridAtoms: "28, 29, 27"
+          - SpecialGridIntacc: "8, 8, 8"
+    # An example of an existing block
+    - scf:
+          - rotate: "{48, 49, 90, 1, 1} end"
+extra: Null
+jobscript: "basejob.sh"
