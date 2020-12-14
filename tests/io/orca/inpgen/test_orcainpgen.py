@@ -182,3 +182,4 @@ def test_geom_scans(datadir):
     shutil.move("harness.sh", "wailordFold")
     shutil.rmtree("wailordFold")
     assert ymlt.geomlines == expect
+    pass

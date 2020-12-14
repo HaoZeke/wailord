@@ -189,6 +189,6 @@ def test_get_pop(datadir):
     ]
     np.testing.assert_equal(
         popdat.theory.value_counts().to_numpy(),
-        np.array([30, 30, 20]),
+        np.array([60, 50, 40]),
     )
     pass
