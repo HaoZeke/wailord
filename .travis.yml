@@ -1,5 +1,9 @@
 language: python
-cache: pip
+cache:
+    directories:
+        - $HOME/.cache/pip # same as pip
+        - $HOME/.poetry
+        - $HOME/.cache/pypoetry
 python:
     - 3.8
 before_install:
