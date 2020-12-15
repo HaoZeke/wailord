@@ -34,9 +34,9 @@ deploy:
           repo: HaoZeke/wailord
           python: 3.8
 
-    - provider: pages
+    - provider: pages:git
+      edge: true
       local_dir: ./genDocs
-      skip_cleanup: true
       keep_history: true
       deploy_key: ./github_deploy_key
       target_branch: pages
