@@ -8,6 +8,10 @@ Wailord
 .. image:: https://img.shields.io/pypi/v/wailord.svg
         :target: https://pypi.python.org/pypi/wailord
 
+.. image:: https://zenodo.org/badge/303189277.svg
+        :target: https://zenodo.org/badge/latestdoi/303189277
+        :alt: Zenodo Status
+
 .. image:: https://img.shields.io/travis/HaoZeke/wailord.svg
         :target: https://travis-ci.com/HaoZeke/wailord
 
@@ -21,12 +25,13 @@ Wailord
      :alt: Updates
 
 
-
 Wailord is a python library to interact with ORCA
 
 
 * Free software: GNU General Public License v3
-* Documentation: https://wailord.readthedocs.io. **TBD**
+* Documentation: https://wailord.netlify.app
+
+Being written up for formal publication. Till then feel free to use the ZenodoDOI_.
 
 
 Features
@@ -49,3 +54,4 @@ Credits
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+.. _ZenodoDOI: https://zenodo.org/badge/latestdoi/303189277
