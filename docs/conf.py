@@ -51,7 +51,7 @@ extensions = [
 ]
 
 # Sitemap Config
-html_baseurl = "https://wailord.rgoswami.me/"
+html_baseurl = "https://wailord.xyz/"
 
 # MathJax Configuration
 mathjax_config = {
@@ -158,6 +158,8 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+# More Extras
+html_extra_path = ["_extras"]
 
 # -- Options for HTMLHelp output ---------------------------------------
 
