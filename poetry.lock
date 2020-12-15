@@ -712,17 +712,6 @@ typing-extensions = ">=3.7.4,<4.0.0"
 jupyter = ["ipywidgets (>=7.5.1,<8.0.0)"]
 
 [[package]]
-name = "robpol86-sphinxcontrib-googleanalytics"
-version = "0.1"
-description = "Sphinx extension googleanalytics"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-Sphinx = ">=0.6"
-
-[[package]]
 name = "scipy"
 version = "1.5.3"
 description = "SciPy: Scientific Library for Python"
@@ -1214,7 +1203,7 @@ test = []
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "42b2ec5abff86a17b401ebf6eda1b464143ec3b3962eae0289a93d59018f14b8"
+content-hash = "e842f43ac6c5c627c3dcbd2aab839d80d018d5b6438f4d3004e10e4bda7fa162"
 
 [metadata.files]
 alabaster = [
@@ -1653,9 +1642,6 @@ requests = [
 rich = [
     {file = "rich-9.1.0-py3-none-any.whl", hash = "sha256:5dd934a0f8953b59d9a5d8d58864012174f0b5ad2de687fd04f4df195f7f7066"},
     {file = "rich-9.1.0.tar.gz", hash = "sha256:05f1cf4dc191c483867b098d8572546de266440d61911d8270069023e325d14a"},
-]
-robpol86-sphinxcontrib-googleanalytics = [
-    {file = "robpol86-sphinxcontrib-googleanalytics-0.1.tar.gz", hash = "sha256:41780f8d5231e597a6ec8b4cad1ef33d07ab74e0e04ab8fadff92a5d136480ad"},
 ]
 scipy = [
     {file = "scipy-1.5.3-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:f574558f1b774864516f3c3fe072ebc90a29186f49b720f60ed339294b7f32ac"},
