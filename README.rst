@@ -33,12 +33,13 @@ Features
 --------
 
 * Integrates with SLURM in a manner of speaking
+* Generic helpers for building arbitrary input files
+* Generates data-frames for all supported runs
 
 Limitations
 -----------
 
-* By choice, the split-job syntax has not been included in the current formulation
-  - The `pre` keyword is a notable exception, as it performs a geometry optimization of the `xyz` file before passing through to the rest of the calculations
+* By choice, the split-job syntax has not been included
 
 Credits
 -------
