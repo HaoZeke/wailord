@@ -1,10 +1,14 @@
 language: python
+cache: pip
 python:
     - 3.8
-install: pip install -U tox-travis
+install:
+    - pip install -U tox-travis
+    - pip install poetry
+    - poetry install
 script:
     - tox
-    - cd docs && make html
+    - poetry shell && cd docs && make html
 deploy:
     - provider: pypi
       distributions: sdist bdist_wheel
