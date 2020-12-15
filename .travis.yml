@@ -2,14 +2,23 @@ language: python
 python:
     - 3.8
 install: pip install -U tox-travis
-script: tox
+script:
+    - tox
+    - cd docs && make html
 deploy:
-    provider: pypi
-    distributions: sdist bdist_wheel
-    user: rgoswami
-    password:
-        secure: aZKdTal0sag7njO8UKyf+tix2n17KmnXwFgbtkdD9ycGvStxeVtwHt58uQynuWZ8SW/CgaAaBA2Nnfl7nQSGrCkkMo+Xfc/PYQFbkEz5GvJOAfK6ShaGsofXtu+kwqIU6CO0XKX4IPLJ51UQj8ICg+TZLigb19J8FPcf5XCpidVPIuenphj9I8NVw02v2ni9bbANIzJCB3kApu60if+r/2JGELzx7DISq4BSFzxlEPfeZWQKo6T6EoH+eh+j0jTfppws1+m2cVNhvD4IzBpQbGFmxEV+EErB4YJChmfmw1Fnx4AOECJ9aPn/K7KgDMirjJl9ojMFkM/w5i7xK/iTuyPFy8yx11C4dGOSqFSsnmF1ooV9MhTCuoxHqFJHpspNQ4fo7F8Nwi7uDy8sGSa89o7hXngIvuh4DkTOdY826IqoeB8EP7NFEialFoPB7lCWOJLbof6kA1O+VcRDKrtuKhorbN2YNbauymp4verWB1B2JqM7CMqGrXSp4EbYcx5b6RVSrzJeiAWOSMFHIogOHBEFjzSEyC5+fsDjnOHNLxV6QyHh/bBTeFQcFt641UHQuFou7uNR0HReOHf4oQf07Mtsn53IZxk0KmhVyyHEaXw/qq0YNwtpqtAyYLNUghHZor3/PNtFWCz3j1aJ46J4eOz4tEdv0LBwws2Pkzu2gBc=
-    on:
-        tags: true
-        repo: HaoZeke/wailord
-        python: 3.8
+    - provider: pypi
+      distributions: sdist bdist_wheel
+      user: rgoswami
+      password:
+          secure: aZKdTal0sag7njO8UKyf+tix2n17KmnXwFgbtkdD9ycGvStxeVtwHt58uQynuWZ8SW/CgaAaBA2Nnfl7nQSGrCkkMo+Xfc/PYQFbkEz5GvJOAfK6ShaGsofXtu+kwqIU6CO0XKX4IPLJ51UQj8ICg+TZLigb19J8FPcf5XCpidVPIuenphj9I8NVw02v2ni9bbANIzJCB3kApu60if+r/2JGELzx7DISq4BSFzxlEPfeZWQKo6T6EoH+eh+j0jTfppws1+m2cVNhvD4IzBpQbGFmxEV+EErB4YJChmfmw1Fnx4AOECJ9aPn/K7KgDMirjJl9ojMFkM/w5i7xK/iTuyPFy8yx11C4dGOSqFSsnmF1ooV9MhTCuoxHqFJHpspNQ4fo7F8Nwi7uDy8sGSa89o7hXngIvuh4DkTOdY826IqoeB8EP7NFEialFoPB7lCWOJLbof6kA1O+VcRDKrtuKhorbN2YNbauymp4verWB1B2JqM7CMqGrXSp4EbYcx5b6RVSrzJeiAWOSMFHIogOHBEFjzSEyC5+fsDjnOHNLxV6QyHh/bBTeFQcFt641UHQuFou7uNR0HReOHf4oQf07Mtsn53IZxk0KmhVyyHEaXw/qq0YNwtpqtAyYLNUghHZor3/PNtFWCz3j1aJ46J4eOz4tEdv0LBwws2Pkzu2gBc=
+      on:
+          tags: true
+          repo: HaoZeke/wailord
+          python: 3.8
+
+    - provider: pages
+      local_dir: ./docs/_build/html
+      skip_cleanup: true
+      github_token:
+          secure: gmTAIgxcpHutpq95SWYutdc0l36R09XTC+q0NgybLLSOsQR6bNJgNSU1z0pKebI8GZnzYpFF6oGUdMoAHYSbYSlC/g0rGLWVyslk52yV6L4ikxbUe0jpOKrj5fDNdRC65QqP7yOY0LelhLihw1JNHwU31h24zOC2oPGk6qFIUzOA5D8+CsEyJ9qHXTzLiQl7HSzVbEBxhveNa6RFi2cQdDCEQ8YPJtXhFB9AoprLClphMp0le0cTsKz6nAMz4zTioz11O35YiZmBwexy1dOQ6qP7/Mvzi9haINnRkkIj2SY2TQ3CPjSzuFZak8yr/HxZYxUVByneQ7O55Nv6uag7Rm8CytSScjTDjUDNGSVSsp43muUZS38QuVBXdiCqBQN+/c1R+AMQsuLHnNN67+kErPuoMcD4JZntJmE39h2SPnpx2AFppk/zf9GRJWXb0vO7Eclf7MbhOzAMz6ySXK7YHw9uV+evP8J8FSP/5U+DrDfEHuwGqNWSHcLr9+Bm5yo+P7UiniNaiTKMb0T4ZYc56kZpx5xIbP9Hq3AgflCCsKhrQq2aEmq+iiWAJCSz97fHVydrQaJuybQv0a83Iu3FaycvvIOydm5OP/h/2uH25clKfFJED16N4ulwO7NuvEBUBNVN0Xey0Z5wb94ZKrzqEN7JYHQyh4G42cXfhgrNnv8=
+      keep_history: true
