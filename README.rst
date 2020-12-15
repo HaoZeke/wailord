@@ -25,11 +25,11 @@ Wailord
      :alt: Updates
 
 
-Wailord is a python library to interact with ORCA
+Wailord is a python library to interact with ORCA_
 
 
 * Free software: GNU General Public License v3
-* Documentation: https://wailord.netlify.app
+* Documentation: https://wailord.xyz
 
 Being written up for formal publication. Till then feel free to use the ZenodoDOI_.
 
@@ -49,10 +49,13 @@ Limitations
 Credits
 -------
 
+* Initially conceived during EFN115F_
 * This package was based off the `audreyr/cookiecutter-pypackage`_ Cookiecutter_ template
 * The image is from `wallhaven.cc`_
 * The favicon is from Bulbagarden_
 
+.. _ORCA: https://orcaforum.kofo.mpg.de/
+.. _EFN115F: https://notendur.hi.is/~hj/reikniefnafr/
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _ZenodoDOI: https://zenodo.org/badge/latestdoi/303189277
