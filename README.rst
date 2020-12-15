@@ -31,7 +31,7 @@ Wailord is a python library to interact with ORCA_
 * Free software: GNU General Public License v3
 * Documentation: https://wailord.xyz
 
-Being written up for formal publication. Till then feel free to use the ZenodoDOI_.
+Being written up. Till then feel free to use the ZenodoDOI_.
 
 
 Features
