@@ -49,9 +49,12 @@ Limitations
 Credits
 -------
 
-* This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-* The image is from wallhaven.cc
+* This package was based off the `audreyr/cookiecutter-pypackage`_ Cookiecutter_ template
+* The image is from `wallhaven.cc`_
+* The favicon is from Bulbagarden_
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _ZenodoDOI: https://zenodo.org/badge/latestdoi/303189277
+.. _Bulbagarden: https://archives.bulbagarden.net/wiki/File:321Wailord_AG_anime.png
+.. _`wallhaven.cc`: https://wallhaven.cc/w/4xgw53
