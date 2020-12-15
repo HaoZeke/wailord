@@ -142,7 +142,7 @@ html_theme_options = {
     "reading_mode": "sepia",
     "typography": "book",
     "extra_links": {
-        "Source Code": "https://github.com/HaoZeke/wailord",
+        "Github": "https://github.com/HaoZeke/wailord",
         "Donate": "https://liberapay.com/rohit/donate",
         "Personal": "https://rgoswami.me",
     },

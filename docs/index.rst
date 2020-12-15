@@ -1,11 +1,11 @@
 Welcome to Wailord's documentation!
 ======================================
 
+.. include:: ../README.rst
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   readme
    installation
    usage
    source/modules
