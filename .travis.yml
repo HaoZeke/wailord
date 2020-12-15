@@ -11,7 +11,7 @@ install:
     - travis_retry poetry install
 script:
     - tox
-    - poetry shell && cd docs && make html
+    - poetry run sphinx-build docs ./genDocs
 deploy:
     - provider: pypi
       distributions: sdist bdist_wheel
