@@ -1,0 +1,7 @@
+wailord.io.xyz module
+=====================
+
+.. automodule:: wailord.io.xyz
+   :members:
+   :undoc-members:
+   :show-inheritance:

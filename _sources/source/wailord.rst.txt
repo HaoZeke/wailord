@@ -1,0 +1,29 @@
+wailord package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   wailord.exp
+   wailord.io
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   wailord.cli
+   wailord.utils
+   wailord.wailord
+
+Module contents
+---------------
+
+.. automodule:: wailord
+   :members:
+   :undoc-members:
+   :show-inheritance:

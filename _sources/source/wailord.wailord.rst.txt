@@ -1,0 +1,7 @@
+wailord.wailord module
+======================
+
+.. automodule:: wailord.wailord
+   :members:
+   :undoc-members:
+   :show-inheritance:

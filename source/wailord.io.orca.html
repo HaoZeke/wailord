@@ -1,0 +1,603 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wailord.io.orca module &#8212; Wailord 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/library/library.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <link rel="canonical" href="https://wailord.rgoswami.me/source/wailord.io.orca.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="wailord.io.xyz module" href="wailord.io.xyz.html" />
+    <link rel="prev" title="wailord.io.inp module" href="wailord.io.inp.html" />
+ 
+
+<link rel="stylesheet" id="sphinx-library-type" href="../_static/library/type-book.css" type="text/css" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=0.9" />
+<script>
+  mobile_menu_content = "";
+  function toggleMenu() {
+    var div = document.getElementsByClassName("document").item(0);
+    var btn = document.getElementById("menu-toggler");
+    if(div.classList.contains("mobile-show")) {
+      div.classList.remove("mobile-show");
+      btn.innerHTML = mobile_menu_content;
+    }
+    else {
+      div.classList.add("mobile-show");
+      mobile_menu_content = btn.innerHTML;
+      btn.innerHTML = btn.getAttribute("data-open");
+    }
+  }
+</script>
+  </head>
+<body class="sepia">
+<div class="document">
+
+  
+  <nav class="mobile-menu" role="navigation">
+    
+  <button type="button" id="menu-toggler" onclick="toggleMenu();"
+    data-open="× Close">≡ Menu</button>
+  <a href="../index.html">Wailord</a>
+  <noscript>
+    <div>
+      JavaScript is required to open/close mobile menu.
+    </div>
+  </noscript>
+  </nav>
+  
+
+  
+  <nav class="sphinxsidebar" role="navigation" aria-label="main navigation">
+    
+
+
+<h1 class="logo ">
+  <a href="../index.html">Wailord</a>
+</h1>
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<h3>Links</h3>
+<ul>
+  
+  <li class="toctree-l1"><a href="https://github.com/HaoZeke/wailord">Github</a></li>
+  
+  <li class="toctree-l1"><a href="https://liberapay.com/rohit/donate">Donate</a></li>
+  
+  <li class="toctree-l1"><a href="https://rgoswami.me">Personal</a></li>
+  
+</ul>
+<h3>Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">wailord</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="wailord.html">wailord package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+<script>
+  function toggleMode(theme) {
+    document.body.className = theme;
+    localStorage.setItem("sphinx-library-mode", theme);
+  }
+  var theme = localStorage.getItem("sphinx-library-mode");
+  if(theme !== null)
+    toggleMode(theme);
+</script>
+<h3>Reading Mode</h3>
+
+<button type="button" onclick="toggleMode('light');">Light</button>
+<button type="button" onclick="toggleMode('sepia');">Sepia</button>
+<button type="button" onclick="toggleMode('dark');">Dark</button>
+
+<noscript>
+  <div>
+    JavaScript is required to toggle reading modes.
+  </div>
+</noscript>
+  </nav>
+  <div class="documentwrapper">
+    <nav class="related breadcrumbs" role="navigation">
+  <a class="nav-item" href="../index.html">Index</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="modules.html">wailord</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="wailord.html">wailord package</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="wailord.io.html">wailord.io package</a>
+  <span class="delim"> &#187;</span>
+  <span class="nav-item">wailord.io.orca module</span>
+    </nav>
+    
+
+    <main class="body" role="main" id="main">
+      
+  <div class="section" id="module-wailord.io.orca">
+<span id="wailord-io-orca-module"></span><h1>wailord.io.orca module<a class="headerlink" href="#module-wailord.io.orca" title="Permalink to this headline">¶</a></h1>
+<p>An ad-hoc treatment of orca output files</p>
+<p>This should implement a grammar, but currently consists of a number of utility
+structures and functions to parse data from the orca output format</p>
+<p class="rubric">Example</p>
+<p>See the tests for more</p>
+<blockquote>
+<div><p>$ poetry run</p>
+</div></blockquote>
+<p>Some more details.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<ul class="simple">
+<li><p>Make grammar</p></li>
+<li><p>Make classes</p></li>
+<li><p>Test the experiments more</p></li>
+<li><p>Pass a list of experiments to ignore</p></li>
+<li><p>Test the ordering of variables</p></li>
+<li><p>Make classes for the order</p></li>
+<li><p>Handle split jobs</p></li>
+<li><p>Propagate exceptions instead of passing the buck with warnings</p></li>
+<li><p>Setup proper logging</p></li>
+<li><p>Scrape NIST Web book for spectra, properties <a class="reference external" href="https://webbook.nist.gov/cgi/cbook.cgi?ID=C71432&amp;Mask=800#Electronic-Spec">https://webbook.nist.gov/cgi/cbook.cgi?ID=C71432&amp;Mask=800#Electronic-Spec</a></p></li>
+<li><p>Document more things (e.g. SP -&gt; Single point calculation a.k.a. energy
+calculation)</p></li>
+<li><p>Return interesting things</p></li>
+</ul>
+</div>
+<dl class="py function">
+<dt id="wailord.io.orca.genEBASet">
+<code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">genEBASet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rootdir</span></em>, <em class="sig-param"><span class="n">deci</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">latex</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">full</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">order_basis</span><span class="o">=</span><span class="default_value">['STO-3G', '3-21G', '6-31G', '6-311G', '6-311G*', '6-311G**', '6-311++G**', '6-311++G(2d,2p)', '6-311++G(2df,2pd)', '6-311++G(3df,3pd)']</span></em>, <em class="sig-param"><span class="n">order_theory</span><span class="o">=</span><span class="default_value">['HF', 'UHF', 'QCISD', 'CCSD', 'QCISD(T)', 'CCSD(T)']</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#genEBASet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.genEBASet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in a Path object, and typically returns bond angles and energies.
+Optionally returns a TeX table or a full dataset with the filenames and
+geometries. Depreciate this eventually.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wailord.io.orca.getBA">
+<code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">getBA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dat</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">indi</span><span class="o">=</span><span class="default_value">[0, 1, 2]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#getBA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.getBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in a data frame of xyz coordinates and uses it to generate the
+plane angle, indices are used such that the first is the relative center</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wailord.io.orca.getBL">
+<code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">getBL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dat</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">indi</span><span class="o">=</span><span class="default_value">[0, 1]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#getBL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.getBL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in a data frame of xyz coordinates and uses it to calculate the bond length</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wailord.io.orca.getRunInfo">
+<code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">getRunInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">runf</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#getRunInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.getRunInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the runtime parameters from the output path</p>
+<p>The implementation uses an ordered dictionary to ensure that the path
+fragments are matched to the correct keys.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This will only work with wailord experiments at the moment</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>run</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Path</span></code>) – Runtime output path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A simple unordered dictionary of paramters</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>runinf (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wailord.io.orca.get_e">
+<code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">get_e</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orcaoutdat</span></em>, <em class="sig-param"><span class="n">basis</span></em>, <em class="sig-param"><span class="n">system</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#get_e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.get_e" title="Permalink to this definition">¶</a></dt>
+<dd><p>This takes in an orcaout data frame and spits out the energy</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.orca.inpcart">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">inpcart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atype</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wailord.io.orca.inpcart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+<dl class="py attribute">
+<dt id="wailord.io.orca.inpcart.atype">
+<code class="sig-name descname">atype</code><a class="headerlink" href="#wailord.io.orca.inpcart.atype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.inpcart.x">
+<code class="sig-name descname">x</code><a class="headerlink" href="#wailord.io.orca.inpcart.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.inpcart.y">
+<code class="sig-name descname">y</code><a class="headerlink" href="#wailord.io.orca.inpcart.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.inpcart.z">
+<code class="sig-name descname">z</code><a class="headerlink" href="#wailord.io.orca.inpcart.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.orca.orcaExp">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">orcaExp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expfolder</span></em>, <em class="sig-param"><span class="n">deci</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">order_basis</span><span class="o">=</span><span class="default_value">['STO-3G', '3-21G', '6-31G', '6-311G', '6-311G*', '6-311G**', '6-311++G**', '6-311++G(2d,2p)', '6-311++G(2df,2pd)', '6-311++G(3df,3pd)']</span></em>, <em class="sig-param"><span class="n">order_theory</span><span class="o">=</span><span class="default_value">['HF', 'UHF', 'QCISD', 'CCSD', 'QCISD(T)', 'CCSD(T)']</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The class meant to handle experiments generated with wailord.</p>
+<p>The general concept is that this is meant to work with the setup wailord
+generates. Remember to use <cite>df.round()</cite> for pretty printing!</p>
+<dl class="py method">
+<dt id="wailord.io.orca.orcaExp.get_energy_surface">
+<code class="sig-name descname">get_energy_surface</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">etype</span><span class="o">=</span><span class="default_value">['Actual Energy', 'SCF Energy']</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.get_energy_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.get_energy_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates an energy surface dataframe</p>
+<p>This essentially walks over the generated set of files, and fills out
+calls to the base orcaVis class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>etype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional) – This is passed to the base</p></li>
+<li><p><strong>class call</strong> (<em>OrcaVis</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of etype energies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaExp.get_final_sp_energy">
+<code class="sig-name descname">get_final_sp_energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.get_final_sp_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.get_final_sp_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a datframe of only the final single point energies</p>
+<p>Proxies calls to the base orcaVis class over a series of generated files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of final energies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaExp.get_population">
+<code class="sig-name descname">get_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poptype</span><span class="o">=</span><span class="default_value">['Mulliken', 'Loewdin']</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.get_population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.get_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates a population dataframe</p>
+<p>This essentially walks over the generated set of files, and fills out
+calls to the base orcaVis class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>poptype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, optional) – This is passed to the base</p></li>
+<li><p><strong>class call</strong> (<em>OrcaVis</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of etype energies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaExp.get_vib_freq">
+<code class="sig-name descname">get_vib_freq</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.get_vib_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.get_vib_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a datframe of the vibrational frequencies</p>
+<p>Proxies calls to the base orcaVis class over a series of generated files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaExp.handle_exp">
+<code class="sig-name descname">handle_exp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">efol</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.handle_exp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.handle_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates the internal file variables from the path</p>
+<dl class="simple">
+<dt>Alert:</dt><dd><p>This is <em>not</em> meant to be called by the user!!!!</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>efol</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Path</span></code>) – Output path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaExp.inpconf">
+<code class="sig-name descname">inpconf</code><a class="headerlink" href="#wailord.io.orca.orcaExp.inpconf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populated by <cite>handle_exp</cite></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaExp.orclist">
+<code class="sig-name descname">orclist</code><a class="headerlink" href="#wailord.io.orca.orcaExp.orclist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populated by <cite>handle_exp</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaExp.visit_coord_block">
+<code class="sig-name descname">visit_coord_block</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.visit_coord_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.visit_coord_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a dict of the section (as key) and the key/value pairs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaExp.visit_meta">
+<code class="sig-name descname">visit_meta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.visit_meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.visit_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the overall output.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.orca.orcaVis">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">orcaVis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ofile</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The class meant to handle ORCA output files.</p>
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<ul class="simple">
+<li><p>Add a grammar and recursive descent later</p></li>
+</ul>
+</div>
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.final_sp_e">
+<code class="sig-name descname">final_sp_e</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.final_sp_e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.final_sp_e" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.get_evals">
+<code class="sig-name descname">get_evals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ofile</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.get_evals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.get_evals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.get_final_e">
+<code class="sig-name descname">get_final_e</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dat</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.get_final_e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.get_final_e" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.mult_energy_surface">
+<code class="sig-name descname">mult_energy_surface</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">etype</span><span class="o">=</span><span class="default_value">['Actual Energy', 'MDCI', 'MDCI w/o Triples', 'SCF Energy']</span></em>, <em class="sig-param"><span class="n">npoints</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.mult_energy_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.mult_energy_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple Energy surface dataframe generator</p>
+<p>This is a helper function to obtain a dataframe which contains multiple
+energy surfaces. The implementation leverages the <cite>reduce</cite> function from
+<cite>functools</cite> to merge a list of dataframes generated from the
+<cite>single_energy_surface</cite> calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>etype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>,</em><em>optional</em>) – The type of calculated energy surface to
+return. Defaults to <cite>[“Actual Energy”, “MDCI”, “MDCI w/o Triples”,
+“SCF Energy”]</cite> but can be any valid subset of the same.</p></li>
+<li><p><strong>npoints</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>,</em><em>optional</em>) – The number of points over which a scan has
+taken place. Defaults to the number of evaluations calculated in
+the output file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of bond_length and energies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.mult_population_analysis">
+<code class="sig-name descname">mult_population_analysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poptype</span><span class="o">=</span><span class="default_value">['Mulliken', 'Loewdin']</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.mult_population_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.mult_population_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple population analysis dataframe generator</p>
+<p>This is a helper function to obtain a dataframe which contains multiple
+population analysis outputs. The implementation is similar to the energy surface helper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>poptype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>,</em><em>optional</em>) – The type of calculated energy surface to
+return.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of population analysis types</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.single_energy_surface">
+<code class="sig-name descname">single_energy_surface</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">etype</span><span class="o">=</span><span class="default_value">'Actual Energy'</span></em>, <em class="sig-param"><span class="n">npoints</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.single_energy_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.single_energy_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Single energy surface dataframe generator</p>
+<p>For say, QCISD(T), this is essentially the same as a QCISD calculation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="https://www.its.hku.hk/services/research/hpc/software/orca">MDCI</a> types are meant to work with single reference correlation
+methods</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>etype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>,</em><em>optional</em>) – The type of calculated energy surface to</p></li>
+<li><p><strong>Defaults to 'Actual Energy' and can be any of `</strong><strong>[</strong><strong>&quot;Actual Energy&quot;</strong> (<em>return.</em>) – </p></li>
+<li><p><strong>&quot;MDCI&quot;</strong> – </p></li>
+<li><p><strong>w/o Triples&quot;</strong> (<em>&quot;MDCI</em>) – </p></li>
+<li><p><strong>Energy&quot;</strong><strong>]</strong><strong>`</strong> (<em>&quot;SCF</em>) – </p></li>
+<li><p><strong>npoints</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>,</em><em>optional</em>) – The number of points over which a scan has
+taken place. Defaults to the number of evaluations calculated in
+the output file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of energy surfaces</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.single_population_analysis">
+<code class="sig-name descname">single_population_analysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poptype</span><span class="o">=</span><span class="default_value">'Mulliken'</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.single_population_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.single_population_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Single population analysis dataframe generator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>poptype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>,</em><em>optional</em>) – The type of population analysis to</p></li>
+<li><p><strong>Defaults to 'Mulliken'.</strong> (<em>return.</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of the population analysis</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.vib_freq">
+<code class="sig-name descname">vib_freq</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.vib_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.vib_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for
+intensities</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.orca.orcaout">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">orcaout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">final_energy</span></em>, <em class="sig-param"><span class="n">fGeom</span></em>, <em class="sig-param"><span class="n">basis</span></em>, <em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">system</span></em>, <em class="sig-param"><span class="n">spin</span></em>, <em class="sig-param"><span class="n">theory</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wailord.io.orca.orcaout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaout.basis">
+<code class="sig-name descname">basis</code><a class="headerlink" href="#wailord.io.orca.orcaout.basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaout.fGeom">
+<code class="sig-name descname">fGeom</code><a class="headerlink" href="#wailord.io.orca.orcaout.fGeom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaout.filename">
+<code class="sig-name descname">filename</code><a class="headerlink" href="#wailord.io.orca.orcaout.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaout.final_energy">
+<code class="sig-name descname">final_energy</code><a class="headerlink" href="#wailord.io.orca.orcaout.final_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaout.spin">
+<code class="sig-name descname">spin</code><a class="headerlink" href="#wailord.io.orca.orcaout.spin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaout.system">
+<code class="sig-name descname">system</code><a class="headerlink" href="#wailord.io.orca.orcaout.system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="wailord.io.orca.orcaout.theory">
+<code class="sig-name descname">theory</code><a class="headerlink" href="#wailord.io.orca.orcaout.theory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 6</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="wailord.io.orca.parseOut">
+<code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">parseOut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">plotter</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#parseOut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.parseOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles orca outputs with regex for energy and coordinates</p>
+</dd></dl>
+
+</div>
+
+
+    </main>
+    <nav class="related bottom" role="navigation">
+  <a class="prev" href="wailord.io.inp.html" title="Previous">
+    &larr; wailord.io.inp module
+  </a>
+  <a class="next" href="wailord.io.xyz.html" title="Next">
+    wailord.io.xyz module &rarr;
+  </a>
+  <div class="clear"></div>
+    </nav>
+    
+
+  </div>
+
+  <div class="clear"></div>
+</div>
+<footer class="footer" role="contentinfo">
+    &copy; Copyright 2020, Rohit Goswami.
+  
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> with
+  <a href="https://github.com/vsalvino/sphinx-library">Library</a> theme.
+  
+  <a href="../_sources/source/wailord.io.orca.rst.txt" rel="nofollow">Page source</a>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,713 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wailord.io.inp &#8212; Wailord 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/library/library.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <link rel="canonical" href="https://wailord.rgoswami.me/_modules/wailord/io/inp.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+ 
+
+<link rel="stylesheet" id="sphinx-library-type" href="../../../_static/library/type-book.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=0.9" />
+<script>
+  mobile_menu_content = "";
+  function toggleMenu() {
+    var div = document.getElementsByClassName("document").item(0);
+    var btn = document.getElementById("menu-toggler");
+    if(div.classList.contains("mobile-show")) {
+      div.classList.remove("mobile-show");
+      btn.innerHTML = mobile_menu_content;
+    }
+    else {
+      div.classList.add("mobile-show");
+      mobile_menu_content = btn.innerHTML;
+      btn.innerHTML = btn.getAttribute("data-open");
+    }
+  }
+</script>
+  </head>
+<body class="sepia">
+<div class="document">
+
+  
+  <nav class="mobile-menu" role="navigation">
+    
+  <button type="button" id="menu-toggler" onclick="toggleMenu();"
+    data-open="× Close">≡ Menu</button>
+  <a href="../../../index.html">Wailord</a>
+  <noscript>
+    <div>
+      JavaScript is required to open/close mobile menu.
+    </div>
+  </noscript>
+  </nav>
+  
+
+  
+  <nav class="sphinxsidebar" role="navigation" aria-label="main navigation">
+    
+
+
+<h1 class="logo ">
+  <a href="../../../index.html">Wailord</a>
+</h1>
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<h3>Links</h3>
+<ul>
+  
+  <li class="toctree-l1"><a href="https://github.com/HaoZeke/wailord">Github</a></li>
+  
+  <li class="toctree-l1"><a href="https://liberapay.com/rohit/donate">Donate</a></li>
+  
+  <li class="toctree-l1"><a href="https://rgoswami.me">Personal</a></li>
+  
+</ul>
+<h3>Contents</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">wailord</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+<script>
+  function toggleMode(theme) {
+    document.body.className = theme;
+    localStorage.setItem("sphinx-library-mode", theme);
+  }
+  var theme = localStorage.getItem("sphinx-library-mode");
+  if(theme !== null)
+    toggleMode(theme);
+</script>
+<h3>Reading Mode</h3>
+
+<button type="button" onclick="toggleMode('light');">Light</button>
+<button type="button" onclick="toggleMode('sepia');">Sepia</button>
+<button type="button" onclick="toggleMode('dark');">Dark</button>
+
+<noscript>
+  <div>
+    JavaScript is required to toggle reading modes.
+  </div>
+</noscript>
+  </nav>
+  <div class="documentwrapper">
+    <nav class="related breadcrumbs" role="navigation">
+  <a class="nav-item" href="../../../index.html">Index</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="../../index.html">Module code</a>
+  <span class="delim"> &#187;</span>
+  <span class="nav-item">wailord.io.inp</span>
+    </nav>
+    
+
+    <main class="body" role="main" id="main">
+      
+  <h1>Source code for wailord.io.inp</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;An orca input generator and reader</span>
+
+<span class="sd">This module reads in a configuration file and generates the requisite input</span>
+<span class="sd">files. It also reads existing configuration files and returns interesting</span>
+<span class="sd">things. A short description of the input types is at the `ORCA input</span>
+<span class="sd">description`_ page.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    See the tests for more</span>
+
+<span class="sd">        $ pytest</span>
+
+<span class="sd">Some more details.</span>
+
+<span class="sd">Todo:</span>
+<span class="sd">    * Make tests</span>
+<span class="sd">    * Return interesting things</span>
+<span class="sd">    * Add MNDO and other semi-empirical methods, which employ a minimal basis by</span>
+<span class="sd">      default and do not need a basis set in the input</span>
+<span class="sd">    * Add more explicit support for &quot;simple input lines&quot;</span>
+<span class="sd">    * Add more explicit support for the &quot;block input structure&quot;</span>
+<span class="sd">    * Add support for &quot;sequential&quot; jobs</span>
+<span class="sd">    * Support multiple xyz files [DONE]</span>
+<span class="sd">    * Clean up geometry, add gen_dirs back</span>
+<span class="sd">    * Test and expand brokensym</span>
+<span class="sd">    * Test number in harness</span>
+<span class="sd">    * Test Visualizer modifications</span>
+<span class="sd">    * Validate scans and constraints</span>
+<span class="sd">    * Parse wailord generated input files</span>
+
+<span class="sd">.. _Google Python Style Guide:</span>
+<span class="sd">   http://google.github.io/styleguide/pyguide.html</span>
+<span class="sd">.. _ORCA input description:</span>
+<span class="sd">   https://sites.google.com/site/orcainputlibrary/generalinput</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">wailord.io</span> <span class="k">as</span> <span class="nn">waio</span>
+<span class="kn">import</span> <span class="nn">wailord.utils</span> <span class="k">as</span> <span class="nn">wau</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">itertt</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+
+<span class="kn">from</span> <span class="nn">konfik</span> <span class="kn">import</span> <span class="n">Konfik</span>
+
+<span class="n">SCAN_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="s2">&quot;Dihedral&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;Bond&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;Angle&quot;</span><span class="p">}</span>
+<span class="n">CONSTRAINT_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="s2">&quot;Dihedral&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;Bond&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;Angle&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="s2">&quot;Cartesian&quot;</span><span class="p">}</span>
+<span class="n">AXIS_PROXY</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>  <span class="c1"># 0 is the atom type</span>
+
+
+<div class="viewcode-block" id="inpGenerator"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator">[docs]</a><span class="k">class</span> <span class="nc">inpGenerator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyzpath</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geomlines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyzlines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prjname</span> <span class="o">=</span> <span class="s2">&quot;wailordFold&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scf</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viz</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paramlines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keylines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span> <span class="o">=</span> <span class="n">Konfik</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scripts</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">show_config</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="inpGenerator.read_yml"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.read_yml">[docs]</a>    <span class="k">def</span> <span class="nf">read_yml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the overall output. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyzpath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s2">&quot;qc&quot;</span><span class="p">,</span> <span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="s2">&quot;spin&quot;</span><span class="p">)(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span>
+        <span class="p">)</span>
+        <span class="c1"># Test this later, with and without, also try overrides</span>
+        <span class="k">if</span> <span class="s2">&quot;extra&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">extra</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Consider using None in the yml file for extra&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_geom"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_geom">[docs]</a>    <span class="k">def</span> <span class="nf">parse_geom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rework the geometry into output&quot;&quot;&quot;</span>
+        <span class="n">textlines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%g</span><span class="s2">eom&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;scan&quot;</span> <span class="ow">in</span> <span class="n">geom</span><span class="p">:</span>
+            <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  Scan</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">scanthing</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">scanthing</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="ow">in</span> <span class="n">SCAN_TYPES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">geom_scan</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">scan</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scanthing</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">scantype</span><span class="o">=</span><span class="n">scanthing</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Only dihedral, bond and angle scan types are supported, got </span><span class="si">{</span><span class="n">scanthing</span><span class="si">}</span><span class="s2"> instead&quot;</span>
+                    <span class="p">)</span>
+            <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  end&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;constrain&quot;</span> <span class="ow">in</span> <span class="n">geom</span><span class="p">:</span>
+            <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  Constraints</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">consthing</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">constrain</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">consthing</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="ow">in</span> <span class="n">CONSTRAINT_TYPES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">geom_constrain</span><span class="p">(</span>
+                            <span class="n">geom</span><span class="o">.</span><span class="n">constrain</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">consthing</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">constype</span><span class="o">=</span><span class="n">consthing</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Only dihedral, bond, angle, and cartesian constraints are supported, got </span><span class="si">{</span><span class="n">consthing</span><span class="si">}</span><span class="s2"> instead&quot;</span>
+                    <span class="p">)</span>
+            <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  end&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;maxiter&quot;</span> <span class="ow">in</span> <span class="n">geom</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            maxiter </span><span class="si">{</span><span class="n">geom</span><span class="o">.</span><span class="n">maxiter</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            &quot;&quot;&quot;</span>
+            <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+        <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">end</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textlines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.geom_constrain"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.geom_constrain">[docs]</a>    <span class="k">def</span> <span class="nf">geom_constrain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cons</span><span class="p">,</span> <span class="n">constype</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handles constraints&quot;&quot;&quot;</span>
+        <span class="n">linesthing</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">constype</span> <span class="o">=</span> <span class="n">constype</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">constraint</span> <span class="ow">in</span> <span class="n">cons</span><span class="p">:</span>
+            <span class="n">btwn</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">[</span><span class="s2">&quot;between&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">in</span> <span class="n">constraint</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">constraint</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">constype</span> <span class="o">!=</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span>
+                <span class="n">btwn_num</span> <span class="o">=</span> <span class="n">btwn</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+                <span class="c1"># TODO Handle the other types as tuples (B,2)</span>
+                <span class="n">comment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_comment</span><span class="p">(</span>
+                    <span class="n">btwn</span><span class="p">,</span>
+                    <span class="n">thistype</span><span class="o">=</span><span class="n">constype</span><span class="p">,</span>
+                    <span class="n">use_types</span><span class="o">=</span><span class="n">CONSTRAINT_TYPES</span><span class="p">,</span>
+                    <span class="n">usage</span><span class="o">=</span><span class="s2">&quot;constraint on&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="c1"># if constype == &#39;B&#39; and len(btwn_num) == 2:</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Cartesian comments have not been implemented&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span>
+                <span class="p">)</span>
+                <span class="n">comment</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">linesthing</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="se">{{</span><span class="s2"> </span><span class="si">{</span><span class="n">constype</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">btwn</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> C </span><span class="se">}}</span><span class="s2"> # </span><span class="si">{</span><span class="n">comment</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">linesthing</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.geom_scan"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.geom_scan">[docs]</a>    <span class="k">def</span> <span class="nf">geom_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thing</span><span class="p">,</span> <span class="n">scantype</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handles scans&quot;&quot;&quot;</span>
+        <span class="n">linesthing</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">scantype</span> <span class="o">=</span> <span class="n">scantype</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">thingline</span> <span class="ow">in</span> <span class="n">thing</span><span class="p">:</span>
+            <span class="n">btwn</span><span class="p">,</span> <span class="n">fromto</span><span class="p">,</span> <span class="n">points</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span>
+                <span class="s2">&quot;between&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;range&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;points&quot;</span><span class="p">,</span>
+            <span class="p">)(</span><span class="n">thingline</span><span class="p">)</span>
+            <span class="n">comment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_comment</span><span class="p">(</span><span class="n">btwn</span><span class="p">,</span> <span class="n">scantype</span><span class="p">)</span>
+            <span class="n">linesthing</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">scantype</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">btwn</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">fromto</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">fromto</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s2"> # </span><span class="si">{</span><span class="n">comment</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">linesthing</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.scan_comment"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.scan_comment">[docs]</a>    <span class="k">def</span> <span class="nf">scan_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">between</span><span class="p">,</span> <span class="n">thistype</span><span class="p">,</span> <span class="n">use_types</span><span class="o">=</span><span class="n">SCAN_TYPES</span><span class="p">,</span> <span class="n">usage</span><span class="o">=</span><span class="s2">&quot;scan for&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a comment line, or raise an error&quot;&quot;&quot;</span>
+        <span class="n">outtmp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">between</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">thiskey</span> <span class="o">=</span> <span class="n">use_types</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">thistype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">outtmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xyzdat</span><span class="o">.</span><span class="n">atom_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span>
+                    <span class="s2">&quot;Trying to use an atom which does not exist, check indices&quot;</span>
+                <span class="p">)</span>
+        <span class="n">gencom</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outtmp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">thiskey</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">usage</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">gencom</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_xyz"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">parse_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate folder structure for each system&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyzpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyzpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyzpath</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">waio</span><span class="o">.</span><span class="n">xyz</span><span class="o">.</span><span class="n">xyzIO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">xyz</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xyzlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xyzdat</span><span class="o">.</span><span class="n">coord_block</span><span class="p">)</span>
+            <span class="c1"># Geometry</span>
+            <span class="k">if</span> <span class="s2">&quot;geom&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">geomlines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_geom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">geom</span><span class="p">)</span>
+            <span class="c1"># Paramter Blocks</span>
+            <span class="k">if</span> <span class="s2">&quot;params&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">paramlines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;scf&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_scf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">scf</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;viz&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">viz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_viz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">viz</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;keywords&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">keylines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_keywords</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keywords</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;blocks&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_blocks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">blocks</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gendir_qc</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyzpath</span><span class="o">.</span><span class="n">resolve</span><span class="p">()):</span>
+                <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.xyz&quot;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="n">waio</span><span class="o">.</span><span class="n">xyz</span><span class="o">.</span><span class="n">xyzIO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">xyzlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xyzdat</span><span class="o">.</span><span class="n">coord_block</span><span class="p">)</span>
+                        <span class="c1"># Geometry</span>
+                        <span class="k">if</span> <span class="s2">&quot;geom&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">geomlines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_geom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">geom</span><span class="p">)</span>
+                            <span class="c1"># Paramter Blocks</span>
+                        <span class="k">if</span> <span class="s2">&quot;params&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">paramlines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_params</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">params</span>
+                            <span class="p">)</span>
+                        <span class="k">if</span> <span class="s2">&quot;scf&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">scf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_scf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">scf</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="s2">&quot;viz&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">viz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_viz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">viz</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="s2">&quot;keywords&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">keylines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_keywords</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keywords</span>
+                            <span class="p">)</span>
+                        <span class="k">if</span> <span class="s2">&quot;blocks&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_blocks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">blocks</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">gendir_qc</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_blocks"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_blocks">[docs]</a>    <span class="k">def</span> <span class="nf">parse_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocks</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generic Block Handler</span>
+
+<span class="sd">        Consider the following:</span>
+<span class="sd">        blocks:</span>
+<span class="sd">            - method:</span>
+<span class="sd">                  - Z_Tol: &quot;1e-14&quot;</span>
+<span class="sd">                  - SpecialGridAtoms: &quot;28, 29, 27&quot;</span>
+<span class="sd">                  - SpecialGridIntacc: &quot;8, 8, 8&quot;</span>
+
+<span class="sd">        Which is to be mapped to:</span>
+<span class="sd">        %method</span>
+<span class="sd">          Z_Tol 1e-14</span>
+<span class="sd">          SpecialGridAtoms 28, 29, 27</span>
+<span class="sd">          SpecialGridIntacc 8, 8, 8</span>
+<span class="sd">        end</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            blocks (`list` of `str`): The blocks to be rendered</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bname</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">bid</span><span class="p">,</span> <span class="n">bdat</span> <span class="ow">in</span> <span class="n">bname</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">blines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">%</span><span class="si">{</span><span class="n">bid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">bdat</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                        <span class="n">blines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+                <span class="n">blines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;end</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">blines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_keywords"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_keywords">[docs]</a>    <span class="k">def</span> <span class="nf">parse_keywords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keywords</span><span class="p">):</span>
+        <span class="n">keylines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">kl</span> <span class="ow">in</span> <span class="n">keywords</span><span class="p">:</span>
+            <span class="n">keylines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">! </span><span class="si">{</span><span class="n">kl</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">keylines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_yml"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_yml">[docs]</a>    <span class="k">def</span> <span class="nf">parse_yml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle the various options&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Deal with parsing the basic structure</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read_yml</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_xyz</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qc</span><span class="o">.</span><span class="n">active</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse_qc</span><span class="p">()</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_viz"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_viz">[docs]</a>    <span class="k">def</span> <span class="nf">parse_viz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">viz</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">viz</span><span class="o">.</span><span class="n">chemcraft</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">            </span><span class="si">%o</span><span class="s2">utput</span>
+<span class="s2">            Print[ P_Basis ] 2</span>
+<span class="s2">            Print[ P_MOs ] 1</span>
+<span class="s2">            end</span>
+
+<span class="s2">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_scf"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_scf">[docs]</a>    <span class="k">def</span> <span class="nf">parse_scf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scf</span><span class="p">):</span>
+        <span class="n">textlines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="s2">cf</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;brokensym&quot;</span> <span class="ow">in</span> <span class="n">scf</span><span class="p">:</span>
+            <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;  BrokenSym </span><span class="si">{</span><span class="n">scf</span><span class="o">.</span><span class="n">brokensym</span><span class="o">.</span><span class="n">more_unpaired</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">scf</span><span class="o">.</span><span class="n">brokensym</span><span class="o">.</span><span class="n">less_unpaired</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;maxiter&quot;</span> <span class="ow">in</span> <span class="n">scf</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            maxiter </span><span class="si">{</span><span class="n">scf</span><span class="o">.</span><span class="n">maxiter</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            &quot;&quot;&quot;</span>
+            <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+        <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">end</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textlines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_params"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_params">[docs]</a>    <span class="k">def</span> <span class="nf">parse_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rework the parameters into output. Recall that these do not require</span>
+<span class="sd">        relaxation, and can also take fixed variables. On the other hand, these</span>
+<span class="sd">        need more information to set up.&quot;&quot;&quot;</span>
+        <span class="n">textlines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;%paras</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">):</span>
+                <span class="n">param</span><span class="p">[</span><span class="s2">&quot;slot&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">xyzlines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">comment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_slot</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">&quot;slot&quot;</span><span class="p">])</span>
+                <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params_value</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">comment</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;range&quot;</span><span class="p">):</span>
+                <span class="n">param</span><span class="p">[</span><span class="s2">&quot;slot&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">xyzlines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">comment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_slot</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">&quot;slot&quot;</span><span class="p">])</span>
+                <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params_range</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">comment</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Currently only value and range variables are supported&quot;</span>
+                <span class="p">)</span>
+        <span class="n">textlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;end</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textlines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="inpGenerator.params_slot"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.params_slot">[docs]</a>    <span class="k">def</span> <span class="nf">params_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thing</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;xyz&quot;</span> <span class="ow">in</span> <span class="n">thing</span> <span class="ow">or</span> <span class="n">thing</span><span class="p">[</span><span class="s2">&quot;xyz&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Currently only supports xyz&quot;</span><span class="p">)</span>
+        <span class="n">atype</span><span class="p">,</span> <span class="n">anum</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s2">&quot;atype&quot;</span><span class="p">,</span> <span class="s2">&quot;anum&quot;</span><span class="p">,</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)(</span><span class="n">thing</span><span class="p">)</span>
+        <span class="n">xyztmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyzlines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">aline</span> <span class="o">=</span> <span class="n">xyztmp</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">aline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">atype</span><span class="p">:</span>
+            <span class="n">aline</span><span class="p">[</span><span class="n">AXIS_PROXY</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">xyztmp</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aline</span><span class="p">)</span>
+        <span class="c1"># print(&quot;\n&quot;.join(xyztmp))</span>
+        <span class="n">xyzblock</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xyztmp</span><span class="p">)</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;# </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-axis of </span><span class="si">{</span><span class="n">atype</span><span class="si">}{</span><span class="n">anum</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">xyzblock</span><span class="p">,</span> <span class="n">comment</span></div>
+
+<div class="viewcode-block" id="inpGenerator.params_value"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.params_value">[docs]</a>    <span class="k">def</span> <span class="nf">params_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thing</span><span class="p">,</span> <span class="n">comment</span><span class="p">):</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">)(</span><span class="n">thing</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">comment</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="inpGenerator.params_range"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.params_range">[docs]</a>    <span class="k">def</span> <span class="nf">params_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thing</span><span class="p">,</span> <span class="n">comment</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handles variables with range&quot;&quot;&quot;</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">lrange</span><span class="p">,</span> <span class="n">points</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;range&quot;</span><span class="p">,</span> <span class="s2">&quot;points&quot;</span><span class="p">)(</span><span class="n">thing</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">lrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">lrange</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">points</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">comment</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="inpGenerator.genharness"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.genharness">[docs]</a>    <span class="k">def</span> <span class="nf">genharness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">slow</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a harness file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            basename (str): The folder into which the harness should be put.</span>
+<span class="sd">            slow (bool): A parameter used to ensure better practices, rate limits to submitting 10 files every 30 seconds</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Nothing: This generates a file, and nothing else</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">basename</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="si">}</span><span class="s2">/harness.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">op</span><span class="p">:</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#!/usr/bin/env bash</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;export cur_file=$(realpath $0) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;export cur_dir=$(dirname &quot;$</span><span class="si">{cur_file}</span><span class="s1">&quot;)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">script</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scripts</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cd &quot;./</span><span class="si">{</span><span class="n">script</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;qsub &#39;./</span><span class="si">{</span><span class="n">script</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;cd $cur_dir</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">slow</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;echo(&quot;Slowing down!&quot;)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;sleep 30s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.parse_qc"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.parse_qc">[docs]</a>    <span class="k">def</span> <span class="nf">parse_qc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">qcList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">itertt</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qc</span><span class="o">.</span><span class="n">style</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">qc</span><span class="o">.</span><span class="n">calculations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">qc</span><span class="o">.</span><span class="n">basis_sets</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qcopts</span> <span class="o">=</span> <span class="n">qcList</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.gendir_qc"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.gendir_qc">[docs]</a>    <span class="k">def</span> <span class="nf">gendir_qc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to generate QC folder structure recursively&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">basename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">basename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prjname</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">slug</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Overwriting extra from yml file&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="n">extra</span>
+        <span class="k">for</span> <span class="n">styl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">qc</span><span class="o">.</span><span class="n">style</span><span class="p">:</span>
+            <span class="n">styl</span> <span class="o">=</span> <span class="n">styl</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gendir_qcspin</span><span class="p">(</span><span class="n">basename</span> <span class="o">/</span> <span class="n">styl</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">genharness</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.gendir_qcspin"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.gendir_qcspin">[docs]</a>    <span class="k">def</span> <span class="nf">gendir_qcspin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generates the style folders&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">:</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gendir_qccalc</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;spin_</span><span class="si">{</span><span class="n">sp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.gendir_qccalc"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.gendir_qccalc">[docs]</a>    <span class="k">def</span> <span class="nf">gendir_qccalc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generates set of calculation folders&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">cal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">qc</span><span class="o">.</span><span class="n">calculations</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gendir_qcbasis</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="n">cal</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.gendir_qcbasis"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.gendir_qcbasis">[docs]</a>    <span class="k">def</span> <span class="nf">gendir_qcbasis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generates the directory of input files. Note that the folders will have +</span>
+<span class="sd">        replaced by P and * by 8&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">qc</span><span class="o">.</span><span class="n">basis_sets</span><span class="p">:</span>
+            <span class="n">bas</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;8&quot;</span><span class="p">)</span>
+            <span class="n">Path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="n">bas</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">geninp</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="n">bas</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.geninp"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.geninp">[docs]</a>    <span class="k">def</span> <span class="nf">geninp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uses the path to generate details for an input file&quot;&quot;&quot;</span>
+        <span class="n">tmpstr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">tmpconf</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="c1"># Reverse the function call order</span>
+            <span class="s2">&quot;basis&quot;</span><span class="p">:</span> <span class="n">tmpstr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;8&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;calc&quot;</span><span class="p">:</span> <span class="n">tmpstr</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+            <span class="s2">&quot;spin&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="n">itertt</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">tmpstr</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;spin_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="n">tmpstr</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">),</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;orca.inp&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;unrestricted&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tmpconf</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;UKS&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">tmpconf</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;UHF&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">tmpconf</span><span class="p">[</span><span class="s2">&quot;unrestricted&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writeinp</span><span class="p">(</span><span class="n">tmpconf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">putscript</span><span class="p">(</span>
+            <span class="n">to_loc</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">from_loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">jobscript</span><span class="p">,</span>
+            <span class="n">slug</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tmpconf</span><span class="p">[</span><span class="s1">&#39;basis&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">tmpconf</span><span class="p">[</span><span class="s1">&#39;style&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.putscript"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.putscript">[docs]</a>    <span class="k">def</span> <span class="nf">putscript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_loc</span><span class="p">,</span> <span class="n">to_loc</span><span class="p">,</span> <span class="n">slug</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Copies the jobscript&quot;&quot;&quot;</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">from_loc</span><span class="p">,</span> <span class="n">to_loc</span><span class="p">)</span>
+        <span class="n">scriptname</span> <span class="o">=</span> <span class="n">to_loc</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">jobscript</span>
+        <span class="n">slug</span> <span class="o">=</span> <span class="n">slug</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">rep_obj</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;prev&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ORCA_CALCULATION&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">slug</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="n">wau</span><span class="o">.</span><span class="n">repkey</span><span class="p">(</span><span class="n">scriptname</span><span class="p">,</span> <span class="n">rep_obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">viz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">chemcraft</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">scriptname</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">script</span><span class="p">:</span>
+                    <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                    cd $SLURM_SUBMIT_DIR</span>
+<span class="s2">                    $orcadir/orca_2mkl orca -molden&quot;&quot;&quot;</span>
+                    <span class="n">script</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scripts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scriptname</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="inpGenerator.writeinp"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.inpGenerator.writeinp">[docs]</a>    <span class="k">def</span> <span class="nf">writeinp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">confobj</span><span class="p">,</span> <span class="n">extralines</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes an input file. Minimally should have:</span>
+<span class="sd">        basis, calc, spin, style, name</span>
+<span class="sd">        extralines: Optional set of lines to write out before the coordinate block</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">extralines</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">extralines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra</span>
+        <span class="n">basis</span><span class="p">,</span> <span class="n">calc</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">unrestricted</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span>
+            <span class="s2">&quot;basis&quot;</span><span class="p">,</span> <span class="s2">&quot;calc&quot;</span><span class="p">,</span> <span class="s2">&quot;spin&quot;</span><span class="p">,</span> <span class="s2">&quot;style&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;unrestricted&quot;</span>
+        <span class="p">)(</span><span class="n">confobj</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">op</span><span class="p">:</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;!</span><span class="si">{</span><span class="n">style</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">basis</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">calc</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keylines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keylines</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">extralines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">extralines</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">unrestricted</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scf</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">viz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viz</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">paramlines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paramlines</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blocks</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">geomlines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geomlines</span><span class="p">)</span>
+                <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">*xyz </span><span class="si">{</span><span class="n">spin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyzlines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="simpleInput"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.simpleInput">[docs]</a><span class="k">class</span> <span class="nc">simpleInput</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Base class for representing the simple input line&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contents</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;!</span><span class="si">{</span><span class="n">contents</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="blockInput"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.blockInput">[docs]</a><span class="k">class</span> <span class="nc">blockInput</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Base class representing block inputs&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyword</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        %block </span><span class="si">{</span><span class="n">keyword</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            </span><span class="si">{</span><span class="n">lines</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        end</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="coordBlock"><a class="viewcode-back" href="../../../source/wailord.io.inp.html#wailord.io.inp.coordBlock">[docs]</a><span class="k">class</span> <span class="nc">coordBlock</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Base class for the coordinate block&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyword</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        *block </span><span class="si">{</span><span class="n">keyword</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            </span><span class="si">{</span><span class="n">lines</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        *</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+</pre></div>
+
+    </main>
+    <nav class="related bottom" role="navigation">
+  <div class="clear"></div>
+    </nav>
+    
+
+  </div>
+
+  <div class="clear"></div>
+</div>
+<footer class="footer" role="contentinfo">
+    &copy; Copyright 2020, Rohit Goswami.
+  
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> with
+  <a href="https://github.com/vsalvino/sphinx-library">Library</a> theme.
+  
+</footer>
+  </body>
+</html>

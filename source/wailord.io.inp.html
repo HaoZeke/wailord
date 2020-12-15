@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wailord.io.inp module &#8212; Wailord 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/library/library.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <link rel="canonical" href="https://wailord.rgoswami.me/source/wailord.io.inp.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="wailord.io.orca module" href="wailord.io.orca.html" />
+    <link rel="prev" title="wailord.io package" href="wailord.io.html" />
+ 
+
+<link rel="stylesheet" id="sphinx-library-type" href="../_static/library/type-book.css" type="text/css" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=0.9" />
+<script>
+  mobile_menu_content = "";
+  function toggleMenu() {
+    var div = document.getElementsByClassName("document").item(0);
+    var btn = document.getElementById("menu-toggler");
+    if(div.classList.contains("mobile-show")) {
+      div.classList.remove("mobile-show");
+      btn.innerHTML = mobile_menu_content;
+    }
+    else {
+      div.classList.add("mobile-show");
+      mobile_menu_content = btn.innerHTML;
+      btn.innerHTML = btn.getAttribute("data-open");
+    }
+  }
+</script>
+  </head>
+<body class="sepia">
+<div class="document">
+
+  
+  <nav class="mobile-menu" role="navigation">
+    
+  <button type="button" id="menu-toggler" onclick="toggleMenu();"
+    data-open="× Close">≡ Menu</button>
+  <a href="../index.html">Wailord</a>
+  <noscript>
+    <div>
+      JavaScript is required to open/close mobile menu.
+    </div>
+  </noscript>
+  </nav>
+  
+
+  
+  <nav class="sphinxsidebar" role="navigation" aria-label="main navigation">
+    
+
+
+<h1 class="logo ">
+  <a href="../index.html">Wailord</a>
+</h1>
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<h3>Links</h3>
+<ul>
+  
+  <li class="toctree-l1"><a href="https://github.com/HaoZeke/wailord">Github</a></li>
+  
+  <li class="toctree-l1"><a href="https://liberapay.com/rohit/donate">Donate</a></li>
+  
+  <li class="toctree-l1"><a href="https://rgoswami.me">Personal</a></li>
+  
+</ul>
+<h3>Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">wailord</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="wailord.html">wailord package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+<script>
+  function toggleMode(theme) {
+    document.body.className = theme;
+    localStorage.setItem("sphinx-library-mode", theme);
+  }
+  var theme = localStorage.getItem("sphinx-library-mode");
+  if(theme !== null)
+    toggleMode(theme);
+</script>
+<h3>Reading Mode</h3>
+
+<button type="button" onclick="toggleMode('light');">Light</button>
+<button type="button" onclick="toggleMode('sepia');">Sepia</button>
+<button type="button" onclick="toggleMode('dark');">Dark</button>
+
+<noscript>
+  <div>
+    JavaScript is required to toggle reading modes.
+  </div>
+</noscript>
+  </nav>
+  <div class="documentwrapper">
+    <nav class="related breadcrumbs" role="navigation">
+  <a class="nav-item" href="../index.html">Index</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="modules.html">wailord</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="wailord.html">wailord package</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="wailord.io.html">wailord.io package</a>
+  <span class="delim"> &#187;</span>
+  <span class="nav-item">wailord.io.inp module</span>
+    </nav>
+    
+
+    <main class="body" role="main" id="main">
+      
+  <div class="section" id="module-wailord.io.inp">
+<span id="wailord-io-inp-module"></span><h1>wailord.io.inp module<a class="headerlink" href="#module-wailord.io.inp" title="Permalink to this headline">¶</a></h1>
+<p>An orca input generator and reader</p>
+<p>This module reads in a configuration file and generates the requisite input
+files. It also reads existing configuration files and returns interesting
+things. A short description of the input types is at the <a class="reference external" href="https://sites.google.com/site/orcainputlibrary/generalinput">ORCA input
+description</a> page.</p>
+<p class="rubric">Example</p>
+<p>See the tests for more</p>
+<blockquote>
+<div><p>$ pytest</p>
+</div></blockquote>
+<p>Some more details.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<ul class="simple">
+<li><p>Make tests</p></li>
+<li><p>Return interesting things</p></li>
+<li><p>Add MNDO and other semi-empirical methods, which employ a minimal basis by
+default and do not need a basis set in the input</p></li>
+<li><p>Add more explicit support for “simple input lines”</p></li>
+<li><p>Add more explicit support for the “block input structure”</p></li>
+<li><p>Add support for “sequential” jobs</p></li>
+<li><p>Support multiple xyz files [DONE]</p></li>
+<li><p>Clean up geometry, add gen_dirs back</p></li>
+<li><p>Test and expand brokensym</p></li>
+<li><p>Test number in harness</p></li>
+<li><p>Test Visualizer modifications</p></li>
+<li><p>Validate scans and constraints</p></li>
+<li><p>Parse wailord generated input files</p></li>
+</ul>
+</div>
+<dl class="py class">
+<dt id="wailord.io.inp.blockInput">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.inp.</code><code class="sig-name descname">blockInput</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#blockInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.blockInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class representing block inputs</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.inp.coordBlock">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.inp.</code><code class="sig-name descname">coordBlock</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#coordBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.coordBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for the coordinate block</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.inp.inpGenerator">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.inp.</code><code class="sig-name descname">inpGenerator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.gendir_qc">
+<code class="sig-name descname">gendir_qc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">basename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">extra</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.gendir_qc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.gendir_qc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to generate QC folder structure recursively</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.gendir_qcbasis">
+<code class="sig-name descname">gendir_qcbasis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.gendir_qcbasis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.gendir_qcbasis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the directory of input files. Note that the folders will have +
+replaced by P and * by 8</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.gendir_qccalc">
+<code class="sig-name descname">gendir_qccalc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.gendir_qccalc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.gendir_qccalc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates set of calculation folders</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.gendir_qcspin">
+<code class="sig-name descname">gendir_qcspin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.gendir_qcspin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.gendir_qcspin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the style folders</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.genharness">
+<code class="sig-name descname">genharness</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">basename</span></em>, <em class="sig-param"><span class="n">slow</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.genharness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.genharness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a harness file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The folder into which the harness should be put.</p></li>
+<li><p><strong>slow</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – A parameter used to ensure better practices, rate limits to submitting 10 files every 30 seconds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>This generates a file, and nothing else</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Nothing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.geninp">
+<code class="sig-name descname">geninp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.geninp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.geninp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the path to generate details for an input file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.geom_constrain">
+<code class="sig-name descname">geom_constrain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cons</span></em>, <em class="sig-param"><span class="n">constype</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.geom_constrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.geom_constrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles constraints</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.geom_scan">
+<code class="sig-name descname">geom_scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">thing</span></em>, <em class="sig-param"><span class="n">scantype</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.geom_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.geom_scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles scans</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.params_range">
+<code class="sig-name descname">params_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">thing</span></em>, <em class="sig-param"><span class="n">comment</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.params_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.params_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles variables with range</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.params_slot">
+<code class="sig-name descname">params_slot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">thing</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.params_slot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.params_slot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.params_value">
+<code class="sig-name descname">params_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">thing</span></em>, <em class="sig-param"><span class="n">comment</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.params_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.params_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_blocks">
+<code class="sig-name descname">parse_blocks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blocks</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_blocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic Block Handler</p>
+<p>Consider the following:
+blocks:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>method:</dt><dd><ul>
+<li><p>Z_Tol: “1e-14”</p></li>
+<li><p>SpecialGridAtoms: “28, 29, 27”</p></li>
+<li><p>SpecialGridIntacc: “8, 8, 8”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Which is to be mapped to:
+%method</p>
+<blockquote>
+<div><p>Z_Tol 1e-14
+SpecialGridAtoms 28, 29, 27
+SpecialGridIntacc 8, 8, 8</p>
+</div></blockquote>
+<p>end</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The blocks to be rendered</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>blocks (<cite>list</cite> of <cite>str</cite>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_geom">
+<code class="sig-name descname">parse_geom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">geom</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_geom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_geom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rework the geometry into output</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_keywords">
+<code class="sig-name descname">parse_keywords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keywords</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_keywords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_keywords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_params">
+<code class="sig-name descname">parse_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rework the parameters into output. Recall that these do not require
+relaxation, and can also take fixed variables. On the other hand, these
+need more information to set up.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_qc">
+<code class="sig-name descname">parse_qc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_qc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_qc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_scf">
+<code class="sig-name descname">parse_scf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scf</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_scf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_scf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_viz">
+<code class="sig-name descname">parse_viz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">viz</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_viz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_viz" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_xyz">
+<code class="sig-name descname">parse_xyz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate folder structure for each system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.parse_yml">
+<code class="sig-name descname">parse_yml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.parse_yml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.parse_yml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the various options</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.putscript">
+<code class="sig-name descname">putscript</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">from_loc</span></em>, <em class="sig-param"><span class="n">to_loc</span></em>, <em class="sig-param"><span class="n">slug</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.putscript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.putscript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies the jobscript</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.read_yml">
+<code class="sig-name descname">read_yml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.read_yml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.read_yml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the overall output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.scan_comment">
+<code class="sig-name descname">scan_comment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">between</span></em>, <em class="sig-param"><span class="n">thistype</span></em>, <em class="sig-param"><span class="n">use_types</span><span class="o">=</span><span class="default_value">{'A': 'Angle', 'B': 'Bond', 'D': 'Dihedral'}</span></em>, <em class="sig-param"><span class="n">usage</span><span class="o">=</span><span class="default_value">'scan for'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.scan_comment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.scan_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a comment line, or raise an error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.inp.inpGenerator.writeinp">
+<code class="sig-name descname">writeinp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">confobj</span></em>, <em class="sig-param"><span class="n">extralines</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#inpGenerator.writeinp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.inpGenerator.writeinp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an input file. Minimally should have:
+basis, calc, spin, style, name
+extralines: Optional set of lines to write out before the coordinate block</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.inp.simpleInput">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.inp.</code><code class="sig-name descname">simpleInput</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/inp.html#simpleInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.inp.simpleInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for representing the simple input line</p>
+</dd></dl>
+
+</div>
+
+
+    </main>
+    <nav class="related bottom" role="navigation">
+  <a class="prev" href="wailord.io.html" title="Previous">
+    &larr; wailord.io package
+  </a>
+  <a class="next" href="wailord.io.orca.html" title="Next">
+    wailord.io.orca module &rarr;
+  </a>
+  <div class="clear"></div>
+    </nav>
+    
+
+  </div>
+
+  <div class="clear"></div>
+</div>
+<footer class="footer" role="contentinfo">
+    &copy; Copyright 2020, Rohit Goswami.
+  
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> with
+  <a href="https://github.com/vsalvino/sphinx-library">Library</a> theme.
+  
+  <a href="../_sources/source/wailord.io.inp.rst.txt" rel="nofollow">Page source</a>
+</footer>
+  </body>
+</html>

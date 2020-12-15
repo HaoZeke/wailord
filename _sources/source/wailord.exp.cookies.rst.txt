@@ -1,0 +1,7 @@
+wailord.exp.cookies module
+==========================
+
+.. automodule:: wailord.exp.cookies
+   :members:
+   :undoc-members:
+   :show-inheritance:
