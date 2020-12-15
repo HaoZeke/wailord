@@ -11,8 +11,8 @@ Wailord
 .. image:: https://img.shields.io/travis/HaoZeke/wailord.svg
         :target: https://travis-ci.com/HaoZeke/wailord
 
-.. image:: https://readthedocs.org/projects/wailord/badge/?version=latest
-        :target: https://wailord.readthedocs.io/en/latest/?badge=latest
+.. image:: https://api.netlify.com/api/v1/badges/2209e709-8d41-46ee-bf4d-0b116f9243b1/deploy-status
+        :target: https://app.netlify.com/sites/wailord/deploys
         :alt: Documentation Status
 
 
