@@ -292,13 +292,31 @@ def test_orca_mult_fullpop(datadir):
     pass
 
 
-###########################
-# Vibrational Frequencies #
-###########################
+###############
+# IR Spectrum #
+###############
 
 
-def test_orca_vibf(datadir):
+def test_orca_irspec(datadir):
     spop = waio.orca.orcaVis(ofile=datadir / "b3lyp_6311g88_h2o.out")
+    sdat = spop.ir_spec()
+    assert sdat.shape == (3, 11)
+    assert sdat.T2.pint.units == "kilometer / mole"
+    assert sdat.freq.pint.units == "reciprocal_centimeter"
+    np.testing.assert_equal(
+        sdat.freq.pint.m.to_numpy(), np.array([1639.47, 3807.28, 3903.73])
+    )
+    np.testing.assert_equal(sdat.Mode.to_numpy(), np.array([6, 7, 8]))
+    pass
+
+
+#########################
+# Vibrational Frequency #
+#########################
+
+
+def test_orca_vibfreq(datadir):
+    spop = waio.orca.orcaVis(ofile=datadir / "orca_imaginary_freq.out")
     sdat = spop.vib_freq()
     assert sdat.shape == (3, 11)
     assert sdat.T2.pint.units == "kilometer / mole"

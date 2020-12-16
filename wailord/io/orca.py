@@ -350,7 +350,7 @@ class orcaExp:
         )
         return fe
 
-    def get_vib_freq(self):
+    def get_ir_spec(self):
         """Returns a datframe of the "ir spectrum"
 
         Proxies calls to the base orcaVis class over a series of generated files
@@ -363,7 +363,7 @@ class orcaExp:
         """
         vdatl = []
         for runf in self.orclist:
-            runorc = orcaVis(runf).vib_freq()
+            runorc = orcaVis(runf).ir_spec()
             vdatl.append(runorc)
         ve = pd.concat(vdatl, axis=0)
         ve = ve.drop_duplicates()
@@ -603,7 +603,7 @@ class orcaVis:
             )
         return edat
 
-    def vib_freq(self):
+    def ir_spec(self):
         """Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for
         intensities"""
         sregexp = OUT_REGEX["irSpectrum"]

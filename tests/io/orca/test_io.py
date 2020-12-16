@@ -203,7 +203,7 @@ def test_get_pop(datadir):
 def test_get_ir_freq(datadir):
     oth = ["HF", "MP2", "B3LYP"]
     expt = waio.orca.orcaExp(expfolder=datadir / "vib_freq", order_theory=oth)
-    vdat = expt.get_vib_freq()
+    vdat = expt.get_ir_spec()
     assert vdat.shape == (63, 11)
     assert (vdat >> filter(_.slug == "O1H2_h2o")).shape == (9, 11)
     pass
