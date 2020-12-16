@@ -195,12 +195,12 @@ def test_get_pop(datadir):
     pass
 
 
-###########################
-# Vibrational Frequencies #
-###########################
+###############
+# IR Spectrum #
+###############
 
 
-def test_get_vib_freq(datadir):
+def test_get_ir_freq(datadir):
     oth = ["HF", "MP2", "B3LYP"]
     expt = waio.orca.orcaExp(expfolder=datadir / "vib_freq", order_theory=oth)
     vdat = expt.get_vib_freq()

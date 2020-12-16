@@ -91,7 +91,7 @@ OUT_REGEX = {
     "energy_evals": re.compile(r"There will be\s*\d* energy evaluations"),
     "Mulliken": re.compile(r"MULLIKEN ATOMIC CHARGES"),
     "Loewdin": re.compile(r"LOEWDIN ATOMIC CHARGES"),
-    "Vibrational Frequencies": re.compile(r"IR SPECTRUM"),
+    "irSpectrum": re.compile(r"IR SPECTRUM"),
 }
 
 # ------------ Refactor
@@ -351,7 +351,7 @@ class orcaExp:
         return fe
 
     def get_vib_freq(self):
-        """Returns a datframe of the vibrational frequencies
+        """Returns a datframe of the "ir spectrum"
 
         Proxies calls to the base orcaVis class over a series of generated files
 
@@ -606,7 +606,7 @@ class orcaVis:
     def vib_freq(self):
         """Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for
         intensities"""
-        sregexp = OUT_REGEX["Vibrational Frequencies"]
+        sregexp = OUT_REGEX["irSpectrum"]
         vline = namedtuple("vline", "Mode freq T2 TX TY TZ")
         accumulate = []
         with open(self.ofile) as of:
