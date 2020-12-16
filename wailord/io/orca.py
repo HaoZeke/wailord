@@ -43,6 +43,7 @@ import os
 import textwrap
 import pint
 import pint_pandas
+import warnings
 import vg
 
 from pathlib import Path
@@ -92,6 +93,7 @@ OUT_REGEX = {
     "Mulliken": re.compile(r"MULLIKEN ATOMIC CHARGES"),
     "Loewdin": re.compile(r"LOEWDIN ATOMIC CHARGES"),
     "irSpectrum": re.compile(r"IR SPECTRUM"),
+    "Vibrational Frequency": re.compile(r"VIBRATIONAL FREQUENCIES"),
 }
 
 # ------------ Refactor
@@ -270,6 +272,55 @@ def getRunInfo(runf):
     return dict(runinf)
 
 
+def calc_htst(product, reactant, transition_state, temperature):
+    """Calculates the HTST rate constant.
+
+    This is calculated as:
+
+    .. math::
+       k^{HTST}  = \frac{∏_{i=1 … N}𝜈ᵢ}{∏_{j=1 … N-1}𝜈ⱼ^‡}e^{\frac{-𝛥E}{k_BT}}
+
+    Where
+    * :math:`𝜈ᵢ` are the final/initial state vibrational frequencies and
+      :math:`𝜈ⱼ^‡` are the vibrational frequencies at the saddle point
+    * :math:`𝛥E` is the difference between the energy of the state and the
+      saddle point :math:`𝛥E=V_{saddle}-V_{other}`
+
+    It is important to note that the :math:`k_f` and :math:`k_b` are relative
+    measures and the rate constant is the ratio of the two. In some cases it
+    might be necessary to weigh the results by the magnitude of 'c'
+
+    Args:
+        product(:obj:`orcaVis`): The product visitor class
+        reactant(:obj:`orcaVis`): The reactant visitor class
+        transition_state(:obj:`orcaVis`): The transition state visitor class
+        temperature(`float`): The temperature
+
+    Returns:
+        kout(:obj:`rateconst`) : Returns a named tuple of forward and backward rates
+    """
+    prod = product.vib_freq()
+    react = reactant.vib_freq()
+    ts = transition_state.vib_freq()
+    ppnum = prod.freq.loc[~(prod.freq <= 0)].to_numpy()
+    reactnum = react.freq.loc[~(react.freq <= 0)].to_numpy()
+    tsdenom = ts.freq.loc[~(ts.freq <= 0)].to_numpy()
+    temp = Q_(temperature, "K")
+    preProd = ppnum.prod() / tsdenom.prod()
+    preReact = reactnum.prod() / tsdenom.prod()
+    delProd = transition_state.fin_sp_e - product.fin_sp_e
+    delReact = transition_state.fin_sp_e - reactant.fin_sp_e
+    prodExp = -1 * (delProd / (ureg.boltzmann_constant * temp))
+    reactExp = -1 * (delReact / (ureg.boltzmann_constant * temp))
+    kf = (preProd * ureg.speed_of_light).to_base_units() * np.exp(
+        prodExp.to_base_units()
+    )
+    kb = (preReact * ureg.speed_of_light).to_base_units() * np.exp(
+        reactExp.to_base_units()
+    )
+    return (kf, kb)
+
+
 class orcaExp:
     """The class meant to handle experiments generated with wailord.
 
@@ -364,6 +415,30 @@ class orcaExp:
         vdatl = []
         for runf in self.orclist:
             runorc = orcaVis(runf).ir_spec()
+            vdatl.append(runorc)
+        ve = pd.concat(vdatl, axis=0)
+        ve = ve.drop_duplicates()
+        basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
+        theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
+        ve["basis"] = ve["basis"].astype(basis_type)
+        ve["theory"] = ve["theory"].astype(theory_type)
+        ve.sort_values(by=["theory", "basis"], ignore_index=True, inplace=True)
+        return ve
+
+    def get_vib_freq(self):
+        """Returns a datframe of the vibrational modes
+
+        Proxies calls to the base orcaVis class over a series of generated files
+
+        Args:
+            None
+
+        Returns:
+            pd.DataFrame: Returns a data frame of frequencies
+        """
+        vdatl = []
+        for runf in self.orclist:
+            runorc = orcaVis(runf).vib_freq()
             vdatl.append(runorc)
         ve = pd.concat(vdatl, axis=0)
         ve = ve.drop_duplicates()
@@ -602,6 +677,62 @@ class orcaVis:
                 ValueError(f"{etype} surface not found for {self.runinfo['theory']}")
             )
         return edat
+
+    def vib_freq(self):
+        """Get the vibrational frequencies, and fails if there are more than one
+        imaginary frequency"""
+        sregexp = OUT_REGEX["Vibrational Frequency"]
+        vline = namedtuple("vline", "Mode freq imaginary")
+        accumulate = []
+        with open(self.ofile) as of:
+            flines = of.readlines()
+            for lnum, line in enumerate(flines):
+                if sregexp.search(line):
+                    offset = lnum + 5
+                    i = 0
+                    while flines[offset + i] != "\n":
+                        raw = flines[offset + i].split()
+                        if len(raw) == 3:
+                            v = vline(
+                                Mode=int(raw[0].replace(":", "")),
+                                freq=float(raw[1]),
+                                imaginary=False,
+                            )
+                        elif len(raw) == 5:
+                            v = vline(
+                                Mode=int(raw[0].replace(":", "")),
+                                freq=float(raw[1]),
+                                imaginary=True,
+                            )
+                        accumulate.append(v)
+                        i = i + 1
+        vdat = pd.DataFrame(accumulate)
+        vdat["freq"] = vdat["freq"].astype("pint[cm_1]")
+        # TODO: Add experiment layer
+        # TODO: Error if more than one imaginary
+        # Check if greater 100 then it is not numerical
+        if vdat.empty:
+            raise (
+                ValueError(
+                    f"Spectra not found for {self.runinfo['theory']}, did you run FREQ?"
+                )
+            )
+        elif vdat.imaginary.value_counts()[1] > 1:
+            warnings.warn(
+                f"More than one imaginary mode, you did not find a saddle point",
+                UserWarning,
+            )
+        elif vdat.imaginary.value_counts()[1] == 0:
+            raise (
+                ValueError(
+                    "No imaginary frequencies found, check the geometry of reactant and product configurations"
+                )
+            )
+        else:
+            for key in self.runinfo.keys():
+                vdat[key] = self.runinfo[key]
+        return vdat
+        pass
 
     def ir_spec(self):
         """Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for

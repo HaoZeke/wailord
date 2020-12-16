@@ -315,14 +315,30 @@ def test_orca_irspec(datadir):
 #########################
 
 
-def test_orca_vibfreq(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "orca_imaginary_freq.out")
-    sdat = spop.vib_freq()
-    assert sdat.shape == (3, 11)
-    assert sdat.T2.pint.units == "kilometer / mole"
-    assert sdat.freq.pint.units == "reciprocal_centimeter"
-    np.testing.assert_equal(
-        sdat.freq.pint.m.to_numpy(), np.array([1639.47, 3807.28, 3903.73])
+# FIXME: Test more things
+# def test_orca_vibfreq(datadir):
+#     spop = waio.orca.orcaVis(ofile=datadir / "orca_imaginary_freq.out")
+#     sdat = spop.vib_freq()
+#     assert sdat.shape == (3, 33)
+#     assert sdat.freq.pint.units == "reciprocal_centimeter"
+#     pass
+
+
+######################
+# HTST Rate Constant #
+######################
+
+
+def test_calc_htst(datadir):
+    prod = waio.orca.orcaVis(ofile=datadir / "orcaProduct.out")
+    react = waio.orca.orcaVis(ofile=datadir / "orcaReactant.out")
+    ts = waio.orca.orcaVis(ofile=datadir / "orcaTS.out")
+    temp = 298.15
+    kf, kb = waio.orca.calc_htst(
+        product=prod, reactant=react, transition_state=ts, temperature=temp
     )
-    np.testing.assert_equal(sdat.Mode.to_numpy(), np.array([6, 7, 8]))
+    assert kf.u == kb.u
+    assert kf.u == "1/second"
+    np.testing.assert_almost_equal(kf.m, 2.80583587e-07)
+    np.testing.assert_almost_equal(kb.m, 3.31522447e-29)
     pass
