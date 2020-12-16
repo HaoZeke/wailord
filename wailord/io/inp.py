@@ -80,6 +80,9 @@ class inpGenerator:
         self.qc, self.xyzpath, self.spin = itemgetter("qc", "xyz", "spin")(
             self.konfik.config
         )
+        # Test later
+        if "basis_sets" not in self.qc:
+            self.qc["basis_sets"] = ["semi_emp"]
         # Test this later, with and without, also try overrides
         if "extra" in self.konfik.config.keys():
             self.extra = self.konfik.config.extra
@@ -480,6 +483,8 @@ class inpGenerator:
         basis, calc, spin, style, name, unrestricted = itemgetter(
             "basis", "calc", "spin", "style", "name", "unrestricted"
         )(confobj)
+        if basis == "semi_emp":
+            basis = ""
         with open(name, "w") as op:
             op.write(f"!{style} {basis} {calc}\n")
             if self.keylines is not None:
