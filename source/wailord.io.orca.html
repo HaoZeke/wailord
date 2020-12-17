@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wailord.io.orca module &#8212; Wailord 0.0.1 documentation</title>
+    <title>wailord.io.orca module &#8212; Wailord 0.0.2 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/library/library.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
@@ -20,6 +20,8 @@
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/togglebutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["tex2jax.js"], "jax": ["input/TeX", "output/HTML-CSS"]})</script>
     <link rel="canonical" href="https://wailord.xyz/source/wailord.io.orca.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -176,6 +178,42 @@ calculation)</p></li>
 </ul>
 </div>
 <dl class="py function">
+<dt id="wailord.io.orca.calc_htst">
+<code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">calc_htst</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">product</span></em>, <em class="sig-param"><span class="n">reactant</span></em>, <em class="sig-param"><span class="n">transition_state</span></em>, <em class="sig-param"><span class="n">temperature</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#calc_htst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.calc_htst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the HTST rate constant.</p>
+<blockquote>
+<div><p>This is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[k^{HTST}  =\]</div>
+</div></blockquote>
+<p>rac{∏_{i=1 … N}𝜈ᵢ}{∏_{j=1 … N-1}𝜈ⱼ^‡}e^{
+rac{-𝛥E}{k_BT}}</p>
+<blockquote>
+<div><p>Where
+* <span class="math notranslate nohighlight">\(𝜈ᵢ\)</span> are the final/initial state vibrational frequencies and</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(𝜈ⱼ^‡\)</span> are the vibrational frequencies at the saddle point</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(𝛥E\)</span> is the difference between the energy of the state and the
+saddle point <span class="math notranslate nohighlight">\(𝛥E=V_{saddle}-V_{other}\)</span></p></li>
+</ul>
+<p>It is important to note that the <span class="math notranslate nohighlight">\(k_f\)</span> and <span class="math notranslate nohighlight">\(k_b\)</span> are relative
+measures and the rate constant is the ratio of the two. In some cases it
+might be necessary to weigh the results by the magnitude of ‘c’</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>product(<a class="reference internal" href="#wailord.io.orca.orcaVis" title="wailord.io.orca.orcaVis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orcaVis</span></code></a>): The product visitor class
+reactant(<a class="reference internal" href="#wailord.io.orca.orcaVis" title="wailord.io.orca.orcaVis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orcaVis</span></code></a>): The reactant visitor class
+transition_state(<a class="reference internal" href="#wailord.io.orca.orcaVis" title="wailord.io.orca.orcaVis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orcaVis</span></code></a>): The transition state visitor class
+temperature(<cite>float</cite>): The temperature</p>
+</dd>
+<dt>Returns:</dt><dd><p>kout(<code class="xref py py-obj docutils literal notranslate"><span class="pre">rateconst</span></code>) : Returns a named tuple of forward and backward rates</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
 <dt id="wailord.io.orca.genEBASet">
 <code class="sig-prename descclassname">wailord.io.orca.</code><code class="sig-name descname">genEBASet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rootdir</span></em>, <em class="sig-param"><span class="n">deci</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">latex</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">full</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">order_basis</span><span class="o">=</span><span class="default_value">['STO-3G', '3-21G', '6-31G', '6-311G', '6-311G*', '6-311G**', '6-311++G**', '6-311++G(2d,2p)', '6-311++G(2df,2pd)', '6-311++G(3df,3pd)']</span></em>, <em class="sig-param"><span class="n">order_theory</span><span class="o">=</span><span class="default_value">['HF', 'UHF', 'QCISD', 'CCSD', 'QCISD(T)', 'CCSD(T)']</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#genEBASet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.genEBASet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes in a Path object, and typically returns bond angles and energies.
@@ -303,6 +341,24 @@ calls to the base orcaVis class.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="wailord.io.orca.orcaExp.get_ir_spec">
+<code class="sig-name descname">get_ir_spec</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.get_ir_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.get_ir_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a datframe of the “ir spectrum”</p>
+<p>Proxies calls to the base orcaVis class over a series of generated files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="wailord.io.orca.orcaExp.get_population">
 <code class="sig-name descname">get_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poptype</span><span class="o">=</span><span class="default_value">['Mulliken', 'Loewdin']</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.get_population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.get_population" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populates a population dataframe</p>
@@ -327,7 +383,25 @@ calls to the base orcaVis class.</p>
 <dl class="py method">
 <dt id="wailord.io.orca.orcaExp.get_vib_freq">
 <code class="sig-name descname">get_vib_freq</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.get_vib_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.get_vib_freq" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a datframe of the vibrational frequencies</p>
+<dd><p>Returns a datframe of the vibrational modes</p>
+<p>Proxies calls to the base orcaVis class over a series of generated files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns a data frame of frequencies</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaExp.get_vpt2_transitions">
+<code class="sig-name descname">get_vpt2_transitions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaExp.get_vpt2_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaExp.get_vpt2_transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a datframe of the fundamental transitions table</p>
 <p>Proxies calls to the base orcaVis class over a series of generated files</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -408,6 +482,13 @@ calls to the base orcaVis class.</p>
 <dt id="wailord.io.orca.orcaVis.get_final_e">
 <code class="sig-name descname">get_final_e</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dat</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.get_final_e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.get_final_e" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.ir_spec">
+<code class="sig-name descname">ir_spec</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.ir_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.ir_spec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for
+intensities</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="wailord.io.orca.orcaVis.mult_energy_surface">
@@ -512,8 +593,14 @@ the output file.</p></li>
 <dl class="py method">
 <dt id="wailord.io.orca.orcaVis.vib_freq">
 <code class="sig-name descname">vib_freq</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.vib_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.vib_freq" title="Permalink to this definition">¶</a></dt>
-<dd><p>Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for
-intensities</p>
+<dd><p>Get the vibrational frequencies, and fails if there are more than one
+imaginary frequency</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.orca.orcaVis.vpt2_transitions">
+<code class="sig-name descname">vpt2_transitions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/orca.html#orcaVis.vpt2_transitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.orca.orcaVis.vpt2_transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grabs the fundamental transition analysis from a VPT2 calculation</p>
 </dd></dl>
 
 </dd></dl>

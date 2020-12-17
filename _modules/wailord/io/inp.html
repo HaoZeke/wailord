@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wailord.io.inp &#8212; Wailord 0.0.1 documentation</title>
+    <title>wailord.io.inp &#8212; Wailord 0.0.2 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/library/library.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/proof.css" />
@@ -20,6 +20,8 @@
     <script src="../../../_static/copybutton.js"></script>
     <script src="../../../_static/togglebutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["tex2jax.js"], "jax": ["input/TeX", "output/HTML-CSS"]})</script>
     <link rel="canonical" href="https://wailord.xyz/_modules/wailord/io/inp.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -220,6 +222,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">qc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyzpath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s2">&quot;qc&quot;</span><span class="p">,</span> <span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="s2">&quot;spin&quot;</span><span class="p">)(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span>
         <span class="p">)</span>
+        <span class="c1"># Test later</span>
+        <span class="k">if</span> <span class="s2">&quot;basis_sets&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qc</span><span class="p">[</span><span class="s2">&quot;basis_sets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;semi_emp&quot;</span><span class="p">]</span>
         <span class="c1"># Test this later, with and without, also try overrides</span>
         <span class="k">if</span> <span class="s2">&quot;extra&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">konfik</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">extra</span>
@@ -620,6 +625,8 @@
         <span class="n">basis</span><span class="p">,</span> <span class="n">calc</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">unrestricted</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span>
             <span class="s2">&quot;basis&quot;</span><span class="p">,</span> <span class="s2">&quot;calc&quot;</span><span class="p">,</span> <span class="s2">&quot;spin&quot;</span><span class="p">,</span> <span class="s2">&quot;style&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;unrestricted&quot;</span>
         <span class="p">)(</span><span class="n">confobj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">basis</span> <span class="o">==</span> <span class="s2">&quot;semi_emp&quot;</span><span class="p">:</span>
+            <span class="n">basis</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">op</span><span class="p">:</span>
             <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;!</span><span class="si">{</span><span class="n">style</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">basis</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">calc</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keylines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

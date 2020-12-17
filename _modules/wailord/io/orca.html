@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wailord.io.orca &#8212; Wailord 0.0.1 documentation</title>
+    <title>wailord.io.orca &#8212; Wailord 0.0.2 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/library/library.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/proof.css" />
@@ -20,6 +20,8 @@
     <script src="../../../_static/copybutton.js"></script>
     <script src="../../../_static/togglebutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["tex2jax.js"], "jax": ["input/TeX", "output/HTML-CSS"]})</script>
     <link rel="canonical" href="https://wailord.xyz/_modules/wailord/io/orca.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -183,6 +185,7 @@
 <span class="kn">import</span> <span class="nn">textwrap</span>
 <span class="kn">import</span> <span class="nn">pint</span>
 <span class="kn">import</span> <span class="nn">pint_pandas</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">vg</span>
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -231,7 +234,9 @@
     <span class="s2">&quot;energy_evals&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;There will be\s*\d* energy evaluations&quot;</span><span class="p">),</span>
     <span class="s2">&quot;Mulliken&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;MULLIKEN ATOMIC CHARGES&quot;</span><span class="p">),</span>
     <span class="s2">&quot;Loewdin&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;LOEWDIN ATOMIC CHARGES&quot;</span><span class="p">),</span>
-    <span class="s2">&quot;Vibrational Frequencies&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;IR SPECTRUM&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;irSpectrum&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;IR SPECTRUM&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;vpt2trans&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Fundamental transition&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;Vibrational Frequency&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;VIBRATIONAL FREQUENCIES&quot;</span><span class="p">),</span>
 <span class="p">}</span>
 
 <span class="c1"># ------------ Refactor</span>
@@ -410,6 +415,53 @@
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">runinf</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="calc_htst"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.calc_htst">[docs]</a><span class="k">def</span> <span class="nf">calc_htst</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">reactant</span><span class="p">,</span> <span class="n">transition_state</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the HTST rate constant.</span>
+
+<span class="sd">    This is calculated as:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       k^{HTST}  = \frac{∏_{i=1 … N}𝜈ᵢ}{∏_{j=1 … N-1}𝜈ⱼ^‡}e^{\frac{-𝛥E}{k_BT}}</span>
+
+<span class="sd">    Where</span>
+<span class="sd">    * :math:`𝜈ᵢ` are the final/initial state vibrational frequencies and</span>
+<span class="sd">      :math:`𝜈ⱼ^‡` are the vibrational frequencies at the saddle point</span>
+<span class="sd">    * :math:`𝛥E` is the difference between the energy of the state and the</span>
+<span class="sd">      saddle point :math:`𝛥E=V_{saddle}-V_{other}`</span>
+
+<span class="sd">    It is important to note that the :math:`k_f` and :math:`k_b` are relative</span>
+<span class="sd">    measures and the rate constant is the ratio of the two. In some cases it</span>
+<span class="sd">    might be necessary to weigh the results by the magnitude of &#39;c&#39;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        product(:obj:`orcaVis`): The product visitor class</span>
+<span class="sd">        reactant(:obj:`orcaVis`): The reactant visitor class</span>
+<span class="sd">        transition_state(:obj:`orcaVis`): The transition state visitor class</span>
+<span class="sd">        temperature(`float`): The temperature</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        kout(:obj:`rateconst`) : Returns a named tuple of forward and backward rates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">()</span>
+    <span class="n">react</span> <span class="o">=</span> <span class="n">reactant</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">()</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">transition_state</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">()</span>
+    <span class="n">ppnum</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">reactnum</span> <span class="o">=</span> <span class="n">react</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">react</span><span class="o">.</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">tsdenom</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">Q_</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">)</span>
+    <span class="c1"># FIXME: Should this be the ureg.speed_of_light instead?</span>
+    <span class="n">conv</span> <span class="o">=</span> <span class="n">Q_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;m/s&quot;</span><span class="p">)</span>
+    <span class="n">preProd</span> <span class="o">=</span> <span class="n">ppnum</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span> <span class="o">/</span> <span class="n">tsdenom</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+    <span class="n">preReact</span> <span class="o">=</span> <span class="n">reactnum</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span> <span class="o">/</span> <span class="n">tsdenom</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+    <span class="n">delProd</span> <span class="o">=</span> <span class="n">transition_state</span><span class="o">.</span><span class="n">fin_sp_e</span> <span class="o">-</span> <span class="n">product</span><span class="o">.</span><span class="n">fin_sp_e</span>
+    <span class="n">delReact</span> <span class="o">=</span> <span class="n">transition_state</span><span class="o">.</span><span class="n">fin_sp_e</span> <span class="o">-</span> <span class="n">reactant</span><span class="o">.</span><span class="n">fin_sp_e</span>
+    <span class="n">prodExp</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">delProd</span> <span class="o">/</span> <span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">boltzmann_constant</span> <span class="o">*</span> <span class="n">temp</span><span class="p">))</span>
+    <span class="n">reactExp</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">delReact</span> <span class="o">/</span> <span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">boltzmann_constant</span> <span class="o">*</span> <span class="n">temp</span><span class="p">))</span>
+    <span class="n">kf</span> <span class="o">=</span> <span class="p">(</span><span class="n">preProd</span> <span class="o">*</span> <span class="n">conv</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">prodExp</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">())</span>
+    <span class="n">kb</span> <span class="o">=</span> <span class="p">(</span><span class="n">preReact</span> <span class="o">*</span> <span class="n">conv</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">reactExp</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">kf</span><span class="p">,</span> <span class="n">kb</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="orcaExp"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp">[docs]</a><span class="k">class</span> <span class="nc">orcaExp</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;The class meant to handle experiments generated with wailord.</span>
 
@@ -490,8 +542,32 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">fe</span></div>
 
+<div class="viewcode-block" id="orcaExp.get_ir_spec"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_ir_spec">[docs]</a>    <span class="k">def</span> <span class="nf">get_ir_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a datframe of the &quot;ir spectrum&quot;</span>
+
+<span class="sd">        Proxies calls to the base orcaVis class over a series of generated files</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of frequencies</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vdatl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
+            <span class="n">runorc</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">ir_spec</span><span class="p">()</span>
+            <span class="n">vdatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runorc</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">vdatl</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">ve</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ve</span></div>
+
 <div class="viewcode-block" id="orcaExp.get_vib_freq"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_vib_freq">[docs]</a>    <span class="k">def</span> <span class="nf">get_vib_freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a datframe of the vibrational frequencies</span>
+        <span class="sd">&quot;&quot;&quot;Returns a datframe of the vibrational modes</span>
 
 <span class="sd">        Proxies calls to the base orcaVis class over a series of generated files</span>
 
@@ -504,6 +580,30 @@
         <span class="n">vdatl</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
             <span class="n">runorc</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">()</span>
+            <span class="n">vdatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runorc</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">vdatl</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">ve</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ve</span></div>
+
+<div class="viewcode-block" id="orcaExp.get_vpt2_transitions"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_vpt2_transitions">[docs]</a>    <span class="k">def</span> <span class="nf">get_vpt2_transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a datframe of the fundamental transitions table</span>
+
+<span class="sd">        Proxies calls to the base orcaVis class over a series of generated files</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of frequencies</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vdatl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
+            <span class="n">runorc</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">vpt2_transitions</span><span class="p">()</span>
             <span class="n">vdatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runorc</span><span class="p">)</span>
         <span class="n">ve</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">vdatl</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">ve</span> <span class="o">=</span> <span class="n">ve</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
@@ -744,9 +844,97 @@
         <span class="k">return</span> <span class="n">edat</span></div>
 
 <div class="viewcode-block" id="orcaVis.vib_freq"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.vib_freq">[docs]</a>    <span class="k">def</span> <span class="nf">vib_freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the vibrational frequencies, and fails if there are more than one</span>
+<span class="sd">        imaginary frequency&quot;&quot;&quot;</span>
+        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;Vibrational Frequency&quot;</span><span class="p">]</span>
+        <span class="n">vline</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;vline&quot;</span><span class="p">,</span> <span class="s2">&quot;Mode freq imaginary&quot;</span><span class="p">)</span>
+        <span class="n">accumulate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">flines</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">lnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sregexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">offset</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">+</span> <span class="mi">5</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">while</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">vline</span><span class="p">(</span>
+                                <span class="n">Mode</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+                                <span class="n">freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                                <span class="n">imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">vline</span><span class="p">(</span>
+                                <span class="n">Mode</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+                                <span class="n">freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                                <span class="n">imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="n">accumulate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">vdat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">accumulate</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO: Add experiment layer</span>
+        <span class="c1"># TODO: Error if more than one imaginary</span>
+        <span class="c1"># Check if greater 100 then it is not numerical</span>
+        <span class="c1"># if vdat.empty:</span>
+        <span class="c1">#     raise (</span>
+        <span class="c1">#         ValueError(</span>
+        <span class="c1">#             f&quot;Spectra not found for {self.runinfo[&#39;theory&#39;]}, did you run FREQ?&quot;</span>
+        <span class="c1">#         )</span>
+        <span class="c1">#     )</span>
+        <span class="c1"># elif vdat.imaginary.value_counts()[1] &gt; 1:</span>
+        <span class="c1">#     warnings.warn(</span>
+        <span class="c1">#         f&quot;More than one imaginary mode, you did not find a saddle point&quot;,</span>
+        <span class="c1">#         UserWarning,</span>
+        <span class="c1">#     )</span>
+        <span class="c1"># elif vdat.imaginary.value_counts()[1] == 0:</span>
+        <span class="c1">#     raise (</span>
+        <span class="c1">#         ValueError(</span>
+        <span class="c1">#             &quot;No imaginary frequencies found, check the geometry of reactant and product configurations&quot;</span>
+        <span class="c1">#         )</span>
+        <span class="c1">#     )</span>
+        <span class="k">return</span> <span class="n">vdat</span></div>
+
+<div class="viewcode-block" id="orcaVis.vpt2_transitions"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.vpt2_transitions">[docs]</a>    <span class="k">def</span> <span class="nf">vpt2_transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Grabs the fundamental transition analysis from a VPT2 calculation&quot;&quot;&quot;</span>
+        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;vpt2trans&quot;</span><span class="p">]</span>
+        <span class="n">vline</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;vline&quot;</span><span class="p">,</span> <span class="s2">&quot;Mode harmonic_freq vpt2_freq freq_diff&quot;</span><span class="p">)</span>
+        <span class="n">accumulate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">flines</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">lnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sregexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">offset</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">+</span> <span class="mi">4</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">while</span> <span class="s2">&quot;---&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]:</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="n">vline</span><span class="p">(</span>
+                            <span class="n">Mode</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="n">harmonic_freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="n">vpt2_freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                            <span class="n">freq_diff</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span>
+                        <span class="p">)</span>
+                        <span class="n">accumulate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">vdat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">accumulate</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;harmonic_freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;harmonic_freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;vpt2_freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;vpt2_freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vdat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span>
+                <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Data not found for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="s1">&#39;theory&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, did you run VPT2?&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">vdat</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vdat</span></div>
+
+<div class="viewcode-block" id="orcaVis.ir_spec"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.ir_spec">[docs]</a>    <span class="k">def</span> <span class="nf">ir_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for</span>
 <span class="sd">        intensities&quot;&quot;&quot;</span>
-        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;Vibrational Frequencies&quot;</span><span class="p">]</span>
+        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;irSpectrum&quot;</span><span class="p">]</span>
         <span class="n">vline</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;vline&quot;</span><span class="p">,</span> <span class="s2">&quot;Mode freq T2 TX TY TZ&quot;</span><span class="p">)</span>
         <span class="n">accumulate</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
