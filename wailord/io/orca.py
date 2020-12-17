@@ -307,18 +307,16 @@ def calc_htst(product, reactant, transition_state, temperature):
     reactnum = react.freq.loc[~(react.freq <= 0)].to_numpy()
     tsdenom = ts.freq.loc[~(ts.freq <= 0)].to_numpy()
     temp = Q_(temperature, "K")
+    # FIXME: Should this be the ureg.speed_of_light instead?
+    conv = Q_(1, "m/s")
     preProd = ppnum.prod() / tsdenom.prod()
     preReact = reactnum.prod() / tsdenom.prod()
     delProd = transition_state.fin_sp_e - product.fin_sp_e
     delReact = transition_state.fin_sp_e - reactant.fin_sp_e
     prodExp = -1 * (delProd / (ureg.boltzmann_constant * temp))
     reactExp = -1 * (delReact / (ureg.boltzmann_constant * temp))
-    kf = (preProd * ureg.speed_of_light).to_base_units() * np.exp(
-        prodExp.to_base_units()
-    )
-    kb = (preReact * ureg.speed_of_light).to_base_units() * np.exp(
-        reactExp.to_base_units()
-    )
+    kf = (preProd * conv).to_base_units() * np.exp(prodExp.to_base_units())
+    kb = (preReact * conv).to_base_units() * np.exp(reactExp.to_base_units())
     return (kf, kb)
 
 
