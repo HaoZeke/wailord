@@ -310,6 +310,24 @@ def test_orca_irspec(datadir):
     pass
 
 
+######################
+# VPT2 Anharmonicity #
+######################
+
+
+def test_orca_vpt2(datadir):
+    spop = waio.orca.orcaVis(ofile=datadir / "orcaVPT2.out")
+    sdat = spop.vpt2_transitions()
+    assert sdat.shape == (3, 9)
+    assert sdat.harmonic_freq.pint.units == "reciprocal_centimeter"
+    assert sdat.vpt2_freq.pint.units == "reciprocal_centimeter"
+    np.testing.assert_equal(
+        sdat.harmonic_freq.pint.m.to_numpy(), np.array([1638.78, 3808.09, 3904.51])
+    )
+    np.testing.assert_equal(sdat.Mode.to_numpy(), np.array([1, 2, 3]))
+    pass
+
+
 #########################
 # Vibrational Frequency #
 #########################

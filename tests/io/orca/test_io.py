@@ -202,8 +202,21 @@ def test_get_pop(datadir):
 
 def test_get_ir_freq(datadir):
     oth = ["HF", "MP2", "B3LYP"]
-    expt = waio.orca.orcaExp(expfolder=datadir / "vib_freq", order_theory=oth)
+    expt = waio.orca.orcaExp(expfolder=datadir / "ir_spec", order_theory=oth)
     vdat = expt.get_ir_spec()
     assert vdat.shape == (63, 11)
     assert (vdat >> filter(_.slug == "O1H2_h2o")).shape == (9, 11)
+    pass
+
+
+######################
+# VPT2 Anharmonicity #
+######################
+
+
+def test_vpt2_transitions(datadir):
+    oth = ["HF", "MP2", "B3LYP"]
+    expt = waio.orca.orcaExp(expfolder=datadir / "vpt2_h2o", order_theory=oth)
+    vdat = expt.get_vpt2_transitions()
+    assert vdat.shape == (9, 9)
     pass

@@ -1,0 +1,18 @@
+qc:
+  active: True
+  style: ["HF", "MP2", "B3LYP"]
+  calculations: ["VPT2"]
+  basis_sets:
+    - 6-311G**
+xyz: "inp.xyz"
+spin:
+  - "0 1"
+scf:
+  maxiter: 1800
+blocks:
+  - method:
+      - Z_Tol: "1e-14"
+keywords:
+  - "nofrozencore extremescf"
+extra: Null
+jobscript: "basejob.sh"

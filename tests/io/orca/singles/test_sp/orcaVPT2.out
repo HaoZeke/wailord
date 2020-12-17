@@ -1,0 +1,1465 @@
+
+                                 *****************
+                                 * O   R   C   A *
+                                 *****************
+
+           --- An Ab Initio, DFT and Semiempirical electronic structure package ---
+
+                  #######################################################
+                  #                        -***-                        #
+                  #  Department of molecular theory and spectroscopy    #
+                  #              Directorship: Frank Neese              #
+                  # Max Planck Institute for Chemical Energy Conversion #
+                  #                  D-45470 Muelheim/Ruhr              #
+                  #                       Germany                       #
+                  #                                                     #
+                  #                  All rights reserved                #
+                  #                        -***-                        #
+                  #######################################################
+
+
+                         Program Version 4.0.1.2 - RELEASE -
+
+
+ With contributions from (in alphabetic order):
+   Daniel Aravena         : Magnetic Properties
+   Michael Atanasov       : Ab Initio Ligand Field Theory
+   Ute Becker             : Parallelization
+   Martin Brehm           : Molecular dynamics
+   Dmytro Bykov           : SCF Hessian
+   Vijay G. Chilkuri      : MRCI spin determinant printing
+   Dipayan Datta          : RHF DLPNO-CCSD density
+   Achintya Kumar Dutta   : EOM-CC, STEOM-CC
+   Dmitry Ganyushin       : Spin-Orbit,Spin-Spin,Magnetic field MRCI
+   Yang Guo               : DLPNO-NEVPT2, CIM, IAO-localization
+   Andreas Hansen         : Spin unrestricted coupled pair/coupled cluster methods
+   Lee Huntington         : MR-EOM, pCC
+   Robert Izsak           : Overlap fitted RIJCOSX, COSX-SCS-MP3, EOM
+   Christian Kollmar      : KDIIS, OOCD, Brueckner-CCSD(T), CCSD density
+   Simone Kossmann        : Meta GGA functionals, TD-DFT gradient, OOMP2, MP2 Hessian
+   Martin Krupicka        : AUTO-CI
+   Dagmar Lenk            : GEPOL surface
+   Dimitrios Liakos       : Extrapolation schemes; parallel MDCI
+   Dimitrios Manganas     : ROCIS; embedding schemes
+   Dimitrios Pantazis     : SARC Basis sets
+   Taras Petrenko         : DFT Hessian,TD-DFT gradient, ASA, ECA, R-Raman, ABS, FL, XAS/XES, NRVS
+   Peter Pinski           : DLPNO-MP2
+   Christoph Reimann      : Effective Core Potentials
+   Marius Retegan         : Local ZFS, SOC
+   Christoph Riplinger    : Optimizer, TS searches, QM/MM, DLPNO-CCSD(T), (RO)-DLPNO pert. Triples
+   Tobias Risthaus        : Range-separated hybrids, TD-DFT gradient, RPA, STAB
+   Michael Roemelt        : Restricted open shell CIS
+   Masaaki Saitow         : Open-shell DLPNO
+   Barbara Sandhoefer     : DKH picture change effects
+   Kantharuban Sivalingam : CASSCF convergence, NEVPT2, FIC-MRCI
+   Georgi Stoychev        : AutoAux
+   Boris Wezisla          : Elementary symmetry handling
+   Frank Wennmohs         : Technical directorship
+
+
+ We gratefully acknowledge several colleagues who have allowed us to
+ interface, adapt or use parts of their codes:
+   Stefan Grimme, W. Hujo, H. Kruse,             : VdW corrections, initial TS optimization,
+                  C. Bannwarth                     DFT functionals, gCP, sTDA/sTD-DF
+   Ed Valeev                                     : LibInt (2-el integral package), F12 methods
+   Garnet Chan, S. Sharma, J. Yang, R. Olivares  : DMRG
+   Ulf Ekstrom                                   : XCFun DFT Library
+   Mihaly Kallay                                 : mrcc  (arbitrary order and MRCC methods)
+   Andreas Klamt, Michael Diedenhofen            : otool_cosmo (COSMO solvation model)
+   Jiri Pittner, Ondrej Demel                    : Mk-CCSD
+   Frank Weinhold                                : gennbo (NPA and NBO analysis)
+   Christopher J. Cramer and Donald G. Truhlar   : smd solvation model
+
+
+ Your calculation uses the libint2 library for the computation of 2-el integrals
+ For citations please refer to: http://libint.valeyev.net
+
+ This ORCA versions uses:
+   CBLAS   interface :  Fast vector & matrix operations
+   LAPACKE interface :  Fast linear algebra routines
+   SCALAPACK package :  Parallel linear algebra routines
+
+
+Your calculation utilizes the basis: 6-311G**
+   H, Li - Ne  : R. Krishnan, J. S. Binkley, R. Seeger and J. A. Pople, J. Chem. Phys. 72, 650 (1980).
+   Na - Ar     : A. D. McLean and G. S. Chandler J. Chem. Phys. 72, 5639, (1980).
+   K  - Ca     : J.-P. Blaudeau, M. P. McGrath, L. A. Curtiss and L. Radom, J. Chem. Phys. 107, 5016 (1997).
+   Ga - Kr     : L. A. Curtiss, M. P. McGrath, J.-P. Blandeau, N. E. Davis, R. C. Binning and L. Radom, J. Chem. Phys. 103, 6104 (1995).
+   Pol./Diff.
+   H, Li - Cl  : T. Clark, J. Chandrasekhar and P. v. R. Schleyer, J. Comp. Chem. 4, 294 (1983).
+   H - Ne      : M. J. Frisch, J. A. Pople and J. S. Binkley, J. Chem. Phys. 80, 3265 (1984).
+
+================================================================================
+                                        WARNINGS
+                       Please study these warnings very carefully!
+================================================================================
+
+
+WARNING: Instead of the default, updated atomic masses from 2016 are used.
+
+Warning: TCutStore was < 0. Adjusted to Thresh (uncritical)
+
+INFO   : the flag for use of LIBINT has been found!
+
+================================================================================
+                                       INPUT FILE
+================================================================================
+NAME = orca.inp
+|  1> !B3LYP 6-311G** VPT2
+|  2> 
+|  3> ! nofrozencore extremescf
+|  4> 
+|  5> %method
+|  6>   Z_Tol 1e-14
+|  7> end
+|  8> 
+|  9> *xyz 0 1
+| 10> O    -0.95226767400000    -0.00000000013081    -0.99608404259745
+| 11> H    -0.95226767400000    0.75726467653558    -0.40247197464994
+| 12> H    -0.95226767400000    -0.75726467640477    -0.40247197475261
+| 13> **                         ****END OF INPUT****
+================================================================================
+
+                     *******************************
+                     *              VPT2           *
+                     *******************************
+
+------------------------------------------------------------------------------
+                           ORCA GTO INTEGRAL CALCULATION
+------------------------------------------------------------------------------
+
+                         BASIS SET STATISTICS AND STARTUP INFO
+
+ # of primitive gaussian shells          ...   29
+ # of primitive gaussian functions       ...   47
+ # of contracted shells                  ...   16
+ # of contracted basis functions         ...   30
+ Highest angular momentum                ...    2
+ Maximum contraction depth               ...    6
+ Integral package used                   ... LIBINT
+ Integral threshhold            Thresh   ...  3.000e-16
+ Primitive cut-off              TCut     ...  3.000e-16
+
+
+------------------------------ INTEGRAL EVALUATION ----------------------------
+
+
+ * One electron integrals 
+ Pre-screening matrix                    ... done
+ Shell pair data                         ... done (   0.000 sec)
+
+
+Diagonalization of the overlap matrix:
+Smallest eigenvalue                        ... 1.817e-02
+Time for diagonalization                   ...    0.047 sec
+Threshold for overlap eigenvalues          ... 1.000e-08
+Number of eigenvalues below threshold      ... 0
+Time for construction of square roots      ...    0.000 sec
+Total time needed                          ...    0.048 sec
+
+-------------------
+DFT GRID GENERATION
+-------------------
+
+General Integration Accuracy     IntAcc      ...  4.340
+Radial Grid Type                 RadialGrid  ... Gauss-Chebyshev
+Angular Grid (max. acc.)         AngularGrid ... Lebedev-110
+Angular grid pruning method      GridPruning ... 3 (G Style)
+Weight generation scheme         WeightScheme... Becke
+Basis function cutoff            BFCut       ...    3.0000e-16
+Integration weight cutoff        WCut        ...    1.0000e-14
+Grids for H and He will be reduced by one unit
+
+# of grid points (after initial pruning)     ...   3304 (   0.0 sec)
+# of grid points (after weights+screening)   ...   3282 (   0.0 sec)
+nearest neighbour list constructed           ...    0.0 sec
+Grid point re-assignment to atoms done       ...    0.0 sec
+Grid point division into batches done        ...    0.0 sec
+Reduced shell lists constructed in    0.0 sec
+
+Total number of grid points                  ...     3282
+Total number of batches                      ...       53
+Average number of points per batch           ...       61
+Average number of grid points per atom       ...     1094
+Average number of shells per batch           ...    15.11 (94.44%)
+Average number of basis functions per batch  ...    28.33 (94.44%)
+Average number of large shells per batch     ...    14.48 (95.83%)
+Average number of large basis fcns per batch ...    27.22 (96.08%)
+Maximum spatial batch extension              ...  25.65, 12.83, 21.59 au
+Average spatial batch extension              ...   6.73,  4.60,  6.12 au
+
+Time for grid setup =    0.018 sec
+
+Loading Hartree-Fock densities                     ... done
+Calculating cut-offs                               ... done
+Setting up the integral package                    ... done
+Initializing the effective Hamiltonian             ... done
+Starting the Coulomb interaction                   ... done (   0.0 sec)
+Reading the grid                                   ... done
+Mapping shells                                     ... done
+Starting the XC term evaluation                    ... done (   0.0 sec)
+  promolecular density results
+     # of electrons  =      9.995347964
+     EX              =     -8.781624463
+     EC              =     -0.334592028
+     EX+EC           =     -9.116216492
+Transforming the Hamiltonian                       ... done (   0.0 sec)
+Diagonalizing the Hamiltonian                      ... done (   0.0 sec)
+Back transforming the eigenvectors                 ... done (   0.0 sec)
+Now organizing SCF variables                       ... done
+--------------
+SCF ITERATIONS
+--------------
+               ***  Starting incremental Fock matrix formation  ***
+                               ***Turning on DIIS***
+                      *** Initiating the SOSCF procedure ***
+                           *** Shutting down DIIS ***
+                      *** Re-Reading the Fockian *** 
+                      *** Removing any level shift *** 
+               *** Restarting incremental Fock matrix formation ***
+                           ***RMSP convergence achieved***
+                           ***MAXP convergence achieved***
+                       ***Gradient convergence achieved***
+                    ***Orbital Rotation convergence achieved***
+                          ***Energy convergence achieved***
+              ***Rediagonalizing the Fockian in SOSCF/NRSCF***
+
+               *****************************************************
+               *                     SUCCESS                       *
+               *           SCF CONVERGED AFTER  15 CYCLES          *
+               *****************************************************
+
+Setting up the final grid:
+
+General Integration Accuracy     IntAcc      ...  4.670
+Radial Grid Type                 RadialGrid  ... Gauss-Chebyshev
+Angular Grid (max. acc.)         AngularGrid ... Lebedev-302
+Angular grid pruning method      GridPruning ... 3 (G Style)
+Weight generation scheme         WeightScheme... Becke
+Basis function cutoff            BFCut       ...    3.0000e-16
+Integration weight cutoff        WCut        ...    1.0000e-14
+Grids for H and He will be reduced by one unit
+
+# of grid points (after initial pruning)     ...  13000 (   0.0 sec)
+# of grid points (after weights+screening)   ...  12898 (   0.0 sec)
+nearest neighbour list constructed           ...    0.0 sec
+Grid point re-assignment to atoms done       ...    0.0 sec
+Grid point division into batches done        ...    0.0 sec
+Reduced shell lists constructed in    0.1 sec
+
+Total number of grid points                  ...    12898
+Total number of batches                      ...      203
+Average number of points per batch           ...       63
+Average number of grid points per atom       ...     4299
+Average number of shells per batch           ...    14.06 (87.90%)
+Average number of basis functions per batch  ...    26.20 (87.34%)
+Average number of large shells per batch     ...    13.18 (93.69%)
+Average number of large basis fcns per batch ...    24.54 (93.66%)
+Maximum spatial batch extension              ...  16.96, 16.88, 16.11 au
+Average spatial batch extension              ...   3.53,  2.91,  3.48 au
+
+Final grid set up in    0.1 sec
+Final integration                            ... done (   0.1 sec)
+Change in XC energy                          ...     0.000375160
+Integrated number of electrons               ...     9.999983563
+Previous integrated no of electrons          ...    10.000326932
+             **** THE GBW FILE WAS UPDATED (orca.gbw) ****
+             **** DENSITY FILE WAS UPDATED (orca.scfp.tmp) ****
+             **** ENERGY FILE WAS UPDATED (orca.en.tmp) ****
+                   0          1          2    
+      0       0.000000  -0.000000  -0.066434
+      1       0.000000   0.757265   0.527178
+      2       0.000000  -0.757265   0.527178
+                   0          1          2    
+      0      19.138916  -0.000000 -31.888630
+      1      -0.000000  33.159395  -0.000000
+      2     -31.888630  -0.000000  18.643976
+	  0       0.000000
+	  1       0.000000
+	  2       0.000000
+
+                   0          1          2    
+      0       0.000000   0.000000   0.000000
+      1       0.000000   0.000000   0.000000
+      2       0.000000   0.000000   0.000000
+
+-------------------------   --------------------
+FINAL SINGLE POINT ENERGY       -76.410327381790
+-------------------------   --------------------
+
+
+                            ***************************************
+                            *     ORCA property calculations      *
+                            ***************************************
+
+                                    ---------------------
+                                    Active property flags
+                                    ---------------------
+   (+) Dipole Moment
+
+
+------------------------------------------------------------------------------
+                       ORCA ELECTRIC PROPERTIES CALCULATION
+------------------------------------------------------------------------------
+
+Dipole Moment Calculation                       ... on
+Quadrupole Moment Calculation                   ... off
+Polarizability Calculation                      ... off
+GBWName                                         ... orca.gbw
+Electron density file                           ... orca.scfp.tmp
+The origin for moment calculation is the CENTER OF MASS  = (-0.000000, -0.000000  0.000000)
+
+-------------
+DIPOLE MOMENT
+-------------
+                                X             Y             Z
+Electronic contribution:      0.12309       0.00000      -0.12209
+Nuclear contribution   :     -0.70140      -0.00000       0.69598
+                        -----------------------------------------
+Total Dipole Moment    :     -0.57832      -0.00000       0.57389
+                        -----------------------------------------
+Magnitude (a.u.)       :      0.81474
+Magnitude (Debye)      :      2.07090
+
+
+-------------------------------------------------------------------------------
+                               ORCA SCF HESSIAN
+-------------------------------------------------------------------------------
+
+Hessian of the Kohn-Sham DFT energy:
+Kohn-Sham wavefunction type                      ... RKS
+Hartree-Fock exchange scaling                    ...    0.200
+Number of operators                              ...    1
+Number of atoms                                  ...    3
+Basis set dimensions                             ...   30
+Integral neglect threshold                       ... 3.0e-16
+Integral primitive cutoff                        ... 3.0e-16
+
+Setting up DFT Hessian calculations              ... 
+Electron density on the grid                     ... found on disk
+Electron density on the final grid               ... found on disk
+Building xc-kernel on the grid                   ... done   (      0.0 sec)
+Building xc-kernel on the final grid             ... done   (      0.0 sec)
+                                                     done   (      0.0 sec)
+
+Nuclear repulsion Hessian                        ... done   (      0.0 sec)
+
+----------------------------------------------
+Forming right-hand sides of CP-SCF equations     ...
+----------------------------------------------
+One electron integral derivatives                ... done   (      0.1 sec)
+Transforming the overlap derivative matrices     ... done   (      0.0 sec)
+Making the Q(x) pseudodensities                  ... done   (      0.0 sec)
+Adding the E*S(x)*S(y) terms to the Hessian      ... done   (      0.0 sec)
+Calculating energy weighted overlap derivatives  ... done   (      0.0 sec)
+Two electron integral derivatives                ... done   (      0.1 sec)
+Exchange-correlation integral derivatives        ... done   (      0.4 sec)
+tr(F(y)Q(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Response fock operator R(S(x))                   ... done   (      0.1 sec)
+XC Response fock operator R(S(x))                ... done   (      0.1 sec)
+tr(F(y)S(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Transforming and finalizing RHSs                 ... done   (      0.0 sec)
+
+----------------------------------------------
+Solving the CP-SCF equations                     ...
+----------------------------------------------
+     CP-SCF ITERATION   0: 
+     CP-SCF ITERATION   1:      0.000356902768
+     CP-SCF ITERATION   2:      0.000010063644
+     CP-SCF ITERATION   3:      0.000000097002
+     CP-SCF ITERATION   4:      0.000000002812
+     CP-SCF ITERATION   5:      0.000000000021
+     CP-SCF ITERATION   6:      0.000000000000
+     CP-SCF ITERATION   7:      0.000000000000
+
+                                                 ... done   (      1.3 sec)
+Forming perturbed density Hessian contributions  ... done   (      0.0 sec)
+Making the perturbed densities                   ... done   (      0.0 sec)
+2nd integral derivative contribs                 ... done   (      0.3 sec)
+Exchange-correlation Hessian                     ... done   (      0.7 sec)
+Dipol derivatives                                ... done   (      0.1 sec)
+
+Total SCF Hessian time: 0 days 0 hours 0 min 3 sec 
+
+Writing the Hessian file to the disk             ... done
+
+raw_Hessian
+                  0          1          2          3          4          5    
+      0       0.230651  -0.000000  -0.228226  -0.115325  -0.142996   0.114113
+      1      -0.000000   0.667761   0.000000  -0.185672  -0.333880   0.184255
+      2      -0.228216   0.000000   0.227134   0.114108   0.141899  -0.113567
+      3      -0.115219  -0.185883   0.114236   0.109400   0.164543  -0.108398
+      4      -0.143201  -0.334096   0.142094   0.164539   0.366117  -0.163268
+      5       0.114236   0.184447  -0.113446  -0.108398  -0.163271   0.107717
+      6      -0.115219   0.185883   0.114236   0.005819  -0.021341  -0.005839
+      7       0.143201  -0.334096  -0.142094   0.021338  -0.032020  -0.021173
+      8       0.114236  -0.184447  -0.113446  -0.005839   0.021176   0.005729
+                   6          7          8    
+      0      -0.115325   0.142996   0.114113
+      1       0.185672  -0.333880  -0.184255
+      2       0.114108  -0.141899  -0.113567
+      3       0.005819   0.021341  -0.005839
+      4      -0.021338  -0.032020   0.021173
+      5      -0.005839  -0.021176   0.005729
+      6       0.109400  -0.164543  -0.108398
+      7      -0.164539   0.366117   0.163268
+      8      -0.108398   0.163271   0.107717
+diagolised_Hessian, mat_L
+
+-------------------------------------------------------------------------------
+                               ORCA SCF HESSIAN
+-------------------------------------------------------------------------------
+
+Hessian of the Kohn-Sham DFT energy:
+Kohn-Sham wavefunction type                      ... RKS
+Hartree-Fock exchange scaling                    ...    0.200
+Number of operators                              ...    1
+Number of atoms                                  ...    3
+Basis set dimensions                             ...   30
+Integral neglect threshold                       ... 3.0e-16
+Integral primitive cutoff                        ... 3.0e-16
+
+Setting up DFT Hessian calculations              ... 
+Electron density on the grid                     ... found on disk
+Electron density on the final grid               ... found on disk
+Building xc-kernel on the grid                   ... done   (      0.0 sec)
+Building xc-kernel on the final grid             ... done   (      0.0 sec)
+                                                     done   (      0.0 sec)
+
+Nuclear repulsion Hessian                        ... done   (      0.0 sec)
+
+----------------------------------------------
+Forming right-hand sides of CP-SCF equations     ...
+----------------------------------------------
+One electron integral derivatives                ... done   (      0.1 sec)
+Transforming the overlap derivative matrices     ... done   (      0.0 sec)
+Making the Q(x) pseudodensities                  ... done   (      0.0 sec)
+Adding the E*S(x)*S(y) terms to the Hessian      ... done   (      0.0 sec)
+Calculating energy weighted overlap derivatives  ... done   (      0.0 sec)
+Two electron integral derivatives                ... done   (      0.1 sec)
+Exchange-correlation integral derivatives        ... done   (      0.4 sec)
+tr(F(y)Q(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Response fock operator R(S(x))                   ... done   (      0.1 sec)
+XC Response fock operator R(S(x))                ... done   (      0.1 sec)
+tr(F(y)S(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Transforming and finalizing RHSs                 ... done   (      0.0 sec)
+
+----------------------------------------------
+Solving the CP-SCF equations                     ...
+----------------------------------------------
+     CP-SCF ITERATION   0: 
+     CP-SCF ITERATION   1:      0.000357214379
+     CP-SCF ITERATION   2:      0.000010018679
+     CP-SCF ITERATION   3:      0.000000098264
+     CP-SCF ITERATION   4:      0.000000002791
+     CP-SCF ITERATION   5:      0.000000000021
+     CP-SCF ITERATION   6:      0.000000000000
+     CP-SCF ITERATION   7:      0.000000000000
+
+                                                 ... done   (      1.2 sec)
+Forming perturbed density Hessian contributions  ... done   (      0.0 sec)
+Making the perturbed densities                   ... done   (      0.0 sec)
+2nd integral derivative contribs                 ... done   (      0.3 sec)
+Exchange-correlation Hessian                     ... done   (      0.7 sec)
+Dipol derivatives                                ... done   (      0.1 sec)
+
+Total SCF Hessian time: 0 days 0 hours 0 min 3 sec 
+
+Writing the Hessian file to the disk             ... done
+
+
+-------------------------------------------------------------------------------
+                               ORCA SCF HESSIAN
+-------------------------------------------------------------------------------
+
+Hessian of the Kohn-Sham DFT energy:
+Kohn-Sham wavefunction type                      ... RKS
+Hartree-Fock exchange scaling                    ...    0.200
+Number of operators                              ...    1
+Number of atoms                                  ...    3
+Basis set dimensions                             ...   30
+Integral neglect threshold                       ... 3.0e-16
+Integral primitive cutoff                        ... 3.0e-16
+
+Setting up DFT Hessian calculations              ... 
+Electron density on the grid                     ... found on disk
+Electron density on the final grid               ... found on disk
+Building xc-kernel on the grid                   ... done   (      0.0 sec)
+Building xc-kernel on the final grid             ... done   (      0.0 sec)
+                                                     done   (      0.0 sec)
+
+Nuclear repulsion Hessian                        ... done   (      0.0 sec)
+
+----------------------------------------------
+Forming right-hand sides of CP-SCF equations     ...
+----------------------------------------------
+One electron integral derivatives                ... done   (      0.1 sec)
+Transforming the overlap derivative matrices     ... done   (      0.0 sec)
+Making the Q(x) pseudodensities                  ... done   (      0.0 sec)
+Adding the E*S(x)*S(y) terms to the Hessian      ... done   (      0.0 sec)
+Calculating energy weighted overlap derivatives  ... done   (      0.0 sec)
+Two electron integral derivatives                ... done   (      0.1 sec)
+Exchange-correlation integral derivatives        ... done   (      0.4 sec)
+tr(F(y)Q(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Response fock operator R(S(x))                   ... done   (      0.1 sec)
+XC Response fock operator R(S(x))                ... done   (      0.1 sec)
+tr(F(y)S(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Transforming and finalizing RHSs                 ... done   (      0.0 sec)
+
+----------------------------------------------
+Solving the CP-SCF equations                     ...
+----------------------------------------------
+     CP-SCF ITERATION   0: 
+     CP-SCF ITERATION   1:      0.000356639368
+     CP-SCF ITERATION   2:      0.000010111617
+     CP-SCF ITERATION   3:      0.000000096852
+     CP-SCF ITERATION   4:      0.000000002833
+     CP-SCF ITERATION   5:      0.000000000022
+     CP-SCF ITERATION   6:      0.000000000000
+     CP-SCF ITERATION   7:      0.000000000000
+
+                                                 ... done   (      1.2 sec)
+Forming perturbed density Hessian contributions  ... done   (      0.0 sec)
+Making the perturbed densities                   ... done   (      0.0 sec)
+2nd integral derivative contribs                 ... done   (      0.3 sec)
+Exchange-correlation Hessian                     ... done   (      0.7 sec)
+Dipol derivatives                                ... done   (      0.1 sec)
+
+Total SCF Hessian time: 0 days 0 hours 0 min 3 sec 
+
+Writing the Hessian file to the disk             ... done
+
+
+-------------------------------------------------------------------------------
+                               ORCA SCF HESSIAN
+-------------------------------------------------------------------------------
+
+Hessian of the Kohn-Sham DFT energy:
+Kohn-Sham wavefunction type                      ... RKS
+Hartree-Fock exchange scaling                    ...    0.200
+Number of operators                              ...    1
+Number of atoms                                  ...    3
+Basis set dimensions                             ...   30
+Integral neglect threshold                       ... 3.0e-16
+Integral primitive cutoff                        ... 3.0e-16
+
+Setting up DFT Hessian calculations              ... 
+Electron density on the grid                     ... found on disk
+Electron density on the final grid               ... found on disk
+Building xc-kernel on the grid                   ... done   (      0.0 sec)
+Building xc-kernel on the final grid             ... done   (      0.0 sec)
+                                                     done   (      0.0 sec)
+
+Nuclear repulsion Hessian                        ... done   (      0.0 sec)
+
+----------------------------------------------
+Forming right-hand sides of CP-SCF equations     ...
+----------------------------------------------
+One electron integral derivatives                ... done   (      0.1 sec)
+Transforming the overlap derivative matrices     ... done   (      0.0 sec)
+Making the Q(x) pseudodensities                  ... done   (      0.0 sec)
+Adding the E*S(x)*S(y) terms to the Hessian      ... done   (      0.0 sec)
+Calculating energy weighted overlap derivatives  ... done   (      0.0 sec)
+Two electron integral derivatives                ... done   (      0.1 sec)
+Exchange-correlation integral derivatives        ... done   (      0.4 sec)
+tr(F(y)Q(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Response fock operator R(S(x))                   ... done   (      0.1 sec)
+XC Response fock operator R(S(x))                ... done   (      0.1 sec)
+tr(F(y)S(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Transforming and finalizing RHSs                 ... done   (      0.0 sec)
+
+----------------------------------------------
+Solving the CP-SCF equations                     ...
+----------------------------------------------
+     CP-SCF ITERATION   0: 
+     CP-SCF ITERATION   1:      0.000357274680
+     CP-SCF ITERATION   2:      0.000010221235
+     CP-SCF ITERATION   3:      0.000000098384
+     CP-SCF ITERATION   4:      0.000000002857
+     CP-SCF ITERATION   5:      0.000000000022
+     CP-SCF ITERATION   6:      0.000000000000
+     CP-SCF ITERATION   7:      0.000000000000
+
+                                                 ... done   (      1.2 sec)
+Forming perturbed density Hessian contributions  ... done   (      0.0 sec)
+Making the perturbed densities                   ... done   (      0.0 sec)
+2nd integral derivative contribs                 ... done   (      0.3 sec)
+Exchange-correlation Hessian                     ... done   (      0.7 sec)
+Dipol derivatives                                ... done   (      0.1 sec)
+
+Total SCF Hessian time: 0 days 0 hours 0 min 3 sec 
+
+Writing the Hessian file to the disk             ... done
+
+
+-------------------------------------------------------------------------------
+                               ORCA SCF HESSIAN
+-------------------------------------------------------------------------------
+
+Hessian of the Kohn-Sham DFT energy:
+Kohn-Sham wavefunction type                      ... RKS
+Hartree-Fock exchange scaling                    ...    0.200
+Number of operators                              ...    1
+Number of atoms                                  ...    3
+Basis set dimensions                             ...   30
+Integral neglect threshold                       ... 3.0e-16
+Integral primitive cutoff                        ... 3.0e-16
+
+Setting up DFT Hessian calculations              ... 
+Electron density on the grid                     ... found on disk
+Electron density on the final grid               ... found on disk
+Building xc-kernel on the grid                   ... done   (      0.0 sec)
+Building xc-kernel on the final grid             ... done   (      0.0 sec)
+                                                     done   (      0.0 sec)
+
+Nuclear repulsion Hessian                        ... done   (      0.0 sec)
+
+----------------------------------------------
+Forming right-hand sides of CP-SCF equations     ...
+----------------------------------------------
+One electron integral derivatives                ... done   (      0.1 sec)
+Transforming the overlap derivative matrices     ... done   (      0.0 sec)
+Making the Q(x) pseudodensities                  ... done   (      0.0 sec)
+Adding the E*S(x)*S(y) terms to the Hessian      ... done   (      0.0 sec)
+Calculating energy weighted overlap derivatives  ... done   (      0.0 sec)
+Two electron integral derivatives                ... done   (      0.1 sec)
+Exchange-correlation integral derivatives        ... done   (      0.4 sec)
+tr(F(y)Q(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Response fock operator R(S(x))                   ... done   (      0.1 sec)
+XC Response fock operator R(S(x))                ... done   (      0.1 sec)
+tr(F(y)S(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Transforming and finalizing RHSs                 ... done   (      0.0 sec)
+
+----------------------------------------------
+Solving the CP-SCF equations                     ...
+----------------------------------------------
+     CP-SCF ITERATION   0: 
+     CP-SCF ITERATION   1:      0.000356485751
+     CP-SCF ITERATION   2:      0.000009907275
+     CP-SCF ITERATION   3:      0.000000096059
+     CP-SCF ITERATION   4:      0.000000002768
+     CP-SCF ITERATION   5:      0.000000000021
+     CP-SCF ITERATION   6:      0.000000000000
+     CP-SCF ITERATION   7:      0.000000000000
+
+                                                 ... done   (      1.2 sec)
+Forming perturbed density Hessian contributions  ... done   (      0.0 sec)
+Making the perturbed densities                   ... done   (      0.0 sec)
+2nd integral derivative contribs                 ... done   (      0.3 sec)
+Exchange-correlation Hessian                     ... done   (      0.7 sec)
+Dipol derivatives                                ... done   (      0.1 sec)
+
+Total SCF Hessian time: 0 days 0 hours 0 min 3 sec 
+
+Writing the Hessian file to the disk             ... done
+
+
+-------------------------------------------------------------------------------
+                               ORCA SCF HESSIAN
+-------------------------------------------------------------------------------
+
+Hessian of the Kohn-Sham DFT energy:
+Kohn-Sham wavefunction type                      ... RKS
+Hartree-Fock exchange scaling                    ...    0.200
+Number of operators                              ...    1
+Number of atoms                                  ...    3
+Basis set dimensions                             ...   30
+Integral neglect threshold                       ... 3.0e-16
+Integral primitive cutoff                        ... 3.0e-16
+
+Setting up DFT Hessian calculations              ... 
+Electron density on the grid                     ... found on disk
+Electron density on the final grid               ... found on disk
+Building xc-kernel on the grid                   ... done   (      0.0 sec)
+Building xc-kernel on the final grid             ... done   (      0.0 sec)
+                                                     done   (      0.0 sec)
+
+Nuclear repulsion Hessian                        ... done   (      0.0 sec)
+
+----------------------------------------------
+Forming right-hand sides of CP-SCF equations     ...
+----------------------------------------------
+One electron integral derivatives                ... done   (      0.1 sec)
+Transforming the overlap derivative matrices     ... done   (      0.0 sec)
+Making the Q(x) pseudodensities                  ... done   (      0.0 sec)
+Adding the E*S(x)*S(y) terms to the Hessian      ... done   (      0.0 sec)
+Calculating energy weighted overlap derivatives  ... done   (      0.0 sec)
+Two electron integral derivatives                ... done   (      0.1 sec)
+Exchange-correlation integral derivatives        ... done   (      0.4 sec)
+tr(F(y)Q(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Response fock operator R(S(x))                   ... done   (      0.1 sec)
+XC Response fock operator R(S(x))                ... done   (      0.1 sec)
+tr(F(y)S(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Transforming and finalizing RHSs                 ... done   (      0.0 sec)
+
+----------------------------------------------
+Solving the CP-SCF equations                     ...
+----------------------------------------------
+     CP-SCF ITERATION   0: 
+     CP-SCF ITERATION   1:      0.000358469153
+     CP-SCF ITERATION   2:      0.000010066138
+     CP-SCF ITERATION   3:      0.000000098814
+     CP-SCF ITERATION   4:      0.000000002822
+     CP-SCF ITERATION   5:      0.000000000022
+     CP-SCF ITERATION   6:      0.000000000000
+     CP-SCF ITERATION   7:      0.000000000000
+
+                                                 ... done   (      1.2 sec)
+Forming perturbed density Hessian contributions  ... done   (      0.0 sec)
+Making the perturbed densities                   ... done   (      0.0 sec)
+2nd integral derivative contribs                 ... done   (      0.3 sec)
+Exchange-correlation Hessian                     ... done   (      0.7 sec)
+Dipol derivatives                                ... done   (      0.1 sec)
+
+Total SCF Hessian time: 0 days 0 hours 0 min 3 sec 
+
+Writing the Hessian file to the disk             ... done
+
+
+-------------------------------------------------------------------------------
+                               ORCA SCF HESSIAN
+-------------------------------------------------------------------------------
+
+Hessian of the Kohn-Sham DFT energy:
+Kohn-Sham wavefunction type                      ... RKS
+Hartree-Fock exchange scaling                    ...    0.200
+Number of operators                              ...    1
+Number of atoms                                  ...    3
+Basis set dimensions                             ...   30
+Integral neglect threshold                       ... 3.0e-16
+Integral primitive cutoff                        ... 3.0e-16
+
+Setting up DFT Hessian calculations              ... 
+Electron density on the grid                     ... found on disk
+Electron density on the final grid               ... found on disk
+Building xc-kernel on the grid                   ... done   (      0.0 sec)
+Building xc-kernel on the final grid             ... done   (      0.0 sec)
+                                                     done   (      0.0 sec)
+
+Nuclear repulsion Hessian                        ... done   (      0.0 sec)
+
+----------------------------------------------
+Forming right-hand sides of CP-SCF equations     ...
+----------------------------------------------
+One electron integral derivatives                ... done   (      0.1 sec)
+Transforming the overlap derivative matrices     ... done   (      0.0 sec)
+Making the Q(x) pseudodensities                  ... done   (      0.0 sec)
+Adding the E*S(x)*S(y) terms to the Hessian      ... done   (      0.0 sec)
+Calculating energy weighted overlap derivatives  ... done   (      0.0 sec)
+Two electron integral derivatives                ... done   (      0.1 sec)
+Exchange-correlation integral derivatives        ... done   (      0.4 sec)
+tr(F(y)Q(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Response fock operator R(S(x))                   ... done   (      0.1 sec)
+XC Response fock operator R(S(x))                ... done   (      0.1 sec)
+tr(F(y)S(x)) contribution to the Hessian         ... done   (      0.0 sec)
+Transforming and finalizing RHSs                 ... done   (      0.0 sec)
+
+----------------------------------------------
+Solving the CP-SCF equations                     ...
+----------------------------------------------
+     CP-SCF ITERATION   0: 
+     CP-SCF ITERATION   1:      0.000358469153
+     CP-SCF ITERATION   2:      0.000010066138
+     CP-SCF ITERATION   3:      0.000000098814
+     CP-SCF ITERATION   4:      0.000000002822
+     CP-SCF ITERATION   5:      0.000000000022
+     CP-SCF ITERATION   6:      0.000000000000
+     CP-SCF ITERATION   7:      0.000000000000
+
+                                                 ... done   (      1.2 sec)
+Forming perturbed density Hessian contributions  ... done   (      0.0 sec)
+Making the perturbed densities                   ... done   (      0.0 sec)
+2nd integral derivative contribs                 ... done   (      0.3 sec)
+Exchange-correlation Hessian                     ... done   (      0.7 sec)
+Dipol derivatives                                ... done   (      0.1 sec)
+
+Total SCF Hessian time: 0 days 0 hours 0 min 3 sec 
+
+Writing the Hessian file to the disk             ... done
+
+	  0      -0.000012
+	  1      -0.000003
+	  2      -0.000000
+	  3       0.000075
+	  4       0.000146
+	  5       0.000220
+	  6       0.101633
+	  7       0.548789
+	  8       0.576930
+
+                  0          1          2          3          4          5    
+      0      -0.547893   0.000000  -0.692791  -0.000000   0.404241  -0.000001
+      1      -0.000000  -0.888460   0.000000   0.371723   0.000000   0.010556
+      2      -0.599271   0.000000   0.638766  -0.000000   0.421042  -0.000001
+      3      -0.284732   0.079862  -0.173993   0.392478  -0.406124   0.500628
+      4      -0.000004  -0.306473   0.000147  -0.344661   0.000001  -0.000228
+      5      -0.298783  -0.070820   0.160424  -0.397594  -0.405856   0.499317
+      6      -0.284732  -0.079862  -0.173993  -0.392478  -0.406125  -0.500626
+      7       0.000004  -0.306473  -0.000147  -0.344661  -0.000001  -0.000228
+      8      -0.298783   0.070820   0.160424   0.397594  -0.405857  -0.499316
+                   6          7          8    
+      0       0.192531  -0.139194  -0.000000
+      1      -0.000000  -0.000000   0.268977
+      2      -0.191045   0.138122   0.000000
+      3      -0.383121   0.277372  -0.298255
+      4       0.414623   0.572789  -0.535988
+      5       0.380161  -0.275229   0.295950
+      6      -0.383121   0.277372   0.298255
+      7      -0.414623  -0.572789  -0.535988
+      8       0.380161  -0.275229  -0.295950
+                  0          1          2          3          4          5    
+      0      -0.547893   0.000000  -0.692791  -0.000000   0.404241  -0.000001
+      1      -0.000000  -0.888460   0.000000   0.371723   0.000000   0.010556
+      2      -0.599271   0.000000   0.638766  -0.000000   0.421042  -0.000001
+      3      -0.284732   0.079862  -0.173993   0.392478  -0.406124   0.500628
+      4      -0.000004  -0.306473   0.000147  -0.344661   0.000001  -0.000228
+      5      -0.298783  -0.070820   0.160424  -0.397594  -0.405856   0.499317
+      6      -0.284732  -0.079862  -0.173993  -0.392478  -0.406125  -0.500626
+      7       0.000004  -0.306473  -0.000147  -0.344661  -0.000001  -0.000228
+      8      -0.298783   0.070820   0.160424   0.397594  -0.405857  -0.499316
+                   6          7          8    
+      0       0.192531  -0.139194  -0.000000
+      1      -0.000000  -0.000000   0.268977
+      2      -0.191045   0.138122   0.000000
+      3      -0.383121   0.277372  -0.298255
+      4       0.414623   0.572789  -0.535988
+      5       0.380161  -0.275229   0.295950
+      6      -0.383121   0.277372   0.298255
+      7      -0.414623  -0.572789  -0.535988
+      8       0.380161  -0.275229  -0.295950
+raw_Hessian
+                  0          1          2          3          4          5    
+      0       0.228270  -0.000000  -0.227179  -0.114135  -0.143112   0.113590
+      1      -0.000000   0.674372   0.000000  -0.185802  -0.337186   0.184384
+      2      -0.227169   0.000000   0.224769   0.113585   0.142014  -0.112384
+      3      -0.114019  -0.185999   0.113704   0.108452   0.164657  -0.107592
+      4      -0.143314  -0.337425   0.142207   0.164654   0.368484  -0.163382
+      5       0.113704   0.184561  -0.112254  -0.107592  -0.163385   0.106782
+      6      -0.114019   0.185999   0.113704   0.005567  -0.021342  -0.006113
+      7       0.143314  -0.337425  -0.142207   0.021340  -0.031059  -0.021174
+      8       0.113704  -0.184561  -0.112254  -0.006113   0.021177   0.005472
+                   6          7          8    
+      0      -0.114135   0.143112   0.113590
+      1       0.185802  -0.337186  -0.184384
+      2       0.113585  -0.142014  -0.112384
+      3       0.005567   0.021342  -0.006113
+      4      -0.021340  -0.031059   0.021174
+      5      -0.006113  -0.021177   0.005472
+      6       0.108452  -0.164657  -0.107592
+      7      -0.164654   0.368484   0.163382
+      8      -0.107592   0.163385   0.106782
+diagolised_Hessian, mat_L
+	  0      -0.000611
+	  1      -0.000001
+	  2      -0.000000
+	  3       0.000003
+	  4       0.000075
+	  5       0.000611
+	  6       0.100682
+	  7       0.549207
+	  8       0.578893
+
+                  0          1          2          3          4          5    
+      0       0.190815   0.000000   0.691737  -0.654706   0.000000   0.000000
+      1      -0.000000  -0.909961   0.000000  -0.000000  -0.314860  -0.003621
+      2       0.189051  -0.000000  -0.639897  -0.706548  -0.000000   0.000000
+      3      -0.479345   0.052744   0.173740  -0.127785  -0.400784  -0.498698
+      4      -0.000001  -0.284246  -0.000154  -0.000004   0.360615  -0.000203
+      5      -0.483893  -0.049069  -0.160719  -0.140522   0.399701  -0.501292
+      6      -0.479345  -0.052744   0.173740  -0.127785   0.400784   0.498698
+      7       0.000001  -0.284246   0.000154   0.000004   0.360615  -0.000203
+      8      -0.483893   0.049069  -0.160719  -0.140522  -0.399701   0.501292
+                   6          7          8    
+      0       0.193019  -0.138542  -0.000000
+      1      -0.000000  -0.000000   0.269853
+      2      -0.191528   0.137474   0.000000
+      3      -0.384059   0.276066  -0.296464
+      4       0.412672   0.574197  -0.537737
+      5       0.381091  -0.273933   0.294173
+      6      -0.384059   0.276066   0.296464
+      7      -0.412672  -0.574196  -0.537737
+      8       0.381091  -0.273933  -0.294173
+                  0          1          2          3          4          5    
+      0       0.190815   0.000000   0.691737  -0.654706   0.000000   0.000000
+      1      -0.000000  -0.909961   0.000000  -0.000000  -0.314860  -0.003621
+      2       0.189051  -0.000000  -0.639897  -0.706548  -0.000000   0.000000
+      3      -0.479345   0.052744   0.173740  -0.127785  -0.400784  -0.498698
+      4      -0.000001  -0.284246  -0.000154  -0.000004   0.360615  -0.000203
+      5      -0.483893  -0.049069  -0.160719  -0.140522   0.399701  -0.501292
+      6      -0.479345  -0.052744   0.173740  -0.127785   0.400784   0.498698
+      7       0.000001  -0.284246   0.000154   0.000004   0.360615  -0.000203
+      8      -0.483893   0.049069  -0.160719  -0.140522  -0.399701   0.501292
+                   6          7          8    
+      0       0.193019  -0.138542  -0.000000
+      1      -0.000000  -0.000000   0.269853
+      2      -0.191528   0.137474   0.000000
+      3      -0.384059   0.276066  -0.296464
+      4       0.412672   0.574197  -0.537737
+      5       0.381091  -0.273933   0.294173
+      6      -0.384059   0.276066   0.296464
+      7      -0.412672  -0.574196  -0.537737
+      8       0.381091  -0.273933  -0.294173
+raw_Hessian
+                  0          1          2          3          4          5    
+      0       0.232963  -0.000000  -0.229200  -0.116482  -0.142838   0.114600
+      1      -0.000000   0.661063   0.000000  -0.185485  -0.330531   0.184068
+      2      -0.229189   0.000000   0.229433   0.114595   0.141741  -0.114716
+      3      -0.116386  -0.185707   0.114732   0.110318   0.164376  -0.109173
+      4      -0.143043  -0.330723   0.141938   0.164372   0.363711  -0.163102
+      5       0.114732   0.184272  -0.114605  -0.109173  -0.163106   0.108623
+      6      -0.116386   0.185707   0.114732   0.006068  -0.021332  -0.005560
+      7       0.143043  -0.330723  -0.141938   0.021329  -0.032988  -0.021164
+      8       0.114732  -0.184272  -0.114605  -0.005560   0.021167   0.005982
+                   6          7          8    
+      0      -0.116482   0.142838   0.114600
+      1       0.185485  -0.330531  -0.184068
+      2       0.114595  -0.141741  -0.114716
+      3       0.006068   0.021332  -0.005560
+      4      -0.021329  -0.032988   0.021164
+      5      -0.005560  -0.021167   0.005982
+      6       0.110318  -0.164376  -0.109173
+      7      -0.164372   0.363711   0.163102
+      8      -0.109173   0.163106   0.108623
+diagolised_Hessian, mat_L
+	  0      -0.000169
+	  1      -0.000004
+	  2      -0.000002
+	  3      -0.000000
+	  4       0.000087
+	  5       0.000881
+	  6       0.102575
+	  7       0.548272
+	  8       0.574856
+
+                  0          1          2          3          4          5    
+      0      -0.000000  -0.000000  -0.625720   0.693839   0.000000   0.265756
+      1       0.011477  -0.879137   0.000000   0.000000  -0.393840   0.000000
+      2      -0.000000  -0.000000  -0.681769  -0.637639  -0.000000   0.270257
+      3      -0.497081   0.079295  -0.182245   0.174243  -0.395731  -0.461200
+      4       0.001831  -0.315039  -0.000005  -0.000138   0.339618  -0.000000
+      5      -0.502833  -0.089568  -0.196518  -0.160128   0.387946  -0.464179
+      6       0.497081  -0.079295  -0.182245   0.174243   0.395731  -0.461200
+      7       0.001831  -0.315039   0.000005   0.000139   0.339618   0.000000
+      8       0.502833   0.089568  -0.196518  -0.160128  -0.387946  -0.464179
+                   6          7          8    
+      0       0.192048  -0.139831  -0.000000
+      1      -0.000000  -0.000000   0.268100
+      2      -0.190566   0.138754   0.000000
+      3      -0.382200   0.278646  -0.300033
+      4       0.416528   0.571406  -0.534235
+      5       0.379248  -0.276494   0.297715
+      6      -0.382200   0.278646   0.300033
+      7      -0.416528  -0.571406  -0.534235
+      8       0.379248  -0.276494  -0.297715
+                  0          1          2          3          4          5    
+      0      -0.000000  -0.000000  -0.625720   0.693839   0.000000   0.265756
+      1       0.011477  -0.879137   0.000000   0.000000  -0.393840   0.000000
+      2      -0.000000  -0.000000  -0.681769  -0.637639  -0.000000   0.270257
+      3      -0.497081   0.079295  -0.182245   0.174243  -0.395731  -0.461200
+      4       0.001831  -0.315039  -0.000005  -0.000138   0.339618  -0.000000
+      5      -0.502833  -0.089568  -0.196518  -0.160128   0.387946  -0.464179
+      6       0.497081  -0.079295  -0.182245   0.174243   0.395731  -0.461200
+      7       0.001831  -0.315039   0.000005   0.000139   0.339618   0.000000
+      8       0.502833   0.089568  -0.196518  -0.160128  -0.387946  -0.464179
+                   6          7          8    
+      0       0.192048  -0.139831  -0.000000
+      1      -0.000000  -0.000000   0.268100
+      2      -0.190566   0.138754   0.000000
+      3      -0.382200   0.278646  -0.300033
+      4       0.416528   0.571406  -0.534235
+      5       0.379248  -0.276494   0.297715
+      6      -0.382200   0.278646   0.300033
+      7      -0.416528  -0.571406  -0.534235
+      8       0.379248  -0.276494  -0.297715
+raw_Hessian
+                  0          1          2          3          4          5    
+      0       0.228575  -0.000000  -0.222859  -0.114287  -0.138462   0.111429
+      1      -0.000000   0.653577   0.000000  -0.180783  -0.326788   0.179403
+      2      -0.222849   0.000000   0.225140   0.111424   0.137399  -0.112570
+      3      -0.114191  -0.180992   0.111553   0.108484   0.159830  -0.105703
+      4      -0.138668  -0.327010   0.137596   0.159827   0.358584  -0.158592
+      5       0.111553   0.179593  -0.112460  -0.105703  -0.158595   0.106843
+      6      -0.114191   0.180992   0.111553   0.005708  -0.021162  -0.005850
+      7       0.138668  -0.327010  -0.137596   0.021159  -0.031574  -0.020995
+      8       0.111553  -0.179593  -0.112460  -0.005850   0.020998   0.005617
+                   6          7          8    
+      0      -0.114287   0.138462   0.111429
+      1       0.180783  -0.326788  -0.179403
+      2       0.111424  -0.137399  -0.112570
+      3       0.005708   0.021162  -0.005850
+      4      -0.021159  -0.031574   0.020995
+      5      -0.005850  -0.020998   0.005617
+      6       0.108484  -0.159830  -0.105703
+      7      -0.159827   0.358584   0.158592
+      8      -0.105703   0.158595   0.106843
+diagolised_Hessian, mat_L
+	  0      -0.000001
+	  1      -0.000000
+	  2      -0.000000
+	  3       0.001971
+	  4       0.002006
+	  5       0.002128
+	  6       0.102592
+	  7       0.535789
+	  8       0.563650
+
+                  0          1          2          3          4          5    
+      0      -0.633654   0.000004  -0.693057  -0.000000  -0.248429   0.000000
+      1      -0.000000  -0.941032  -0.000005  -0.205203  -0.000000  -0.001924
+      2      -0.688177  -0.000004   0.638485  -0.000000  -0.251351   0.000000
+      3      -0.169680   0.003252  -0.174051  -0.401163   0.466042  -0.500103
+      4      -0.000005  -0.239194   0.000141   0.394331   0.000000   0.001784
+      5      -0.183456  -0.002296   0.160345   0.403134   0.469422  -0.499893
+      6      -0.169680  -0.003250  -0.174051   0.401163   0.466043   0.500102
+      7       0.000004  -0.239194  -0.000144   0.394331  -0.000000   0.001784
+      8      -0.183456   0.002294   0.160345  -0.403134   0.469423   0.499892
+                   6          7          8    
+      0       0.192616  -0.139058  -0.000000
+      1      -0.000000  -0.000000   0.268975
+      2      -0.191129   0.137987   0.000000
+      3      -0.383315   0.277108  -0.298253
+      4       0.414228   0.573075  -0.535991
+      5       0.380354  -0.274968   0.295948
+      6      -0.383315   0.277108   0.298253
+      7      -0.414228  -0.573075  -0.535991
+      8       0.380354  -0.274968  -0.295948
+                  0          1          2          3          4          5    
+      0      -0.633654   0.000004  -0.693057  -0.000000  -0.248429   0.000000
+      1      -0.000000  -0.941032  -0.000005  -0.205203  -0.000000  -0.001924
+      2      -0.688177  -0.000004   0.638485  -0.000000  -0.251351   0.000000
+      3      -0.169680   0.003252  -0.174051  -0.401163   0.466042  -0.500103
+      4      -0.000005  -0.239194   0.000141   0.394331   0.000000   0.001784
+      5      -0.183456  -0.002296   0.160345   0.403134   0.469422  -0.499893
+      6      -0.169680  -0.003250  -0.174051   0.401163   0.466043   0.500102
+      7       0.000004  -0.239194  -0.000144   0.394331  -0.000000   0.001784
+      8      -0.183456   0.002294   0.160345  -0.403134   0.469423   0.499892
+                   6          7          8    
+      0       0.192616  -0.139058  -0.000000
+      1      -0.000000  -0.000000   0.268975
+      2      -0.191129   0.137987   0.000000
+      3      -0.383315   0.277108  -0.298253
+      4       0.414228   0.573075  -0.535991
+      5       0.380354  -0.274968   0.295948
+      6      -0.383315   0.277108   0.298253
+      7      -0.414228  -0.573075  -0.535991
+      8       0.380354  -0.274968  -0.295948
+raw_Hessian
+                  0          1          2          3          4          5    
+      0       0.232749  -0.000000  -0.233720  -0.116375  -0.147640   0.116860
+      1      -0.000000   0.682247   0.000000  -0.190676  -0.341123   0.189221
+      2      -0.233710   0.000000   0.229149   0.116855   0.146507  -0.114574
+      3      -0.116255  -0.190886   0.116982   0.110321   0.169364  -0.111155
+      4      -0.147840  -0.341328   0.146698   0.169360   0.373798  -0.168052
+      5       0.116982   0.189411  -0.114439  -0.111155  -0.168055   0.108596
+      6      -0.116255   0.190886   0.116982   0.005934  -0.021522  -0.005827
+      7       0.147840  -0.341328  -0.146698   0.021520  -0.032470  -0.021353
+      8       0.116982  -0.189411  -0.114439  -0.005827   0.021356   0.005844
+                   6          7          8    
+      0      -0.116375   0.147640   0.116860
+      1       0.190676  -0.341123  -0.189221
+      2       0.116855  -0.146507  -0.114574
+      3       0.005934   0.021522  -0.005827
+      4      -0.021520  -0.032470   0.021353
+      5      -0.005827  -0.021356   0.005844
+      6       0.110321  -0.169364  -0.111155
+      7      -0.169360   0.373798   0.168052
+      8      -0.111155   0.168055   0.108596
+diagolised_Hessian, mat_L
+	  0      -0.001886
+	  1      -0.001800
+	  2      -0.001747
+	  3      -0.000000
+	  4       0.000000
+	  5       0.000001
+	  6       0.100626
+	  7       0.562066
+	  8       0.590497
+
+                  0          1          2          3          4          5    
+      0       0.000000  -0.219823   0.000000   0.692443   0.000000   0.644788
+      1      -0.191163  -0.000000   0.000034  -0.000000   0.943984   0.000000
+      2       0.000000  -0.220334   0.000000  -0.639134  -0.000000   0.698125
+      3      -0.400734   0.473169  -0.500441   0.173916   0.003853   0.148829
+      4       0.397854   0.000001   0.002650  -0.000152   0.233293   0.000005
+      5       0.403550   0.477153  -0.499553  -0.160526  -0.002590   0.162125
+      6       0.400734   0.473170   0.500440   0.173916  -0.003853   0.148829
+      7       0.397854  -0.000000   0.002650   0.000152   0.233293  -0.000005
+      8      -0.403550   0.477154   0.499552  -0.160526   0.002589   0.162125
+                   6          7          8    
+      0       0.192449  -0.139329  -0.000000
+      1      -0.000000  -0.000000   0.268981
+      2      -0.190963   0.138256   0.000000
+      3      -0.382929   0.277632  -0.298257
+      4       0.415013   0.572507  -0.535984
+      5       0.379971  -0.275487   0.295953
+      6      -0.382929   0.277632   0.298257
+      7      -0.415013  -0.572507  -0.535984
+      8       0.379971  -0.275487  -0.295953
+                  0          1          2          3          4          5    
+      0       0.000000  -0.219823   0.000000   0.692443   0.000000   0.644788
+      1      -0.191163  -0.000000   0.000034  -0.000000   0.943984   0.000000
+      2       0.000000  -0.220334   0.000000  -0.639134  -0.000000   0.698125
+      3      -0.400734   0.473169  -0.500441   0.173916   0.003853   0.148829
+      4       0.397854   0.000001   0.002650  -0.000152   0.233293   0.000005
+      5       0.403550   0.477153  -0.499553  -0.160526  -0.002590   0.162125
+      6       0.400734   0.473170   0.500440   0.173916  -0.003853   0.148829
+      7       0.397854  -0.000000   0.002650   0.000152   0.233293  -0.000005
+      8      -0.403550   0.477154   0.499552  -0.160526   0.002589   0.162125
+                   6          7          8    
+      0       0.192449  -0.139329  -0.000000
+      1      -0.000000  -0.000000   0.268981
+      2      -0.190963   0.138256   0.000000
+      3      -0.382929   0.277632  -0.298257
+      4       0.415013   0.572507  -0.535984
+      5       0.379971  -0.275487   0.295953
+      6      -0.382929   0.277632   0.298257
+      7      -0.415013  -0.572507  -0.535984
+      8       0.379971  -0.275487  -0.295953
+raw_Hessian
+                  0          1          2          3          4          5    
+      0       0.230663   0.010036  -0.228295  -0.116392  -0.148072   0.117078
+      1       0.010035   0.667906  -0.009959  -0.190748  -0.341031   0.189293
+      2      -0.228285  -0.009960   0.227145   0.117073   0.146936  -0.114589
+      3      -0.116273  -0.190959   0.117202   0.110454   0.169507  -0.111363
+      4      -0.148276  -0.341235   0.147130   0.169503   0.373254  -0.168193
+      5       0.117202   0.189483  -0.114454  -0.111363  -0.168197   0.108725
+      6      -0.114174   0.180922   0.111338   0.005819  -0.021230  -0.005839
+      7       0.138239  -0.327097  -0.137171   0.021450  -0.032020  -0.021284
+      8       0.111338  -0.179523  -0.112446  -0.005839   0.021065   0.005729
+                   6          7          8    
+      0      -0.114270   0.138036   0.111216
+      1       0.180713  -0.326875  -0.179334
+      2       0.111211  -0.136976  -0.112556
+      3       0.005819   0.021452  -0.005839
+      4      -0.021227  -0.032020   0.021063
+      5      -0.005839  -0.021286   0.005729
+      6       0.108355  -0.159692  -0.105499
+      7      -0.159689   0.359116   0.158455
+      8      -0.105499   0.158458   0.106718
+diagolised_Hessian, mat_L
+	  0      -0.001861
+	  1      -0.000008
+	  2      -0.000000
+	  3       0.000000
+	  4       0.000025
+	  5       0.002153
+	  6       0.101628
+	  7       0.543669
+	  8       0.582337
+
+                  0          1          2          3          4          5    
+      0       0.157552  -0.074664   0.704640   0.619899  -0.049353   0.173033
+      1       0.000829   0.706817   0.127268  -0.009849   0.641685   0.000675
+      2       0.157947   0.078337  -0.612590   0.710823   0.046696   0.175023
+      3      -0.686311  -0.225142   0.176690   0.144553   0.342946   0.030171
+      4       0.000070   0.405153   0.031787  -0.003799  -0.230033   0.000046
+      5      -0.692113   0.225083  -0.154140   0.164878  -0.339906   0.030345
+      6       0.009583   0.181265   0.177284   0.163351  -0.354673  -0.682216
+      7       0.000075   0.398315   0.032077  -0.003776  -0.218392   0.000050
+      8       0.009692  -0.178007  -0.153525   0.188590   0.352239  -0.687151
+                   6          7          8    
+      0       0.192512  -0.129180  -0.051820
+      1       0.002492   0.099185  -0.250021
+      2      -0.191026   0.128185   0.051421
+      3      -0.375688   0.147431   0.380491
+      4       0.409563   0.335207   0.708382
+      5       0.372786  -0.146293  -0.377551
+      6      -0.390477   0.367404  -0.173977
+      7      -0.419515  -0.730513   0.288038
+      8       0.387460  -0.364566   0.172633
+                  0          1          2          3          4          5    
+      0       0.157552  -0.074664   0.704640   0.619899  -0.049353   0.173033
+      1       0.000829   0.706817   0.127268  -0.009849   0.641685   0.000675
+      2       0.157947   0.078337  -0.612590   0.710823   0.046696   0.175023
+      3      -0.686311  -0.225142   0.176690   0.144553   0.342946   0.030171
+      4       0.000070   0.405153   0.031787  -0.003799  -0.230033   0.000046
+      5      -0.692113   0.225083  -0.154140   0.164878  -0.339906   0.030345
+      6       0.009583   0.181265   0.177284   0.163351  -0.354673  -0.682216
+      7       0.000075   0.398315   0.032077  -0.003776  -0.218392   0.000050
+      8       0.009692  -0.178007  -0.153525   0.188590   0.352239  -0.687151
+                   6          7          8    
+      0       0.192512  -0.129180  -0.051820
+      1       0.002492   0.099185  -0.250021
+      2      -0.191026   0.128185   0.051421
+      3      -0.375688   0.147431   0.380491
+      4       0.409563   0.335207   0.708382
+      5       0.372786  -0.146293  -0.377551
+      6      -0.390477   0.367404  -0.173977
+      7      -0.419515  -0.730513   0.288038
+      8       0.387460  -0.364566   0.172633
+raw_Hessian
+                  0          1          2          3          4          5    
+      0       0.230663  -0.010036  -0.228295  -0.114270  -0.138036   0.111216
+      1      -0.010035   0.667906   0.009959  -0.180713  -0.326875   0.179334
+      2      -0.228285   0.009960   0.227145   0.111211   0.136976  -0.112556
+      3      -0.114174  -0.180922   0.111338   0.108355   0.159692  -0.105499
+      4      -0.138239  -0.327097   0.137171   0.159689   0.359116  -0.158455
+      5       0.111338   0.179523  -0.112446  -0.105499  -0.158458   0.106718
+      6      -0.116273   0.190959   0.117202   0.005819  -0.021452  -0.005839
+      7       0.148276  -0.341235  -0.147130   0.021227  -0.032020  -0.021063
+      8       0.117202  -0.189483  -0.114454  -0.005839   0.021286   0.005729
+                   6          7          8    
+      0      -0.116392   0.148072   0.117078
+      1       0.190748  -0.341031  -0.189293
+      2       0.117073  -0.146936  -0.114589
+      3       0.005819   0.021230  -0.005839
+      4      -0.021450  -0.032020   0.021284
+      5      -0.005839  -0.021065   0.005729
+      6       0.110454  -0.169507  -0.111363
+      7      -0.169503   0.373254   0.168193
+      8      -0.111363   0.168197   0.108725
+diagolised_Hessian, mat_L
+	  0      -0.001861
+	  1      -0.000008
+	  2      -0.000000
+	  3       0.000000
+	  4       0.000025
+	  5       0.002153
+	  6       0.101628
+	  7       0.543669
+	  8       0.582337
+
+                  0          1          2          3          4          5    
+      0      -0.157552   0.074664   0.704639   0.619900   0.049353   0.173033
+      1       0.000829   0.706816  -0.127268   0.009849   0.641686  -0.000675
+      2      -0.157947  -0.078337  -0.612592   0.710822  -0.046696   0.175023
+      3      -0.009583  -0.181266   0.177284   0.163352   0.354673  -0.682216
+      4       0.000075   0.398315  -0.032077   0.003776  -0.218391  -0.000050
+      5      -0.009692   0.178008  -0.153525   0.188590  -0.352238  -0.687151
+      6       0.686311   0.225143   0.176690   0.144553  -0.342946   0.030171
+      7       0.000070   0.405153  -0.031787   0.003799  -0.230033  -0.000046
+      8       0.692113  -0.225084  -0.154141   0.164878   0.339906   0.030345
+                   6          7          8    
+      0       0.192512  -0.129180  -0.051820
+      1      -0.002492  -0.099185   0.250021
+      2      -0.191026   0.128185   0.051421
+      3      -0.390477   0.367404  -0.173977
+      4       0.419515   0.730513  -0.288038
+      5       0.387460  -0.364566   0.172633
+      6      -0.375688   0.147431   0.380491
+      7      -0.409563  -0.335207  -0.708382
+      8       0.372786  -0.146293  -0.377551
+                  0          1          2          3          4          5    
+      0      -0.157552   0.074664   0.704639   0.619900   0.049353   0.173033
+      1       0.000829   0.706816  -0.127268   0.009849   0.641686  -0.000675
+      2      -0.157947  -0.078337  -0.612592   0.710822  -0.046696   0.175023
+      3      -0.009583  -0.181266   0.177284   0.163352   0.354673  -0.682216
+      4       0.000075   0.398315  -0.032077   0.003776  -0.218391  -0.000050
+      5      -0.009692   0.178008  -0.153525   0.188590  -0.352238  -0.687151
+      6       0.686311   0.225143   0.176690   0.144553  -0.342946   0.030171
+      7       0.000070   0.405153  -0.031787   0.003799  -0.230033  -0.000046
+      8       0.692113  -0.225084  -0.154141   0.164878   0.339906   0.030345
+                   6          7          8    
+      0       0.192512  -0.129180  -0.051820
+      1      -0.002492  -0.099185   0.250021
+      2      -0.191026   0.128185   0.051421
+      3      -0.390477   0.367404  -0.173977
+      4       0.419515   0.730513  -0.288038
+      5       0.387460  -0.364566   0.172633
+      6      -0.375688   0.147431   0.380491
+      7      -0.409563  -0.335207  -0.708382
+      8       0.372786  -0.146293  -0.377551
+Calling the VPT2 programme via:
+	 /home/via9/orca_4_0_1_2_linux_x86-64_openmpi202//orca_vpt2 orca.vpt2 
+
+
+
+
+                    *******************************
+                    *         VPT2 Analysis       *
+                    *******************************
+
+
+
+VPT2 Settings:
+    Basename:                                orca
+    Minimise the Orca amount of output:      true
+    Rotational symmetry detection threshold: 1.00e-06
+    Anharmonic displacement factor:          0.050
+    Cutoff value when reading the Hessian:   1.00e-10
+    Print-level:                             0
+
+raw_Hessian
+                  0          1          2          3          4          5    
+      0       0.230651  -0.000000  -0.228226  -0.115325  -0.142996   0.114113
+      1      -0.000000   0.667761   0.000000  -0.185672  -0.333880   0.184255
+      2      -0.228216   0.000000   0.227134   0.114108   0.141899  -0.113567
+      3      -0.115219  -0.185883   0.114236   0.109400   0.164543  -0.108398
+      4      -0.143201  -0.334096   0.142094   0.164539   0.366117  -0.163268
+      5       0.114236   0.184447  -0.113446  -0.108398  -0.163271   0.107717
+      6      -0.115219   0.185883   0.114236   0.005819  -0.021341  -0.005839
+      7       0.143201  -0.334096  -0.142094   0.021338  -0.032020  -0.021173
+      8       0.114236  -0.184447  -0.113446  -0.005839   0.021176   0.005729
+                   6          7          8    
+      0      -0.115325   0.142996   0.114113
+      1       0.185672  -0.333880  -0.184255
+      2       0.114108  -0.141899  -0.113567
+      3       0.005819   0.021341  -0.005839
+      4      -0.021338  -0.032020   0.021173
+      5      -0.005839  -0.021176   0.005729
+      6       0.109400  -0.164543  -0.108398
+      7      -0.164539   0.366117   0.163268
+      8      -0.108398   0.163271   0.107717
+diagolised_Hessian, mat_L
+	  0      -0.000012
+	  1      -0.000003
+	  2      -0.000000
+	  3       0.000075
+	  4       0.000146
+	  5       0.000220
+	  6       0.101633
+	  7       0.548789
+	  8       0.576930
+
+                  0          1          2          3          4          5    
+      0       0.547893   0.000000  -0.692791  -0.000000   0.404241  -0.000001
+      1       0.000000  -0.888460   0.000000   0.371723   0.000000   0.010556
+      2       0.599271   0.000000   0.638766  -0.000000   0.421042  -0.000001
+      3       0.284732   0.079862  -0.173993   0.392478  -0.406124   0.500628
+      4       0.000004  -0.306473   0.000147  -0.344661   0.000001  -0.000228
+      5       0.298783  -0.070820   0.160424  -0.397594  -0.405856   0.499317
+      6       0.284732  -0.079862  -0.173993  -0.392478  -0.406125  -0.500626
+      7      -0.000004  -0.306473  -0.000147  -0.344661  -0.000001  -0.000228
+      8       0.298783   0.070820   0.160424   0.397594  -0.405857  -0.499316
+                   6          7          8    
+      0       0.192531  -0.139194  -0.000000
+      1      -0.000000  -0.000000   0.268977
+      2      -0.191045   0.138122   0.000000
+      3      -0.383121   0.277372  -0.298255
+      4       0.414623   0.572789  -0.535988
+      5       0.380161  -0.275229   0.295950
+      6      -0.383121   0.277372   0.298255
+      7      -0.414623  -0.572789  -0.535988
+      8       0.380161  -0.275229  -0.295950
+                  0          1          2          3          4          5    
+      0       0.547893   0.000000  -0.692791  -0.000000   0.404241  -0.000001
+      1       0.000000  -0.888460   0.000000   0.371723   0.000000   0.010556
+      2       0.599271   0.000000   0.638766  -0.000000   0.421042  -0.000001
+      3       0.284732   0.079862  -0.173993   0.392478  -0.406124   0.500628
+      4       0.000004  -0.306473   0.000147  -0.344661   0.000001  -0.000228
+      5       0.298783  -0.070820   0.160424  -0.397594  -0.405856   0.499317
+      6       0.284732  -0.079862  -0.173993  -0.392478  -0.406125  -0.500626
+      7      -0.000004  -0.306473  -0.000147  -0.344661  -0.000001  -0.000228
+      8       0.298783   0.070820   0.160424   0.397594  -0.405857  -0.499316
+                   6          7          8    
+      0       0.192531  -0.139194  -0.000000
+      1      -0.000000  -0.000000   0.268977
+      2      -0.191045   0.138122   0.000000
+      3      -0.383121   0.277372  -0.298255
+      4       0.414623   0.572789  -0.535988
+      5       0.380161  -0.275229   0.295950
+      6      -0.383121   0.277372   0.298255
+      7      -0.414623  -0.572789  -0.535988
+      8       0.380161  -0.275229  -0.295950
+
+
+============================ Geometry ==========================
+
+ Coordinates in Angstroem
+ ---------------------------------------------------------------
+ Atom         x               y               z         Mass [u]
+ ---------------------------------------------------------------
+  O      0.047157865     0.000000000    -0.046793319  15.994915
+  H     -0.374214773    -0.757264680     0.371321965   1.007825
+  H     -0.374214772     0.757264680     0.371321965   1.007825
+ ---------------------------------------------------------------
+
+
+===================== Rotational Analysis ======================
+
+
+ Moment of inertia tensor [u * Angstrom^2]
+ ---------------------------------------------
+  Axis       x            y           z  
+ ---------------------------------------------
+    x     1.4688147   -0.0000000    0.6307570
+    y    -0.0000000    0.6307760    0.0000000
+    z     0.6307570    0.0000000    1.4737096
+ ---------------------------------------------
+
+
+ Vibrational-rotational constants [1/cm]
+ -----------------------------------------------------
+  a    i      T2+3       T1         T4        Total
+ -----------------------------------------------------
+  0    1     0.80226   -0.35605   -0.01349   -0.432722
+  0    2     0.00139   -0.97172    2.02860   -1.058259
+  0    3    -0.70109   -0.35777    1.78074   -0.721881
+  1    1     0.00000   -0.96642   -0.49703    1.463455
+  1    2    -0.00000   -0.21792    0.58784   -0.369921
+  1    3    -0.00000   -0.17148    0.86595   -0.694472
+  2    1     0.07337   -0.03157   -0.00183   -0.039968
+  2    2     0.00013   -0.08778    0.18340   -0.095743
+  2    3    -0.06412   -0.03172    0.16143   -0.065587
+ -----------------------------------------------------
+
+
+ Rotational constants B_e and B_0 [1/cm]
+ ---------------------------------------------
+ Const         x            y           z  
+ ---------------------------------------------
+  B_e       26.725222   20.056659    8.019713
+  B_0       25.618790   20.256190    7.919064
+  B_e-B_0    1.106431   -0.199531    0.100649
+ ---------------------------------------------
+
+
+
+===================== Vibrational Analysis =====================
+
+
+ Harmonic derivative of the perturbative corrections to the fundamental frequencies D
+
+ -----------------------------------
+ D_vi^wi    v_000    v_001    v_002  
+ -----------------------------------
+ w_000     -0.00751   -0.00797    0.00470
+ w_001      0.04517    0.03778    0.02884
+ w_002     -0.00636    0.08351    0.01067
+ -----------------------------------
+
+
+ Anharmonic constants [1/cm]
+ ---------------------------
+    r      s     chi[r][s]
+ ---------------------------
+    1      1      -14.8840
+    2      1      -12.6556
+    2      2      -43.2317
+    3      1        5.1450
+    3      2     -165.6313
+    3      3      -48.0252
+ ---------------------------
+
+
+ Fundamental transition
+ ---------------------------------------------
+ Mode[i] w[i] [1/cm]  v[i] [1/cm]  Diff [1/cm]
+ ---------------------------------------------
+    1      1638.78      1605.26      -33.52
+    2      3808.09      3632.48     -175.61
+    3      3904.51      3728.21     -176.29
+ ---------------------------------------------
+
+
+ Zero-point ro-vibrational energy
+ --------------------------------------------
+ Harmonic contribution:         4675.687 1/cm
+ Anharmonic correction:          -69.821 1/cm
+ Ro-vibrational correction:       14.415 1/cm
+ --------------------------------------------
+ Total:                         4620.281 1/cm
+
+
+
+============================== End =============================
+
+
+Timings for individual modules:
+
+Sum of individual times         ...       44.781 sec (=   0.746 min)
+GTO integral calculation        ...        3.488 sec (=   0.058 min)   7.8 %
+SCF iterations                  ...       14.351 sec (=   0.239 min)  32.0 %
+Analytical frequency calculation...       26.941 sec (=   0.449 min)  60.2 %
+                             ****ORCA TERMINATED NORMALLY****
+TOTAL RUN TIME: 0 days 0 hours 0 minutes 45 seconds 297 msec

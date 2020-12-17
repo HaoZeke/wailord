@@ -93,6 +93,7 @@ OUT_REGEX = {
     "Mulliken": re.compile(r"MULLIKEN ATOMIC CHARGES"),
     "Loewdin": re.compile(r"LOEWDIN ATOMIC CHARGES"),
     "irSpectrum": re.compile(r"IR SPECTRUM"),
+    "vpt2trans": re.compile(r"Fundamental transition"),
     "Vibrational Frequency": re.compile(r"VIBRATIONAL FREQUENCIES"),
 }
 
@@ -449,6 +450,30 @@ class orcaExp:
         ve.sort_values(by=["theory", "basis"], ignore_index=True, inplace=True)
         return ve
 
+    def get_vpt2_transitions(self):
+        """Returns a datframe of the fundamental transitions table
+
+        Proxies calls to the base orcaVis class over a series of generated files
+
+        Args:
+            None
+
+        Returns:
+            pd.DataFrame: Returns a data frame of frequencies
+        """
+        vdatl = []
+        for runf in self.orclist:
+            runorc = orcaVis(runf).vpt2_transitions()
+            vdatl.append(runorc)
+        ve = pd.concat(vdatl, axis=0)
+        ve = ve.drop_duplicates()
+        basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
+        theory_type = CategoricalDtype(categories=self.order_theory, ordered=True)
+        ve["basis"] = ve["basis"].astype(basis_type)
+        ve["theory"] = ve["theory"].astype(theory_type)
+        ve.sort_values(by=["theory", "basis"], ignore_index=True, inplace=True)
+        return ve
+
     def get_energy_surface(self, etype=["Actual Energy", "SCF Energy"]):
         """Populates an energy surface dataframe
 
@@ -711,28 +736,60 @@ class orcaVis:
         # TODO: Add experiment layer
         # TODO: Error if more than one imaginary
         # Check if greater 100 then it is not numerical
+        # if vdat.empty:
+        #     raise (
+        #         ValueError(
+        #             f"Spectra not found for {self.runinfo['theory']}, did you run FREQ?"
+        #         )
+        #     )
+        # elif vdat.imaginary.value_counts()[1] > 1:
+        #     warnings.warn(
+        #         f"More than one imaginary mode, you did not find a saddle point",
+        #         UserWarning,
+        #     )
+        # elif vdat.imaginary.value_counts()[1] == 0:
+        #     raise (
+        #         ValueError(
+        #             "No imaginary frequencies found, check the geometry of reactant and product configurations"
+        #         )
+        #     )
+        return vdat
+
+    def vpt2_transitions(self):
+        """Grabs the fundamental transition analysis from a VPT2 calculation"""
+        sregexp = OUT_REGEX["vpt2trans"]
+        vline = namedtuple("vline", "Mode harmonic_freq vpt2_freq freq_diff")
+        accumulate = []
+        with open(self.ofile) as of:
+            flines = of.readlines()
+            for lnum, line in enumerate(flines):
+                if sregexp.search(line):
+                    offset = lnum + 4
+                    i = 0
+                    while "---" not in flines[offset + i]:
+                        raw = flines[offset + i].split()
+                        v = vline(
+                            Mode=int(raw[0]),
+                            harmonic_freq=float(raw[1]),
+                            vpt2_freq=float(raw[2]),
+                            freq_diff=float(raw[3]),
+                        )
+                        accumulate.append(v)
+                        i = i + 1
+        vdat = pd.DataFrame(accumulate)
+        vdat["harmonic_freq"] = vdat["harmonic_freq"].astype("pint[cm_1]")
+        vdat["vpt2_freq"] = vdat["vpt2_freq"].astype("pint[cm_1]")
+        vdat["freq_diff"] = vdat["freq_diff"].astype("pint[cm_1]")
         if vdat.empty:
             raise (
                 ValueError(
-                    f"Spectra not found for {self.runinfo['theory']}, did you run FREQ?"
-                )
-            )
-        elif vdat.imaginary.value_counts()[1] > 1:
-            warnings.warn(
-                f"More than one imaginary mode, you did not find a saddle point",
-                UserWarning,
-            )
-        elif vdat.imaginary.value_counts()[1] == 0:
-            raise (
-                ValueError(
-                    "No imaginary frequencies found, check the geometry of reactant and product configurations"
+                    f"Data not found for {self.runinfo['theory']}, did you run VPT2?"
                 )
             )
         else:
             for key in self.runinfo.keys():
                 vdat[key] = self.runinfo[key]
         return vdat
-        pass
 
     def ir_spec(self):
         """Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for
