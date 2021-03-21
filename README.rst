@@ -12,8 +12,9 @@ Wailord
         :target: https://zenodo.org/badge/latestdoi/303189277
         :alt: Zenodo Status
 
-.. image:: https://img.shields.io/travis/HaoZeke/wailord.svg
-        :target: https://travis-ci.com/HaoZeke/wailord
+.. image:: https://github.com/HaoZeke/wailord/actions/workflows/build_wailord.yml/badge.svg
+        :target: https://github.com/HaoZeke/wailord/actions/workflows/build_wailord.yml
+        :alt: Build Status
 
 .. image:: https://api.netlify.com/api/v1/badges/2209e709-8d41-46ee-bf4d-0b116f9243b1/deploy-status
         :target: https://app.netlify.com/sites/wailord/deploys
