@@ -1,4 +1,4 @@
-name: "Build, test, and distribute wailord"
+name: "Build Documentation"
 on: [push, pull_request]
 jobs:
   ci:
@@ -18,12 +18,18 @@ jobs:
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: ${{ matrix.poetry-version }}
-      - name: Prep dependencies
-        run: poetry install
       - name: Test project
         run: poetry run pytest
       - name: Build project
         run: poetry build
+      - name: Build docs
+        run: poetry run sphinx-build docs ./genDocs
+      - name: Deploy Documentation
+        if: ${{ (github.ref == 'refs/heads/main' && github.repository == 'HaoZeke/wailord') || (github.ref == 'refs/heads/master' && github.repository == 'HaoZeke/wailord')}}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./genDocs
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
