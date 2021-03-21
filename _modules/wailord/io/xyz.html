@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wailord.io.xyz &#8212; Wailord 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/library/library.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["tex2jax.js"], "jax": ["input/TeX", "output/HTML-CSS"]})</script>
+    <link rel="canonical" href="https://wailord.xyz/_modules/wailord/io/xyz.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+ 
+
+<link rel="stylesheet" id="sphinx-library-type" href="../../../_static/library/type-book.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=0.9" />
+<script>
+  mobile_menu_content = "";
+  function toggleMenu() {
+    var div = document.getElementsByClassName("document").item(0);
+    var btn = document.getElementById("menu-toggler");
+    if(div.classList.contains("mobile-show")) {
+      div.classList.remove("mobile-show");
+      btn.innerHTML = mobile_menu_content;
+    }
+    else {
+      div.classList.add("mobile-show");
+      mobile_menu_content = btn.innerHTML;
+      btn.innerHTML = btn.getAttribute("data-open");
+    }
+  }
+</script>
+  </head>
+<body class="sepia">
+<div class="document">
+
+  
+  <nav class="mobile-menu" role="navigation">
+    
+  <button type="button" id="menu-toggler" onclick="toggleMenu();"
+    data-open="× Close">≡ Menu</button>
+  <a href="../../../index.html">Wailord</a>
+  <noscript>
+    <div>
+      JavaScript is required to open/close mobile menu.
+    </div>
+  </noscript>
+  </nav>
+  
+
+  
+  <nav class="sphinxsidebar" role="navigation" aria-label="main navigation">
+    
+
+
+<h1 class="logo ">
+  <a href="../../../index.html">Wailord</a>
+</h1>
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<h3>Links</h3>
+<ul>
+  
+  <li class="toctree-l1"><a href="https://github.com/HaoZeke/wailord">Github</a></li>
+  
+  <li class="toctree-l1"><a href="https://liberapay.com/rohit/donate">Donate</a></li>
+  
+  <li class="toctree-l1"><a href="https://rgoswami.me">Personal</a></li>
+  
+</ul>
+<h3>Contents</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">wailord</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+<script>
+  function toggleMode(theme) {
+    document.body.className = theme;
+    localStorage.setItem("sphinx-library-mode", theme);
+  }
+  var theme = localStorage.getItem("sphinx-library-mode");
+  if(theme !== null)
+    toggleMode(theme);
+</script>
+<h3>Reading Mode</h3>
+
+<button type="button" onclick="toggleMode('light');">Light</button>
+<button type="button" onclick="toggleMode('sepia');">Sepia</button>
+<button type="button" onclick="toggleMode('dark');">Dark</button>
+
+<noscript>
+  <div>
+    JavaScript is required to toggle reading modes.
+  </div>
+</noscript>
+  </nav>
+  <div class="documentwrapper">
+    <nav class="related breadcrumbs" role="navigation">
+  <a class="nav-item" href="../../../index.html">Index</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="../../index.html">Module code</a>
+  <span class="delim"> &#187;</span>
+  <span class="nav-item">wailord.io.xyz</span>
+    </nav>
+    
+
+    <main class="body" role="main" id="main">
+      
+  <h1>Source code for wailord.io.xyz</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;An xyz parser</span>
+
+<span class="sd">This module implements a grammar for parsing xyz files.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    See the tests for more</span>
+
+<span class="sd">        $ poetry run</span>
+
+<span class="sd">Some more details.</span>
+
+<span class="sd">Todo:</span>
+<span class="sd">    * Make tests</span>
+<span class="sd">    * Return interesting things</span>
+<span class="sd">    * You have to also use ``sphinx.ext.todo`` extension</span>
+
+<span class="sd">.. _Google Python Style Guide:</span>
+<span class="sd">   http://google.github.io/styleguide/pyguide.html</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">parsimonious.grammar</span> <span class="kn">import</span> <span class="n">Grammar</span>
+<span class="kn">from</span> <span class="nn">parsimonious.nodes</span> <span class="kn">import</span> <span class="n">NodeVisitor</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">itertt</span>
+
+<span class="n">grammar_xyz</span> <span class="o">=</span> <span class="n">Grammar</span><span class="p">(</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    meta = natoms ws coord_block ws?</span>
+<span class="sd">    natoms = number</span>
+<span class="sd">    coord_block = (aline ws)+</span>
+<span class="sd">    aline = (atype ws cline)</span>
+<span class="sd">    atype = ~&quot;[a-zA-Z]&quot; / ~&quot;[0-9]&quot;</span>
+<span class="sd">    cline = (float ws float ws float)</span>
+<span class="sd">    float = pm number &quot;.&quot; number</span>
+<span class="sd">    pm              = ~&quot;[+-]?&quot;</span>
+<span class="sd">    number          = ~&quot;\\d+&quot;</span>
+<span class="sd">    ws              = ~&quot;\\s*&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;grammar_xyz: The xyz grammar.</span>
+
+<span class="sd">Recall that by default the format `specification for an xyz``</span>
+<span class="sd">The docstring may span multiple lines. The type may optionally be specified</span>
+<span class="sd">on the first line, separated by a colon.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="xyzVisitor"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzVisitor">[docs]</a><span class="k">class</span> <span class="nc">xyzVisitor</span><span class="p">(</span><span class="n">NodeVisitor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class extends NodeVisitor&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">natoms</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coord_block</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom_types</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="xyzVisitor.visit_meta"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzVisitor.visit_meta">[docs]</a>    <span class="k">def</span> <span class="nf">visit_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the overall output. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span></div>
+
+<div class="viewcode-block" id="xyzVisitor.visit_coord_block"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzVisitor.visit_coord_block">[docs]</a>    <span class="k">def</span> <span class="nf">visit_coord_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Makes a dict of the section (as key) and the key/value pairs. &quot;&quot;&quot;</span>
+        <span class="n">cb</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">aline</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cb</span><span class="p">):</span>
+            <span class="n">each</span> <span class="o">=</span> <span class="n">aline</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">cb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">each</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coord_block</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cb</span><span class="p">)</span>
+        <span class="c1"># Could have also just returned and assigned node.text</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span></div>
+
+<div class="viewcode-block" id="xyzVisitor.visit_cline"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzVisitor.visit_cline">[docs]</a>    <span class="k">def</span> <span class="nf">visit_cline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Makes a dict of the section (as key) and the key/value pairs. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clines</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span></div>
+
+<div class="viewcode-block" id="xyzVisitor.visit_natoms"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzVisitor.visit_natoms">[docs]</a>    <span class="k">def</span> <span class="nf">visit_natoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Makes a dict of the section (as key) and the key/value pairs. &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span></div>
+
+<div class="viewcode-block" id="xyzVisitor.visit_atype"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzVisitor.visit_atype">[docs]</a>    <span class="k">def</span> <span class="nf">visit_atype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Makes a dict of the section (as key) and the key/value pairs. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span></div>
+
+<div class="viewcode-block" id="xyzVisitor.generic_visit"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzVisitor.generic_visit">[docs]</a>    <span class="k">def</span> <span class="nf">generic_visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="n">visited_children</span></div></div>
+
+
+<div class="viewcode-block" id="xyzIO"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzIO">[docs]</a><span class="k">class</span> <span class="nc">xyzIO</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This class handles xyz files at a user level&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment_line</span> <span class="o">=</span> <span class="s2">&quot;Generated by wailord&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyzdat</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counts</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;XYZ file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="xyzIO.read"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzIO.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">dat</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comment_line</span> <span class="o">=</span> <span class="n">dat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">dat</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Kill comment line</span>
+            <span class="n">dat</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">dat</span><span class="p">))</span>
+            <span class="n">sx</span> <span class="o">=</span> <span class="n">xyzVisitor</span><span class="p">()</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">grammar_xyz</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
+            <span class="n">sx</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xyzdat</span> <span class="o">=</span> <span class="n">sx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">sx</span><span class="o">.</span><span class="n">atom_types</span><span class="p">)</span>
+            <span class="n">ldict</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertt</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">ldict</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">comment_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comment_line</span>
+
+    <span class="nd">@comment_line</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">comment_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cl</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">cl</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_comment_line</span> <span class="o">=</span> <span class="n">cl</span>
+
+<div class="viewcode-block" id="xyzIO.write"><a class="viewcode-back" href="../../../source/wailord.io.xyz.html#wailord.io.xyz.xyzIO.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outname</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outname</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">op</span><span class="p">:</span>
+            <span class="c1"># Recreate the comment line</span>
+            <span class="n">outdat</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyzdat</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">outdat</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">comment_line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">op</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdat</span><span class="p">))</span></div></div>
+</pre></div>
+
+    </main>
+    <nav class="related bottom" role="navigation">
+  <div class="clear"></div>
+    </nav>
+    
+
+  </div>
+
+  <div class="clear"></div>
+</div>
+<footer class="footer" role="contentinfo">
+    &copy; Copyright 2020, Rohit Goswami.
+  
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> with
+  <a href="https://github.com/vsalvino/sphinx-library">Library</a> theme.
+  
+</footer>
+  </body>
+</html>

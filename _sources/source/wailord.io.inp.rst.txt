@@ -1,0 +1,7 @@
+wailord.io.inp module
+=====================
+
+.. automodule:: wailord.io.inp
+   :members:
+   :undoc-members:
+   :show-inheritance:

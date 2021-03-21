@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wailord.io.xyz module &#8212; Wailord 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/library/library.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["tex2jax.js"], "jax": ["input/TeX", "output/HTML-CSS"]})</script>
+    <link rel="canonical" href="https://wailord.xyz/source/wailord.io.xyz.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="wailord.cli module" href="wailord.cli.html" />
+    <link rel="prev" title="wailord.io.orca module" href="wailord.io.orca.html" />
+ 
+
+<link rel="stylesheet" id="sphinx-library-type" href="../_static/library/type-book.css" type="text/css" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=0.9" />
+<script>
+  mobile_menu_content = "";
+  function toggleMenu() {
+    var div = document.getElementsByClassName("document").item(0);
+    var btn = document.getElementById("menu-toggler");
+    if(div.classList.contains("mobile-show")) {
+      div.classList.remove("mobile-show");
+      btn.innerHTML = mobile_menu_content;
+    }
+    else {
+      div.classList.add("mobile-show");
+      mobile_menu_content = btn.innerHTML;
+      btn.innerHTML = btn.getAttribute("data-open");
+    }
+  }
+</script>
+  </head>
+<body class="sepia">
+<div class="document">
+
+  
+  <nav class="mobile-menu" role="navigation">
+    
+  <button type="button" id="menu-toggler" onclick="toggleMenu();"
+    data-open="× Close">≡ Menu</button>
+  <a href="../index.html">Wailord</a>
+  <noscript>
+    <div>
+      JavaScript is required to open/close mobile menu.
+    </div>
+  </noscript>
+  </nav>
+  
+
+  
+  <nav class="sphinxsidebar" role="navigation" aria-label="main navigation">
+    
+
+
+<h1 class="logo ">
+  <a href="../index.html">Wailord</a>
+</h1>
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<h3>Links</h3>
+<ul>
+  
+  <li class="toctree-l1"><a href="https://github.com/HaoZeke/wailord">Github</a></li>
+  
+  <li class="toctree-l1"><a href="https://liberapay.com/rohit/donate">Donate</a></li>
+  
+  <li class="toctree-l1"><a href="https://rgoswami.me">Personal</a></li>
+  
+</ul>
+<h3>Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">wailord</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="wailord.html">wailord package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+</ul>
+<script>
+  function toggleMode(theme) {
+    document.body.className = theme;
+    localStorage.setItem("sphinx-library-mode", theme);
+  }
+  var theme = localStorage.getItem("sphinx-library-mode");
+  if(theme !== null)
+    toggleMode(theme);
+</script>
+<h3>Reading Mode</h3>
+
+<button type="button" onclick="toggleMode('light');">Light</button>
+<button type="button" onclick="toggleMode('sepia');">Sepia</button>
+<button type="button" onclick="toggleMode('dark');">Dark</button>
+
+<noscript>
+  <div>
+    JavaScript is required to toggle reading modes.
+  </div>
+</noscript>
+  </nav>
+  <div class="documentwrapper">
+    <nav class="related breadcrumbs" role="navigation">
+  <a class="nav-item" href="../index.html">Index</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="modules.html">wailord</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="wailord.html">wailord package</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="wailord.io.html">wailord.io package</a>
+  <span class="delim"> &#187;</span>
+  <span class="nav-item">wailord.io.xyz module</span>
+    </nav>
+    
+
+    <main class="body" role="main" id="main">
+      
+  <div class="section" id="module-wailord.io.xyz">
+<span id="wailord-io-xyz-module"></span><h1>wailord.io.xyz module<a class="headerlink" href="#module-wailord.io.xyz" title="Permalink to this headline">¶</a></h1>
+<p>An xyz parser</p>
+<p>This module implements a grammar for parsing xyz files.</p>
+<p class="rubric">Example</p>
+<p>See the tests for more</p>
+<blockquote>
+<div><p>$ poetry run</p>
+</div></blockquote>
+<p>Some more details.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<ul class="simple">
+<li><p>Make tests</p></li>
+<li><p>Return interesting things</p></li>
+<li><p>You have to also use <code class="docutils literal notranslate"><span class="pre">sphinx.ext.todo</span></code> extension</p></li>
+</ul>
+</div>
+<dl class="py data">
+<dt id="wailord.io.xyz.grammar_xyz">
+<code class="sig-prename descclassname">wailord.io.xyz.</code><code class="sig-name descname">grammar_xyz</code><em class="property"> = {'aline': &lt;Sequence aline = atype ws cline&gt;, 'atype': &lt;OneOf atype = ~&quot;[a-zA-Z]&quot;u / ~&quot;[0-9]&quot;u&gt;, 'cline': &lt;Sequence cline = float ws float ws float&gt;, 'coord_block': &lt;OneOrMore coord_block = (aline ws)+&gt;, 'float': &lt;Sequence float = pm number &quot;.&quot; number&gt;, 'meta': &lt;Sequence meta = number ws coord_block ws?&gt;, 'natoms': &lt;Regex number = ~&quot;\d+&quot;u&gt;, 'number': &lt;Regex number = ~&quot;\d+&quot;u&gt;, 'pm': &lt;Regex pm = ~&quot;[+-]?&quot;u&gt;, 'ws': &lt;Regex ws = ~&quot;\s*&quot;u&gt;}</em><a class="headerlink" href="#wailord.io.xyz.grammar_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>The xyz grammar.</p>
+<p>Recall that by default the format <cite>specification for an xyz`</cite>
+The docstring may span multiple lines. The type may optionally be specified
+on the first line, separated by a colon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>grammar_xyz</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.xyz.xyzIO">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.xyz.</code><code class="sig-name descname">xyzIO</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>This class handles xyz files at a user level</p>
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzIO.comment_line">
+<em class="property">property </em><code class="sig-name descname">comment_line</code><a class="headerlink" href="#wailord.io.xyz.xyzIO.comment_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzIO.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzIO.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzIO.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzIO.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outname</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzIO.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzIO.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wailord.io.xyz.xyzVisitor">
+<em class="property">class </em><code class="sig-prename descclassname">wailord.io.xyz.</code><code class="sig-name descname">xyzVisitor</code><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzVisitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzVisitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">parsimonious.nodes.NodeVisitor</span></code></p>
+<p>This class extends NodeVisitor</p>
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzVisitor.generic_visit">
+<code class="sig-name descname">generic_visit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzVisitor.generic_visit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzVisitor.generic_visit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default visitor method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> – The node we’re visiting</p></li>
+<li><p><strong>visited_children</strong> – The results of visiting the children of that
+node, in a list</p></li>
+</ul>
+</dd>
+</dl>
+<p>I’m not sure there’s an implementation of this that makes sense across
+all (or even most) use cases, so we leave it to subclasses to implement
+for now.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzVisitor.visit_atype">
+<code class="sig-name descname">visit_atype</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzVisitor.visit_atype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzVisitor.visit_atype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a dict of the section (as key) and the key/value pairs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzVisitor.visit_cline">
+<code class="sig-name descname">visit_cline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzVisitor.visit_cline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzVisitor.visit_cline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a dict of the section (as key) and the key/value pairs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzVisitor.visit_coord_block">
+<code class="sig-name descname">visit_coord_block</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzVisitor.visit_coord_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzVisitor.visit_coord_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a dict of the section (as key) and the key/value pairs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzVisitor.visit_meta">
+<code class="sig-name descname">visit_meta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzVisitor.visit_meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzVisitor.visit_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the overall output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wailord.io.xyz.xyzVisitor.visit_natoms">
+<code class="sig-name descname">visit_natoms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited_children</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/wailord/io/xyz.html#xyzVisitor.visit_natoms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#wailord.io.xyz.xyzVisitor.visit_natoms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a dict of the section (as key) and the key/value pairs.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+    </main>
+    <nav class="related bottom" role="navigation">
+  <a class="prev" href="wailord.io.orca.html" title="Previous">
+    &larr; wailord.io.orca module
+  </a>
+  <a class="next" href="wailord.cli.html" title="Next">
+    wailord.cli module &rarr;
+  </a>
+  <div class="clear"></div>
+    </nav>
+    
+
+  </div>
+
+  <div class="clear"></div>
+</div>
+<footer class="footer" role="contentinfo">
+    &copy; Copyright 2020, Rohit Goswami.
+  
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> with
+  <a href="https://github.com/vsalvino/sphinx-library">Library</a> theme.
+  
+  <a href="../_sources/source/wailord.io.xyz.rst.txt" rel="nofollow">Page source</a>
+</footer>
+  </body>
+</html>

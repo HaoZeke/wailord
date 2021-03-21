@@ -1,0 +1,7 @@
+wailord.cli module
+==================
+
+.. automodule:: wailord.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:

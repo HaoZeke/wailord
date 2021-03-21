@@ -1,0 +1,1074 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wailord.io.orca &#8212; Wailord 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/library/library.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["tex2jax.js"], "jax": ["input/TeX", "output/HTML-CSS"]})</script>
+    <link rel="canonical" href="https://wailord.xyz/_modules/wailord/io/orca.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+ 
+
+<link rel="stylesheet" id="sphinx-library-type" href="../../../_static/library/type-book.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=0.9" />
+<script>
+  mobile_menu_content = "";
+  function toggleMenu() {
+    var div = document.getElementsByClassName("document").item(0);
+    var btn = document.getElementById("menu-toggler");
+    if(div.classList.contains("mobile-show")) {
+      div.classList.remove("mobile-show");
+      btn.innerHTML = mobile_menu_content;
+    }
+    else {
+      div.classList.add("mobile-show");
+      mobile_menu_content = btn.innerHTML;
+      btn.innerHTML = btn.getAttribute("data-open");
+    }
+  }
+</script>
+  </head>
+<body class="sepia">
+<div class="document">
+
+  
+  <nav class="mobile-menu" role="navigation">
+    
+  <button type="button" id="menu-toggler" onclick="toggleMenu();"
+    data-open="× Close">≡ Menu</button>
+  <a href="../../../index.html">Wailord</a>
+  <noscript>
+    <div>
+      JavaScript is required to open/close mobile menu.
+    </div>
+  </noscript>
+  </nav>
+  
+
+  
+  <nav class="sphinxsidebar" role="navigation" aria-label="main navigation">
+    
+
+
+<h1 class="logo ">
+  <a href="../../../index.html">Wailord</a>
+</h1>
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<h3>Links</h3>
+<ul>
+  
+  <li class="toctree-l1"><a href="https://github.com/HaoZeke/wailord">Github</a></li>
+  
+  <li class="toctree-l1"><a href="https://liberapay.com/rohit/donate">Donate</a></li>
+  
+  <li class="toctree-l1"><a href="https://rgoswami.me">Personal</a></li>
+  
+</ul>
+<h3>Contents</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">wailord</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../history.html">History</a></li>
+</ul>
+<script>
+  function toggleMode(theme) {
+    document.body.className = theme;
+    localStorage.setItem("sphinx-library-mode", theme);
+  }
+  var theme = localStorage.getItem("sphinx-library-mode");
+  if(theme !== null)
+    toggleMode(theme);
+</script>
+<h3>Reading Mode</h3>
+
+<button type="button" onclick="toggleMode('light');">Light</button>
+<button type="button" onclick="toggleMode('sepia');">Sepia</button>
+<button type="button" onclick="toggleMode('dark');">Dark</button>
+
+<noscript>
+  <div>
+    JavaScript is required to toggle reading modes.
+  </div>
+</noscript>
+  </nav>
+  <div class="documentwrapper">
+    <nav class="related breadcrumbs" role="navigation">
+  <a class="nav-item" href="../../../index.html">Index</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="../../index.html">Module code</a>
+  <span class="delim"> &#187;</span>
+  <span class="nav-item">wailord.io.orca</span>
+    </nav>
+    
+
+    <main class="body" role="main" id="main">
+      
+  <h1>Source code for wailord.io.orca</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;An ad-hoc treatment of orca output files</span>
+
+<span class="sd">This should implement a grammar, but currently consists of a number of utility</span>
+<span class="sd">structures and functions to parse data from the orca output format</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    See the tests for more</span>
+
+<span class="sd">        $ poetry run</span>
+
+<span class="sd">Some more details.</span>
+
+<span class="sd">Todo:</span>
+<span class="sd">    * Make grammar</span>
+<span class="sd">    * Make classes</span>
+<span class="sd">    * Test the experiments more</span>
+<span class="sd">    * Pass a list of experiments to ignore</span>
+<span class="sd">    * Test the ordering of variables</span>
+<span class="sd">    * Make classes for the order</span>
+<span class="sd">    * Handle split jobs</span>
+<span class="sd">    * Propagate exceptions instead of passing the buck with warnings</span>
+<span class="sd">    * Setup proper logging</span>
+<span class="sd">    * Scrape NIST Web book for spectra, properties https://webbook.nist.gov/cgi/cbook.cgi?ID=C71432&amp;Mask=800#Electronic-Spec</span>
+<span class="sd">    * Document more things (e.g. SP -&gt; Single point calculation a.k.a. energy</span>
+<span class="sd">      calculation)</span>
+<span class="sd">    * Return interesting things</span>
+
+<span class="sd">.. _Google Python Style Guide:</span>
+<span class="sd">   http://google.github.io/styleguide/pyguide.html</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">wailord.io</span> <span class="k">as</span> <span class="nn">waio</span>
+<span class="kn">import</span> <span class="nn">wailord.utils</span> <span class="k">as</span> <span class="nn">wau</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">itertt</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">import</span> <span class="nn">pint</span>
+<span class="kn">import</span> <span class="nn">pint_pandas</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">vg</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span> <span class="nn">pandas.api.types</span> <span class="kn">import</span> <span class="n">CategoricalDtype</span>
+<span class="kn">from</span> <span class="nn">konfik</span> <span class="kn">import</span> <span class="n">Konfik</span>
+
+<span class="c1"># Pint setup</span>
+<span class="n">PA_</span> <span class="o">=</span> <span class="n">pint_pandas</span><span class="o">.</span><span class="n">PintArray</span>
+<span class="n">ureg</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">()</span>
+<span class="n">pint_pandas</span><span class="o">.</span><span class="n">PintType</span><span class="o">.</span><span class="n">ureg</span> <span class="o">=</span> <span class="n">ureg</span>
+<span class="n">Q_</span> <span class="o">=</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span>
+
+<span class="n">ureg</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s2">&quot;kcal_mol = kcal / 6.02214076e+23 = kcm&quot;</span><span class="p">)</span>
+
+<span class="n">inpcart</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;inpcart&quot;</span><span class="p">,</span> <span class="s2">&quot;atype x y z&quot;</span><span class="p">)</span>
+<span class="n">orcaout</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;orcaout&quot;</span><span class="p">,</span> <span class="s2">&quot;final_energy fGeom basis filename system spin theory&quot;</span><span class="p">)</span>
+
+<span class="n">ORDERED_THEORY</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;HF&quot;</span><span class="p">,</span> <span class="s2">&quot;UHF&quot;</span><span class="p">,</span> <span class="s2">&quot;QCISD&quot;</span><span class="p">,</span> <span class="s2">&quot;CCSD&quot;</span><span class="p">,</span> <span class="s2">&quot;QCISD(T)&quot;</span><span class="p">,</span> <span class="s2">&quot;CCSD(T)&quot;</span><span class="p">]</span>
+
+<span class="n">ORDERED_BASIS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;STO-3G&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;3-21G&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6-31G&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6-311G&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6-311G*&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6-311G**&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6-311++G**&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6-311++G(2d,2p)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6-311++G(2df,2pd)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6-311++G(3df,3pd)&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">OUT_REGEX</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cartesian_coord&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;CARTESIAN\s*COORDINATES\s*\(ANGSTROEM\)\s*&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;final_single_point_e&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?&lt;=FINAL SINGLE POINT ENERGY)\s*-\d*.?\d*&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;basis_set&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Orbital\s*basis\s*set\s*information&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;MDCI&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;The\s*Calculated\s*Surface\s*using\s*the\s*MDCI\s*energy\n&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;MDCI w/o Triples&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s2">&quot;The Calculated Surface using the MDCI energy minus triple correction\s*&quot;</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;Actual Energy&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;The Calculated Surface using the &#39;Actual Energy&#39;&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;SCF Energy&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;The Calculated Surface using the SCF energy&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;energy_evals&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;There will be\s*\d* energy evaluations&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;Mulliken&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;MULLIKEN ATOMIC CHARGES&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;Loewdin&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;LOEWDIN ATOMIC CHARGES&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;irSpectrum&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;IR SPECTRUM&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;vpt2trans&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Fundamental transition&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;Vibrational Frequency&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;VIBRATIONAL FREQUENCIES&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="c1"># ------------ Refactor</span>
+
+
+<div class="viewcode-block" id="parseOut"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.parseOut">[docs]</a><span class="k">def</span> <span class="nf">parseOut</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">plotter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handles orca outputs with regex for energy and coordinates&quot;&quot;&quot;</span>
+    <span class="n">intcreg</span><span class="p">,</span> <span class="n">fsp_ereg</span><span class="p">,</span> <span class="n">get_basis</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span>
+        <span class="s2">&quot;cartesian_coord&quot;</span><span class="p">,</span> <span class="s2">&quot;final_single_point_e&quot;</span><span class="p">,</span> <span class="s2">&quot;basis_set&quot;</span>
+    <span class="p">)(</span><span class="n">OUT_REGEX</span><span class="p">)</span>
+    <span class="n">get_spec</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Number\s*of\s*atoms\s*.*\s*\d*&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">fInp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">fin_energ</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fsp_ereg</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">fInp</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">hartree</span>
+        <span class="k">if</span> <span class="n">plotter</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">energ</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fsp_ereg</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">fInp</span><span class="p">)]</span>
+        <span class="n">num_species</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">get_spec</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">fInp</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">flines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">allAtoms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">linum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">get_basis</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="n">basis</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">linum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">intcreg</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="n">offset</span> <span class="o">=</span> <span class="n">linum</span> <span class="o">+</span> <span class="mi">2</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_species</span><span class="p">):</span>
+                    <span class="n">p</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="n">myAtom</span> <span class="o">=</span> <span class="n">inpcart</span><span class="p">(</span>
+                        <span class="n">atype</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">x</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">angstrom</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">angstrom</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">angstrom</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">allAtoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">myAtom</span><span class="p">)</span>
+    <span class="n">runinfo</span> <span class="o">=</span> <span class="n">getRunInfo</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">runinfo</span><span class="p">[</span><span class="s2">&quot;spin&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;spin_01&quot;</span><span class="p">:</span>
+        <span class="n">spin</span> <span class="o">=</span> <span class="s2">&quot;singlet&quot;</span>
+    <span class="k">elif</span> <span class="n">runinfo</span><span class="p">[</span><span class="s2">&quot;spin&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;spin_03&quot;</span><span class="p">:</span>
+        <span class="n">spin</span> <span class="o">=</span> <span class="s2">&quot;triplet&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not yet implemented </span><span class="si">{</span><span class="n">runinfo</span><span class="p">[</span><span class="s1">&#39;spin&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+    <span class="n">finGeom</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_species</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="n">finGeom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">allAtoms</span><span class="p">[</span><span class="o">-</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1">#  Creates a dictionary of the system H num O num</span>
+    <span class="n">systr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">finGeom</span><span class="p">)</span><span class="o">.</span><span class="n">atype</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="c1"># Flattens the dictionary to a list</span>
+    <span class="n">listdict</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertt</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">systr</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+    <span class="c1"># Flattens the list to a single string</span>
+    <span class="n">liststr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">listdict</span><span class="p">))</span>
+    <span class="n">oout</span> <span class="o">=</span> <span class="n">orcaout</span><span class="p">(</span>
+        <span class="n">final_energy</span><span class="o">=</span><span class="n">fin_energ</span><span class="p">,</span>
+        <span class="n">fGeom</span><span class="o">=</span><span class="n">finGeom</span><span class="p">,</span>
+        <span class="n">basis</span><span class="o">=</span><span class="n">basis</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+        <span class="n">system</span><span class="o">=</span><span class="n">liststr</span><span class="p">,</span>
+        <span class="n">spin</span><span class="o">=</span><span class="n">spin</span><span class="p">,</span>
+        <span class="n">theory</span><span class="o">=</span><span class="n">runinfo</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">plotter</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">oout</span><span class="p">,</span> <span class="n">energ</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">oout</span></div>
+
+
+<div class="viewcode-block" id="get_e"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.get_e">[docs]</a><span class="k">def</span> <span class="nf">get_e</span><span class="p">(</span><span class="n">orcaoutdat</span><span class="p">,</span> <span class="n">basis</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This takes in an orcaout data frame and spits out the energy</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">orcaoutdat</span><span class="p">[</span>
+        <span class="p">(</span><span class="n">orcaoutdat</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">basis</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">orcaoutdat</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">system</span><span class="p">])))</span>
+    <span class="p">][</span><span class="s2">&quot;final_energy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="getBL"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.getBL">[docs]</a><span class="k">def</span> <span class="nf">getBL</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">indi</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Takes in a data frame of xyz coordinates and uses it to calculate the bond length&quot;&quot;&quot;</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">dat</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">dat</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">Q_</span><span class="p">(</span><span class="n">vg</span><span class="o">.</span><span class="n">euclidean_distance</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">),</span> <span class="n">x</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">units</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getBA"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.getBA">[docs]</a><span class="k">def</span> <span class="nf">getBA</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">indi</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Takes in a data frame of xyz coordinates and uses it to generate the</span>
+<span class="sd">    plane angle, indices are used such that the first is the relative center&quot;&quot;&quot;</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">dat</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">dat</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">v3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">dat</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dat</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="n">indi</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">v12</span> <span class="o">=</span> <span class="n">v2</span> <span class="o">-</span> <span class="n">v1</span>
+    <span class="n">v13</span> <span class="o">=</span> <span class="n">v3</span> <span class="o">-</span> <span class="n">v1</span>
+    <span class="k">return</span> <span class="n">Q_</span><span class="p">(</span><span class="n">vg</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">v12</span><span class="p">,</span> <span class="n">v13</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">),</span> <span class="s2">&quot;degrees&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="genEBASet"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.genEBASet">[docs]</a><span class="k">def</span> <span class="nf">genEBASet</span><span class="p">(</span>
+    <span class="n">rootdir</span><span class="p">,</span>
+    <span class="n">deci</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">latex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">order_basis</span><span class="o">=</span><span class="n">ORDERED_BASIS</span><span class="p">,</span>
+    <span class="n">order_theory</span><span class="o">=</span><span class="n">ORDERED_THEORY</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Takes in a Path object, and typically returns bond angles and energies.</span>
+<span class="sd">    Optionally returns a TeX table or a full dataset with the filenames and</span>
+<span class="sd">    geometries. Depreciate this eventually.&quot;&quot;&quot;</span>
+    <span class="n">outs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">rootdir</span><span class="o">.</span><span class="n">resolve</span><span class="p">()):</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;out&quot;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">and</span> <span class="s2">&quot;slurm&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+                <span class="n">outs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parseOut</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+    <span class="n">outdat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">outs</span><span class="p">)</span>
+    <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">outdat</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outdat</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+    <span class="n">outdat</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outdat</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+    <span class="c1"># print(outdat.basis[0])</span>
+    <span class="c1"># print(pd.DataFrame(outdat.fGeom[0]))</span>
+    <span class="n">outdat</span><span class="p">[</span><span class="s2">&quot;angle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outdat</span><span class="o">.</span><span class="n">fGeom</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">geom</span><span class="p">:</span> <span class="n">getBA</span><span class="p">(</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">geom</span><span class="p">),</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">outdat</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">outdat</span><span class="o">.</span><span class="n">final_energy</span> <span class="o">=</span> <span class="n">outdat</span><span class="o">.</span><span class="n">final_energy</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="n">deci</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">outdat</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">outdat</span><span class="o">.</span><span class="n">angle</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="n">deci</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">latex</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">outdat</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="s2">&quot;fGeom&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_latex</span><span class="p">(</span>
+            <span class="n">caption</span><span class="o">=</span><span class="s2">&quot;Calculated systems at all basis sets&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">full</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">outdat</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">outdat</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="s2">&quot;fGeom&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outdat</span></div>
+
+
+<span class="c1"># ------------- Keep ------------------</span>
+
+
+<div class="viewcode-block" id="getRunInfo"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.getRunInfo">[docs]</a><span class="k">def</span> <span class="nf">getRunInfo</span><span class="p">(</span><span class="n">runf</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determines the runtime parameters from the output path</span>
+
+<span class="sd">    The implementation uses an ordered dictionary to ensure that the path</span>
+<span class="sd">    fragments are matched to the correct keys.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This will only work with wailord experiments at the moment</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        run (:obj:`Path`): Runtime output path</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        runinf (:obj:`dict`): A simple unordered dictionary of paramters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">runinf</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;basis&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;calc&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;spin&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;theory&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;slug&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">rfparts</span> <span class="o">=</span> <span class="n">runf</span><span class="o">.</span><span class="n">parts</span>
+    <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">od</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">runinf</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">runinf</span><span class="p">[</span><span class="n">od</span><span class="p">]</span> <span class="o">=</span> <span class="n">rfparts</span><span class="p">[</span><span class="o">-</span><span class="n">num</span><span class="p">]</span>
+    <span class="n">runinf</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">runinf</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;PP&quot;</span><span class="p">,</span> <span class="s2">&quot;++&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;8&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+    <span class="n">runinf</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">runinf</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">runinf</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calc_htst"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.calc_htst">[docs]</a><span class="k">def</span> <span class="nf">calc_htst</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">reactant</span><span class="p">,</span> <span class="n">transition_state</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the HTST rate constant.</span>
+
+<span class="sd">    This is calculated as:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       k^{HTST}  = \frac{∏_{i=1 … N}𝜈ᵢ}{∏_{j=1 … N-1}𝜈ⱼ^‡}e^{\frac{-𝛥E}{k_BT}}</span>
+
+<span class="sd">    Where</span>
+<span class="sd">    * :math:`𝜈ᵢ` are the final/initial state vibrational frequencies and</span>
+<span class="sd">      :math:`𝜈ⱼ^‡` are the vibrational frequencies at the saddle point</span>
+<span class="sd">    * :math:`𝛥E` is the difference between the energy of the state and the</span>
+<span class="sd">      saddle point :math:`𝛥E=V_{saddle}-V_{other}`</span>
+
+<span class="sd">    It is important to note that the :math:`k_f` and :math:`k_b` are relative</span>
+<span class="sd">    measures and the rate constant is the ratio of the two. In some cases it</span>
+<span class="sd">    might be necessary to weigh the results by the magnitude of &#39;c&#39;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        product(:obj:`orcaVis`): The product visitor class</span>
+<span class="sd">        reactant(:obj:`orcaVis`): The reactant visitor class</span>
+<span class="sd">        transition_state(:obj:`orcaVis`): The transition state visitor class</span>
+<span class="sd">        temperature(`float`): The temperature</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        kout(:obj:`rateconst`) : Returns a named tuple of forward and backward rates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">()</span>
+    <span class="n">react</span> <span class="o">=</span> <span class="n">reactant</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">()</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">transition_state</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">()</span>
+    <span class="n">ppnum</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">prod</span><span class="o">.</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">reactnum</span> <span class="o">=</span> <span class="n">react</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">react</span><span class="o">.</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">tsdenom</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">Q_</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">)</span>
+    <span class="c1"># FIXME: Should this be the ureg.speed_of_light instead?</span>
+    <span class="n">conv</span> <span class="o">=</span> <span class="n">Q_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;m/s&quot;</span><span class="p">)</span>
+    <span class="n">preProd</span> <span class="o">=</span> <span class="n">ppnum</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span> <span class="o">/</span> <span class="n">tsdenom</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+    <span class="n">preReact</span> <span class="o">=</span> <span class="n">reactnum</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span> <span class="o">/</span> <span class="n">tsdenom</span><span class="o">.</span><span class="n">prod</span><span class="p">()</span>
+    <span class="n">delProd</span> <span class="o">=</span> <span class="n">transition_state</span><span class="o">.</span><span class="n">fin_sp_e</span> <span class="o">-</span> <span class="n">product</span><span class="o">.</span><span class="n">fin_sp_e</span>
+    <span class="n">delReact</span> <span class="o">=</span> <span class="n">transition_state</span><span class="o">.</span><span class="n">fin_sp_e</span> <span class="o">-</span> <span class="n">reactant</span><span class="o">.</span><span class="n">fin_sp_e</span>
+    <span class="n">prodExp</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">delProd</span> <span class="o">/</span> <span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">boltzmann_constant</span> <span class="o">*</span> <span class="n">temp</span><span class="p">))</span>
+    <span class="n">reactExp</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">delReact</span> <span class="o">/</span> <span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">boltzmann_constant</span> <span class="o">*</span> <span class="n">temp</span><span class="p">))</span>
+    <span class="n">kf</span> <span class="o">=</span> <span class="p">(</span><span class="n">preProd</span> <span class="o">*</span> <span class="n">conv</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">prodExp</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">())</span>
+    <span class="n">kb</span> <span class="o">=</span> <span class="p">(</span><span class="n">preReact</span> <span class="o">*</span> <span class="n">conv</span><span class="p">)</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">reactExp</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">kf</span><span class="p">,</span> <span class="n">kb</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="orcaExp"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp">[docs]</a><span class="k">class</span> <span class="nc">orcaExp</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The class meant to handle experiments generated with wailord.</span>
+
+<span class="sd">    The general concept is that this is meant to work with the setup wailord</span>
+<span class="sd">    generates. Remember to use `df.round()` for pretty printing!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">expfolder</span><span class="p">,</span> <span class="n">deci</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">order_basis</span><span class="o">=</span><span class="n">ORDERED_BASIS</span><span class="p">,</span> <span class="n">order_theory</span><span class="o">=</span><span class="n">ORDERED_THEORY</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializes base parameters</span>
+
+
+<span class="sd">        Args:</span>
+<span class="sd">            expfolder (:obj:`Path`): Output path to the generated wailord experiment</span>
+<span class="sd">            order_basis (:obj:`list`, optional): An ordered list for the basis</span>
+<span class="sd">                sets. Defaults to `ORDERED_BASIS`</span>
+<span class="sd">            order_theory (:obj:`list`, optional): An ordered list for the basis</span>
+<span class="sd">                sets. Defaults to `ORDERED_THEORY`. Unlike `order_basis` is can</span>
+<span class="sd">                vary significantly across experiments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inpconf</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Populated by `handle_exp`</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Populated by `handle_exp`</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span> <span class="o">=</span> <span class="n">order_basis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span> <span class="o">=</span> <span class="n">order_theory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle_exp</span><span class="p">(</span><span class="n">expfolder</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Experiment: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inpconf</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        Outputs: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        Ordered Theory: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        Ordered Basis: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+<div class="viewcode-block" id="orcaExp.handle_exp"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.handle_exp">[docs]</a>    <span class="k">def</span> <span class="nf">handle_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">efol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Populates the internal file variables from the path</span>
+
+<span class="sd">        Alert:</span>
+<span class="sd">             This is *not* meant to be called by the user!!!!</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            efol (:obj:`Path`): Output path</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fnames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inpconf</span> <span class="o">=</span> <span class="n">Konfik</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="n">efol</span> <span class="o">/</span> <span class="s2">&quot;orca.yml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">config</span>
+        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">efol</span><span class="o">.</span><span class="n">resolve</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;out&quot;</span> <span class="ow">in</span> <span class="n">filename</span> <span class="ow">and</span> <span class="s2">&quot;slurm&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+                    <span class="n">fnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span> <span class="o">=</span> <span class="n">fnames</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="orcaExp.get_final_sp_energy"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_final_sp_energy">[docs]</a>    <span class="k">def</span> <span class="nf">get_final_sp_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a datframe of only the final single point energies</span>
+
+<span class="sd">        Proxies calls to the base orcaVis class over a series of generated files</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of final energies</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">edatl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
+            <span class="n">runorc</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">final_sp_e</span><span class="p">()</span>
+            <span class="n">edatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runorc</span><span class="p">)</span>
+        <span class="n">fe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">edatl</span><span class="p">)</span>
+        <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">fe</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fe</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+        <span class="n">fe</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fe</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+        <span class="n">fe</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+            <span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">,</span> <span class="s2">&quot;final_sp_energy&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">fe</span></div>
+
+<div class="viewcode-block" id="orcaExp.get_ir_spec"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_ir_spec">[docs]</a>    <span class="k">def</span> <span class="nf">get_ir_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a datframe of the &quot;ir spectrum&quot;</span>
+
+<span class="sd">        Proxies calls to the base orcaVis class over a series of generated files</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of frequencies</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vdatl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
+            <span class="n">runorc</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">ir_spec</span><span class="p">()</span>
+            <span class="n">vdatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runorc</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">vdatl</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">ve</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ve</span></div>
+
+<div class="viewcode-block" id="orcaExp.get_vib_freq"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_vib_freq">[docs]</a>    <span class="k">def</span> <span class="nf">get_vib_freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a datframe of the vibrational modes</span>
+
+<span class="sd">        Proxies calls to the base orcaVis class over a series of generated files</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of frequencies</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vdatl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
+            <span class="n">runorc</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">()</span>
+            <span class="n">vdatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runorc</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">vdatl</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">ve</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ve</span></div>
+
+<div class="viewcode-block" id="orcaExp.get_vpt2_transitions"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_vpt2_transitions">[docs]</a>    <span class="k">def</span> <span class="nf">get_vpt2_transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a datframe of the fundamental transitions table</span>
+
+<span class="sd">        Proxies calls to the base orcaVis class over a series of generated files</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of frequencies</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vdatl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
+            <span class="n">runorc</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">vpt2_transitions</span><span class="p">()</span>
+            <span class="n">vdatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runorc</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">vdatl</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ve</span> <span class="o">=</span> <span class="n">ve</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+        <span class="n">ve</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ve</span></div>
+
+<div class="viewcode-block" id="orcaExp.get_energy_surface"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_energy_surface">[docs]</a>    <span class="k">def</span> <span class="nf">get_energy_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Actual Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;SCF Energy&quot;</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Populates an energy surface dataframe</span>
+
+<span class="sd">        This essentially walks over the generated set of files, and fills out</span>
+<span class="sd">        calls to the base orcaVis class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            etype (:obj:`list` of :obj:`str`, optional): This is passed to the base</span>
+<span class="sd">            `OrcaVis` class call</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of etype energies</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">etype</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">etype</span> <span class="o">=</span> <span class="p">[</span><span class="n">etype</span><span class="p">]</span>
+        <span class="n">edatl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
+            <span class="n">runsurf</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">mult_energy_surface</span><span class="p">(</span><span class="n">etype</span><span class="o">=</span><span class="n">etype</span><span class="p">)</span>
+            <span class="n">edatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runsurf</span><span class="p">)</span>
+        <span class="n">edat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">edatl</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">edat</span> <span class="o">=</span> <span class="n">edat</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">edat</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edat</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+        <span class="n">edat</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edat</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+        <span class="n">edat</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+            <span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">,</span> <span class="s2">&quot;bond_length&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">edat</span></div>
+
+<div class="viewcode-block" id="orcaExp.get_population"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.get_population">[docs]</a>    <span class="k">def</span> <span class="nf">get_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poptype</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Mulliken&quot;</span><span class="p">,</span> <span class="s2">&quot;Loewdin&quot;</span><span class="p">],</span> <span class="o">/</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Populates a population dataframe</span>
+
+<span class="sd">        This essentially walks over the generated set of files, and fills out</span>
+<span class="sd">        calls to the base orcaVis class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            poptype (:obj:`list` of :obj:`str`, optional): This is passed to the base</span>
+<span class="sd">            `OrcaVis` class call</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of etype energies</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">poptype</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">poptype</span> <span class="o">=</span> <span class="p">[</span><span class="n">poptype</span><span class="p">]</span>
+        <span class="n">popdatl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">runf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orclist</span><span class="p">:</span>
+            <span class="n">runsurf</span> <span class="o">=</span> <span class="n">orcaVis</span><span class="p">(</span><span class="n">runf</span><span class="p">)</span><span class="o">.</span><span class="n">mult_population_analysis</span><span class="p">(</span><span class="n">poptype</span><span class="p">)</span>
+            <span class="n">popdatl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runsurf</span><span class="p">)</span>
+        <span class="n">popdat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">popdatl</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">popdat</span> <span class="o">=</span> <span class="n">popdat</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">basis_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_basis</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">theory_type</span> <span class="o">=</span> <span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order_theory</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">popdat</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">popdat</span><span class="p">[</span><span class="s2">&quot;basis&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">basis_type</span><span class="p">)</span>
+        <span class="n">popdat</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">popdat</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">theory_type</span><span class="p">)</span>
+        <span class="n">popdat</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;theory&quot;</span><span class="p">,</span> <span class="s2">&quot;basis&quot;</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">popdat</span></div>
+
+<div class="viewcode-block" id="orcaExp.visit_meta"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.visit_meta">[docs]</a>    <span class="k">def</span> <span class="nf">visit_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the overall output. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span></div>
+
+<div class="viewcode-block" id="orcaExp.visit_coord_block"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaExp.visit_coord_block">[docs]</a>    <span class="k">def</span> <span class="nf">visit_coord_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Makes a dict of the section (as key) and the key/value pairs. &quot;&quot;&quot;</span>
+        <span class="n">cb</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">aline</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cb</span><span class="p">):</span>
+            <span class="n">each</span> <span class="o">=</span> <span class="n">aline</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">cb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">each</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coord_block</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cb</span><span class="p">)</span>
+        <span class="c1"># Could have also just returned and assigned node.text</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span></div></div>
+
+
+<div class="viewcode-block" id="orcaVis"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis">[docs]</a><span class="k">class</span> <span class="nc">orcaVis</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The class meant to handle ORCA output files.</span>
+
+<span class="sd">    Todo:</span>
+<span class="sd">        * Add a grammar and recursive descent later</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ofile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Output file initialization.</span>
+
+<span class="sd">        This is meant to return base objects to the experiment level class.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Do not include the `self` parameter in the ``Args`` section.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ofile (str): The output file generated by ORCA.</span>
+<span class="sd">            eeval (int): The number of energy evaluations</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eeval</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ofile</span> <span class="o">=</span> <span class="n">ofile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span> <span class="o">=</span> <span class="n">getRunInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fin_sp_e</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_evals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_final_e</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="orcaVis.get_evals"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.get_evals">[docs]</a>    <span class="k">def</span> <span class="nf">get_evals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ofile</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">flines</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">flines</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;energy_evals&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">eeval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="orcaVis.get_final_e"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.get_final_e">[docs]</a>    <span class="k">def</span> <span class="nf">get_final_e</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dat</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">fInp</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fin_sp_e</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;final_single_point_e&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">fInp</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">hartree</span>
+                <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="p">(</span>
+                    <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final single point energy not found for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="orcaVis.final_sp_e"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.final_sp_e">[docs]</a>    <span class="k">def</span> <span class="nf">final_sp_e</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">erow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span>
+        <span class="n">erow</span><span class="p">[</span><span class="s2">&quot;final_sp_energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fin_sp_e</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">erow</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fin_sp_e</span><span class="o">.</span><span class="n">u</span>
+        <span class="k">return</span> <span class="n">erow</span></div>
+
+<div class="viewcode-block" id="orcaVis.mult_energy_surface"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.mult_energy_surface">[docs]</a>    <span class="k">def</span> <span class="nf">mult_energy_surface</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">etype</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Actual Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;MDCI&quot;</span><span class="p">,</span> <span class="s2">&quot;MDCI w/o Triples&quot;</span><span class="p">,</span> <span class="s2">&quot;SCF Energy&quot;</span><span class="p">],</span>
+        <span class="n">npoints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiple Energy surface dataframe generator</span>
+
+<span class="sd">        This is a helper function to obtain a dataframe which contains multiple</span>
+<span class="sd">        energy surfaces. The implementation leverages the `reduce` function from</span>
+<span class="sd">        `functools` to merge a list of dataframes generated from the</span>
+<span class="sd">        `single_energy_surface` calls.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            etype (str,optional): The type of calculated energy surface to</span>
+<span class="sd">                return. Defaults to `[&quot;Actual Energy&quot;, &quot;MDCI&quot;, &quot;MDCI w/o Triples&quot;,</span>
+<span class="sd">                &quot;SCF Energy&quot;]` but can be any valid subset of the same.</span>
+<span class="sd">            npoints (int,optional): The number of points over which a scan has</span>
+<span class="sd">                taken place. Defaults to the number of evaluations calculated in</span>
+<span class="sd">                the output file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of bond_length and energies</span>
+
+<span class="sd">        .. _MDCI:</span>
+<span class="sd">            https://www.its.hku.hk/services/research/hpc/software/orca</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">etype</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">etype</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">etype</span> <span class="o">=</span> <span class="n">etype</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">single</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_energy_surface</span><span class="p">(</span>
+                <span class="n">etype</span><span class="o">=</span><span class="n">etype</span>
+            <span class="p">)</span>  <span class="c1">#: Short circuit if single type is requested</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">single</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">single</span>
+        <span class="n">elist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">et</span> <span class="ow">in</span> <span class="n">etype</span><span class="p">:</span>
+            <span class="n">runsurf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_energy_surface</span><span class="p">(</span><span class="n">etype</span><span class="o">=</span><span class="n">et</span><span class="p">)</span>
+            <span class="n">elist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runsurf</span><span class="p">)</span>
+        <span class="n">eDat_all</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;bond_length&quot;</span><span class="p">),</span> <span class="n">elist</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">eDat_all</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">eDat_all</span></div>
+
+<div class="viewcode-block" id="orcaVis.single_energy_surface"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.single_energy_surface">[docs]</a>    <span class="k">def</span> <span class="nf">single_energy_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">etype</span><span class="o">=</span><span class="s2">&quot;Actual Energy&quot;</span><span class="p">,</span> <span class="n">npoints</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Single energy surface dataframe generator</span>
+
+<span class="sd">        For say, QCISD(T), this is essentially the same as a QCISD calculation.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            `MDCI`_ types are meant to work with single reference correlation</span>
+<span class="sd">            methods</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            etype (str,optional): The type of calculated energy surface to</span>
+<span class="sd">            return. Defaults to &#39;Actual Energy&#39; and can be any of `[&quot;Actual Energy&quot;, &quot;MDCI&quot;, &quot;MDCI w/o Triples&quot;, &quot;SCF Energy&quot;]`</span>
+<span class="sd">            npoints (int,optional): The number of points over which a scan has</span>
+<span class="sd">                taken place. Defaults to the number of evaluations calculated in</span>
+<span class="sd">                the output file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of energy surfaces</span>
+
+<span class="sd">        .. _MDCI:</span>
+<span class="sd">            https://www.its.hku.hk/services/research/hpc/software/orca</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">etype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">OUT_REGEX</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">etype</span><span class="si">}</span><span class="s2"> has not been implemented yet&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">npoints</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">npoints</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eeval</span>
+        <span class="n">xaxis</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">yaxis</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="n">etype</span><span class="p">]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">flines</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">lnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sregexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">offset</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npoints</span><span class="p">):</span>
+                        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="n">xaxis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                        <span class="n">yaxis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">edat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="nb">zip</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bond_length&quot;</span><span class="p">,</span> <span class="n">etype</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">edat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span>
+                <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">etype</span><span class="si">}</span><span class="s2"> surface not found for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="s1">&#39;theory&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">edat</span></div>
+
+<div class="viewcode-block" id="orcaVis.vib_freq"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.vib_freq">[docs]</a>    <span class="k">def</span> <span class="nf">vib_freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the vibrational frequencies, and fails if there are more than one</span>
+<span class="sd">        imaginary frequency&quot;&quot;&quot;</span>
+        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;Vibrational Frequency&quot;</span><span class="p">]</span>
+        <span class="n">vline</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;vline&quot;</span><span class="p">,</span> <span class="s2">&quot;Mode freq imaginary&quot;</span><span class="p">)</span>
+        <span class="n">accumulate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">flines</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">lnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sregexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">offset</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">+</span> <span class="mi">5</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">while</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">vline</span><span class="p">(</span>
+                                <span class="n">Mode</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+                                <span class="n">freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                                <span class="n">imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">vline</span><span class="p">(</span>
+                                <span class="n">Mode</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+                                <span class="n">freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                                <span class="n">imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="n">accumulate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">vdat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">accumulate</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO: Add experiment layer</span>
+        <span class="c1"># TODO: Error if more than one imaginary</span>
+        <span class="c1"># Check if greater 100 then it is not numerical</span>
+        <span class="c1"># if vdat.empty:</span>
+        <span class="c1">#     raise (</span>
+        <span class="c1">#         ValueError(</span>
+        <span class="c1">#             f&quot;Spectra not found for {self.runinfo[&#39;theory&#39;]}, did you run FREQ?&quot;</span>
+        <span class="c1">#         )</span>
+        <span class="c1">#     )</span>
+        <span class="c1"># elif vdat.imaginary.value_counts()[1] &gt; 1:</span>
+        <span class="c1">#     warnings.warn(</span>
+        <span class="c1">#         f&quot;More than one imaginary mode, you did not find a saddle point&quot;,</span>
+        <span class="c1">#         UserWarning,</span>
+        <span class="c1">#     )</span>
+        <span class="c1"># elif vdat.imaginary.value_counts()[1] == 0:</span>
+        <span class="c1">#     raise (</span>
+        <span class="c1">#         ValueError(</span>
+        <span class="c1">#             &quot;No imaginary frequencies found, check the geometry of reactant and product configurations&quot;</span>
+        <span class="c1">#         )</span>
+        <span class="c1">#     )</span>
+        <span class="k">return</span> <span class="n">vdat</span></div>
+
+<div class="viewcode-block" id="orcaVis.vpt2_transitions"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.vpt2_transitions">[docs]</a>    <span class="k">def</span> <span class="nf">vpt2_transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Grabs the fundamental transition analysis from a VPT2 calculation&quot;&quot;&quot;</span>
+        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;vpt2trans&quot;</span><span class="p">]</span>
+        <span class="n">vline</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;vline&quot;</span><span class="p">,</span> <span class="s2">&quot;Mode harmonic_freq vpt2_freq freq_diff&quot;</span><span class="p">)</span>
+        <span class="n">accumulate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">flines</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">lnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sregexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">offset</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">+</span> <span class="mi">4</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">while</span> <span class="s2">&quot;---&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]:</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="n">vline</span><span class="p">(</span>
+                            <span class="n">Mode</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="n">harmonic_freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="n">vpt2_freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                            <span class="n">freq_diff</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span>
+                        <span class="p">)</span>
+                        <span class="n">accumulate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">vdat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">accumulate</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;harmonic_freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;harmonic_freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;vpt2_freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;vpt2_freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vdat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span>
+                <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Data not found for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="s1">&#39;theory&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, did you run VPT2?&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">vdat</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vdat</span></div>
+
+<div class="viewcode-block" id="orcaVis.ir_spec"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.ir_spec">[docs]</a>    <span class="k">def</span> <span class="nf">ir_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for</span>
+<span class="sd">        intensities&quot;&quot;&quot;</span>
+        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="s2">&quot;irSpectrum&quot;</span><span class="p">]</span>
+        <span class="n">vline</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;vline&quot;</span><span class="p">,</span> <span class="s2">&quot;Mode freq T2 TX TY TZ&quot;</span><span class="p">)</span>
+        <span class="n">accumulate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">flines</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">lnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sregexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">offset</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">+</span> <span class="mi">5</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">while</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">raw</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="s2">&quot;:&quot;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="s2">&quot;(&quot;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="s2">&quot;)&quot;</span><span class="p">]</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="n">vline</span><span class="p">(</span>
+                            <span class="n">Mode</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+                            <span class="n">freq</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="n">T2</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                            <span class="n">TX</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+                            <span class="n">TY</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span>
+                            <span class="n">TZ</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+                        <span class="p">)</span>
+                        <span class="n">accumulate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">vdat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">accumulate</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;T2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;T2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[km/mol]&quot;</span><span class="p">)</span>
+        <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdat</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;pint[cm_1]&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vdat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span>
+                <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Spectra not found for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="s1">&#39;theory&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, did you run FREQ?&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">vdat</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vdat</span></div>
+
+<div class="viewcode-block" id="orcaVis.single_population_analysis"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.single_population_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">single_population_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poptype</span><span class="o">=</span><span class="s2">&quot;Mulliken&quot;</span><span class="p">,</span> <span class="o">/</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Single population analysis dataframe generator</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            poptype (str,optional): The type of population analysis to</span>
+<span class="sd">            return. Defaults to &#39;Mulliken&#39;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of the population analysis</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">poptype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">OUT_REGEX</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">poptype</span><span class="si">}</span><span class="s2"> has not been implemented yet&quot;</span><span class="p">))</span>
+        <span class="n">sregexp</span> <span class="o">=</span> <span class="n">OUT_REGEX</span><span class="p">[</span><span class="n">poptype</span><span class="p">]</span>
+        <span class="n">chargeline</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;chargeline&quot;</span><span class="p">,</span> <span class="s2">&quot;anum atype pcharge&quot;</span><span class="p">)</span>
+        <span class="n">fulline</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;fulline&quot;</span><span class="p">,</span> <span class="s2">&quot;anum atype pcharge pspin&quot;</span><span class="p">)</span>
+        <span class="n">accumulate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ofile</span><span class="p">)</span> <span class="k">as</span> <span class="n">of</span><span class="p">:</span>
+            <span class="n">flines</span> <span class="o">=</span> <span class="n">of</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">lnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flines</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sregexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                    <span class="n">offset</span> <span class="o">=</span> <span class="n">lnum</span> <span class="o">+</span> <span class="mi">2</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">while</span> <span class="p">(</span>
+                        <span class="s2">&quot;Sum&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="s2">&quot;--&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="p">):</span>
+                        <span class="n">raw</span> <span class="o">=</span> <span class="n">flines</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="s2">&quot;SPIN&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                            <span class="n">c</span> <span class="o">=</span> <span class="n">fulline</span><span class="p">(</span>
+                                <span class="n">anum</span><span class="o">=</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                <span class="n">atype</span><span class="o">=</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                <span class="n">pcharge</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]),</span>
+                                <span class="n">pspin</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">c</span> <span class="o">=</span> <span class="n">chargeline</span><span class="p">(</span>
+                                <span class="n">anum</span><span class="o">=</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                <span class="n">atype</span><span class="o">=</span><span class="n">raw</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                <span class="n">pcharge</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="p">)</span>
+                        <span class="n">accumulate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">popdat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">accumulate</span><span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">popdat</span><span class="o">.</span><span class="n">anum</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">/</span> <span class="n">popdat</span><span class="o">.</span><span class="n">anum</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+        <span class="n">popdat</span><span class="p">[</span><span class="s2">&quot;step&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">popdat</span><span class="o">.</span><span class="n">anum</span><span class="o">.</span><span class="n">nunique</span><span class="p">()),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span>
+        <span class="p">)</span>
+        <span class="n">popdat</span><span class="p">[</span><span class="s2">&quot;population&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">poptype</span>
+        <span class="k">if</span> <span class="n">popdat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">poptype</span><span class="si">}</span><span class="s2"> not found for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="s1">&#39;theory&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">popdat</span></div>
+
+<div class="viewcode-block" id="orcaVis.mult_population_analysis"><a class="viewcode-back" href="../../../source/wailord.io.orca.html#wailord.io.orca.orcaVis.mult_population_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">mult_population_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poptype</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Mulliken&quot;</span><span class="p">,</span> <span class="s2">&quot;Loewdin&quot;</span><span class="p">],</span> <span class="o">/</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiple population analysis dataframe generator</span>
+
+<span class="sd">        This is a helper function to obtain a dataframe which contains multiple</span>
+<span class="sd">        population analysis outputs. The implementation is similar to the energy surface helper.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            poptype (str,optional): The type of calculated energy surface to</span>
+<span class="sd">                return.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: Returns a data frame of population analysis types</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">poptype</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">poptype</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">poptype</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">poptype</span> <span class="o">=</span> <span class="n">poptype</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">single</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_population_surface</span><span class="p">(</span><span class="n">poptype</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">single</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">single</span>
+        <span class="n">poplist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">poptype</span><span class="p">:</span>
+            <span class="n">runsurf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_population_analysis</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
+            <span class="n">poplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">runsurf</span><span class="p">)</span>
+        <span class="n">popdat</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">]),</span> <span class="n">poplist</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">popdat</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runinfo</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">popdat</span></div></div>
+</pre></div>
+
+    </main>
+    <nav class="related bottom" role="navigation">
+  <div class="clear"></div>
+    </nav>
+    
+
+  </div>
+
+  <div class="clear"></div>
+</div>
+<footer class="footer" role="contentinfo">
+    &copy; Copyright 2020, Rohit Goswami.
+  
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> with
+  <a href="https://github.com/vsalvino/sphinx-library">Library</a> theme.
+  
+</footer>
+  </body>
+</html>

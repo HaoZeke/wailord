@@ -1,0 +1,654 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>parsimonious.grammar &#8212; Wailord 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/library/library.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["tex2jax.js"], "jax": ["input/TeX", "output/HTML-CSS"]})</script>
+    <link rel="canonical" href="https://wailord.xyz/_modules/parsimonious/grammar.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+ 
+
+<link rel="stylesheet" id="sphinx-library-type" href="../../_static/library/type-book.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=0.9" />
+<script>
+  mobile_menu_content = "";
+  function toggleMenu() {
+    var div = document.getElementsByClassName("document").item(0);
+    var btn = document.getElementById("menu-toggler");
+    if(div.classList.contains("mobile-show")) {
+      div.classList.remove("mobile-show");
+      btn.innerHTML = mobile_menu_content;
+    }
+    else {
+      div.classList.add("mobile-show");
+      mobile_menu_content = btn.innerHTML;
+      btn.innerHTML = btn.getAttribute("data-open");
+    }
+  }
+</script>
+  </head>
+<body class="sepia">
+<div class="document">
+
+  
+  <nav class="mobile-menu" role="navigation">
+    
+  <button type="button" id="menu-toggler" onclick="toggleMenu();"
+    data-open="× Close">≡ Menu</button>
+  <a href="../../index.html">Wailord</a>
+  <noscript>
+    <div>
+      JavaScript is required to open/close mobile menu.
+    </div>
+  </noscript>
+  </nav>
+  
+
+  
+  <nav class="sphinxsidebar" role="navigation" aria-label="main navigation">
+    
+
+
+<h1 class="logo ">
+  <a href="../../index.html">Wailord</a>
+</h1>
+
+
+
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<h3>Links</h3>
+<ul>
+  
+  <li class="toctree-l1"><a href="https://github.com/HaoZeke/wailord">Github</a></li>
+  
+  <li class="toctree-l1"><a href="https://liberapay.com/rohit/donate">Donate</a></li>
+  
+  <li class="toctree-l1"><a href="https://rgoswami.me">Personal</a></li>
+  
+</ul>
+<h3>Contents</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">wailord</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+<script>
+  function toggleMode(theme) {
+    document.body.className = theme;
+    localStorage.setItem("sphinx-library-mode", theme);
+  }
+  var theme = localStorage.getItem("sphinx-library-mode");
+  if(theme !== null)
+    toggleMode(theme);
+</script>
+<h3>Reading Mode</h3>
+
+<button type="button" onclick="toggleMode('light');">Light</button>
+<button type="button" onclick="toggleMode('sepia');">Sepia</button>
+<button type="button" onclick="toggleMode('dark');">Dark</button>
+
+<noscript>
+  <div>
+    JavaScript is required to toggle reading modes.
+  </div>
+</noscript>
+  </nav>
+  <div class="documentwrapper">
+    <nav class="related breadcrumbs" role="navigation">
+  <a class="nav-item" href="../../index.html">Index</a>
+  <span class="delim"> &#187;</span>
+  <a class="nav-item" href="../index.html">Module code</a>
+  <span class="delim"> &#187;</span>
+  <span class="nav-item">parsimonious.grammar</span>
+    </nav>
+    
+
+    <main class="body" role="main" id="main">
+      
+  <h1>Source code for parsimonious.grammar</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A convenience which constructs expression trees from an easy-to-read syntax</span>
+
+<span class="sd">Use this unless you have a compelling reason not to; it performs some</span>
+<span class="sd">optimizations that would be tedious to do when constructing an expression tree</span>
+<span class="sd">by hand.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">isfunction</span><span class="p">,</span> <span class="n">ismethod</span>
+
+<span class="kn">from</span> <span class="nn">six</span> <span class="kn">import</span> <span class="p">(</span><span class="n">text_type</span><span class="p">,</span> <span class="n">itervalues</span><span class="p">,</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">python_2_unicode_compatible</span><span class="p">,</span> <span class="n">PY2</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">parsimonious.exceptions</span> <span class="kn">import</span> <span class="n">BadGrammar</span><span class="p">,</span> <span class="n">UndefinedLabel</span>
+<span class="kn">from</span> <span class="nn">parsimonious.expressions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Literal</span><span class="p">,</span> <span class="n">Regex</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">OneOf</span><span class="p">,</span>
+    <span class="n">Lookahead</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">ZeroOrMore</span><span class="p">,</span> <span class="n">OneOrMore</span><span class="p">,</span> <span class="n">Not</span><span class="p">,</span> <span class="n">TokenMatcher</span><span class="p">,</span>
+    <span class="n">expression</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">parsimonious.nodes</span> <span class="kn">import</span> <span class="n">NodeVisitor</span>
+<span class="kn">from</span> <span class="nn">parsimonious.utils</span> <span class="kn">import</span> <span class="n">evaluate_string</span>
+
+<span class="nd">@python_2_unicode_compatible</span>
+<span class="k">class</span> <span class="nc">Grammar</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A collection of rules that describe a language</span>
+
+<span class="sd">    You can start parsing from the default rule by calling ``parse()``</span>
+<span class="sd">    directly on the ``Grammar`` object::</span>
+
+<span class="sd">        g = Grammar(&#39;&#39;&#39;</span>
+<span class="sd">                    polite_greeting = greeting &quot;, my good &quot; title</span>
+<span class="sd">                    greeting        = &quot;Hi&quot; / &quot;Hello&quot;</span>
+<span class="sd">                    title           = &quot;madam&quot; / &quot;sir&quot;</span>
+<span class="sd">                    &#39;&#39;&#39;)</span>
+<span class="sd">        g.parse(&#39;Hello, my good sir&#39;)</span>
+
+<span class="sd">    Or start parsing from any of the other rules; you can pull them out of the</span>
+<span class="sd">    grammar as if it were a dictionary::</span>
+
+<span class="sd">        g[&#39;title&#39;].parse(&#39;sir&#39;)</span>
+
+<span class="sd">    You could also just construct a bunch of ``Expression`` objects yourself</span>
+<span class="sd">    and stitch them together into a language, but using a ``Grammar`` has some</span>
+<span class="sd">    important advantages:</span>
+
+<span class="sd">    * Languages are much easier to define in the nice syntax it provides.</span>
+<span class="sd">    * Circular references aren&#39;t a pain.</span>
+<span class="sd">    * It does all kinds of whizzy space- and time-saving optimizations, like</span>
+<span class="sd">      factoring up repeated subexpressions into a single object, which should</span>
+<span class="sd">      increase cache hit ratio. [Is this implemented yet?]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">more_rules</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a grammar.</span>
+
+<span class="sd">        :arg rules: A string of production rules, one per line.</span>
+<span class="sd">        :arg default_rule: The name of the rule invoked when you call</span>
+<span class="sd">            :meth:`parse()` or :meth:`match()` on the grammar. Defaults to the</span>
+<span class="sd">            first rule. Falls back to None if there are no string-based rules</span>
+<span class="sd">            in this grammar.</span>
+<span class="sd">        :arg more_rules: Additional kwargs whose names are rule names and</span>
+<span class="sd">            values are Expressions or custom-coded callables which accomplish</span>
+<span class="sd">            things the built-in rule syntax cannot. These take precedence over</span>
+<span class="sd">            ``rules`` in case of naming conflicts.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">decorated_custom_rules</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">expression</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">isfunction</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ismethod</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">more_rules</span><span class="p">)}</span>
+
+        <span class="n">exprs</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expressions_from_rules</span><span class="p">(</span><span class="n">rules</span><span class="p">,</span> <span class="n">decorated_custom_rules</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Grammar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">exprs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_rule</span> <span class="o">=</span> <span class="n">first</span>  <span class="c1"># may be None</span>
+
+    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a new Grammar whose :term:`default rule` is ``rule_name``.&quot;&quot;&quot;</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy</span><span class="p">()</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">default_rule</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="n">rule_name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">new</span>
+
+    <span class="k">def</span> <span class="nf">_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a shallow copy of myself.</span>
+
+<span class="sd">        Deep is unnecessary, since Expression trees are immutable. Subgrammars</span>
+<span class="sd">        recreate all the Expressions from scratch, and AbstractGrammars have</span>
+<span class="sd">        no Expressions.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">Grammar</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">Grammar</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Grammar</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">default_rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rule</span>
+        <span class="k">return</span> <span class="n">new</span>
+
+    <span class="k">def</span> <span class="nf">_expressions_from_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">,</span> <span class="n">custom_rules</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a 2-tuple: a dict of rule names pointing to their</span>
+<span class="sd">        expressions, and then the first rule.</span>
+
+<span class="sd">        It&#39;s a web of expressions, all referencing each other. Typically,</span>
+<span class="sd">        there&#39;s a single root to the web of references, and that root is the</span>
+<span class="sd">        starting symbol for parsing, but there&#39;s nothing saying you can&#39;t have</span>
+<span class="sd">        multiple roots.</span>
+
+<span class="sd">        :arg custom_rules: A map of rule names to custom-coded rules:</span>
+<span class="sd">            Expressions</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">rule_grammar</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RuleVisitor</span><span class="p">(</span><span class="n">custom_rules</span><span class="p">)</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse some text with the :term:`default rule`.</span>
+
+<span class="sd">        :arg pos: The index at which to start parsing</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_default_rule</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rule</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse some text with the :term:`default rule` but not necessarily</span>
+<span class="sd">        all the way to the end.</span>
+
+<span class="sd">        :arg pos: The index at which to start parsing</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_default_rule</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rule</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_check_default_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Raise RuntimeError if there is no default rule defined.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rule</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t call parse() on a Grammar that has no &quot;</span>
+                               <span class="s2">&quot;default rule. Choose a specific rule instead, &quot;</span>
+                               <span class="s2">&quot;like some_grammar[&#39;some_rule&#39;].parse(...).&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a rule string that, when passed to the constructor, would</span>
+<span class="sd">        reconstitute the grammar.&quot;&quot;&quot;</span>
+        <span class="n">exprs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">default_rule</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rule</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="n">exprs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">expr</span> <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">itervalues</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span>
+                     <span class="n">expr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_rule</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">as_rule</span><span class="p">()</span> <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">exprs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an expression that will reconstitute the grammar.&quot;&quot;&quot;</span>
+        <span class="n">codec</span> <span class="o">=</span> <span class="s1">&#39;string_escape&#39;</span> <span class="k">if</span> <span class="n">PY2</span> <span class="k">else</span> <span class="s1">&#39;unicode_escape&#39;</span>
+        <span class="k">return</span> <span class="s2">&quot;Grammar(&#39;</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">codec</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">TokenGrammar</span><span class="p">(</span><span class="n">Grammar</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Grammar which takes a list of pre-lexed tokens instead of text</span>
+
+<span class="sd">    This is useful if you want to do the lexing yourself, as a separate pass:</span>
+<span class="sd">    for example, to implement indentation-based languages.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_expressions_from_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">,</span> <span class="n">custom_rules</span><span class="p">):</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">rule_grammar</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TokenRuleVisitor</span><span class="p">(</span><span class="n">custom_rules</span><span class="p">)</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BootstrappingGrammar</span><span class="p">(</span><span class="n">Grammar</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The grammar used to recognize the textual rules that describe other</span>
+<span class="sd">    grammars</span>
+
+<span class="sd">    This grammar gets its start from some hard-coded Expressions and claws its</span>
+<span class="sd">    way from there to an expression tree that describes how to parse the</span>
+<span class="sd">    grammar description syntax.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_expressions_from_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule_syntax</span><span class="p">,</span> <span class="n">custom_rules</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the rules for parsing the grammar definition syntax.</span>
+
+<span class="sd">        Return a 2-tuple: a dict of rule names pointing to their expressions,</span>
+<span class="sd">        and then the top-level expression for the first rule.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Hard-code enough of the rules to parse the grammar that describes the</span>
+        <span class="c1"># grammar description language, to bootstrap:</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="n">Regex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;#[^\r\n]*&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;comment&#39;</span><span class="p">)</span>
+        <span class="n">meaninglessness</span> <span class="o">=</span> <span class="n">OneOf</span><span class="p">(</span><span class="n">Regex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">),</span> <span class="n">comment</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;meaninglessness&#39;</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">meaninglessness</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+        <span class="n">equals</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">),</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;equals&#39;</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">Regex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[a-zA-Z_][a-zA-Z_0-9]*&#39;</span><span class="p">),</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">Not</span><span class="p">(</span><span class="n">equals</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;reference&#39;</span><span class="p">)</span>
+        <span class="n">quantifier</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">Regex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[*+?]&#39;</span><span class="p">),</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;quantifier&#39;</span><span class="p">)</span>
+        <span class="c1"># This pattern supports empty literals. TODO: A problem?</span>
+        <span class="n">spaceless_literal</span> <span class="o">=</span> <span class="n">Regex</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;u?r?&quot;[^&quot;</span><span class="se">\\</span><span class="s1">]*(?:</span><span class="se">\\</span><span class="s1">.[^&quot;</span><span class="se">\\</span><span class="s1">]*)*&quot;&#39;</span><span class="p">,</span>
+                                  <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                  <span class="n">dot_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                  <span class="n">name</span><span class="o">=</span><span class="s1">&#39;spaceless_literal&#39;</span><span class="p">)</span>
+        <span class="n">literal</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">spaceless_literal</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;literal&#39;</span><span class="p">)</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">),</span>
+                         <span class="n">literal</span><span class="p">,</span>
+                         <span class="n">Regex</span><span class="p">(</span><span class="s1">&#39;[ilmsux]*&#39;</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                         <span class="n">_</span><span class="p">,</span>
+                         <span class="n">name</span><span class="o">=</span><span class="s1">&#39;regex&#39;</span><span class="p">)</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="n">OneOf</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">literal</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;atom&#39;</span><span class="p">)</span>
+        <span class="n">quantified</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">quantifier</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;quantified&#39;</span><span class="p">)</span>
+
+        <span class="n">term</span> <span class="o">=</span> <span class="n">OneOf</span><span class="p">(</span><span class="n">quantified</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;term&#39;</span><span class="p">)</span>
+        <span class="n">not_term</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">),</span> <span class="n">term</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;not_term&#39;</span><span class="p">)</span>
+        <span class="n">term</span><span class="o">.</span><span class="n">members</span> <span class="o">=</span> <span class="p">(</span><span class="n">not_term</span><span class="p">,)</span> <span class="o">+</span> <span class="n">term</span><span class="o">.</span><span class="n">members</span>
+
+        <span class="n">sequence</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">OneOrMore</span><span class="p">(</span><span class="n">term</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;sequence&#39;</span><span class="p">)</span>
+        <span class="n">or_term</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">Literal</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span> <span class="n">_</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;or_term&#39;</span><span class="p">)</span>
+        <span class="n">ored</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">OneOrMore</span><span class="p">(</span><span class="n">or_term</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ored&#39;</span><span class="p">)</span>
+        <span class="n">expression</span> <span class="o">=</span> <span class="n">OneOf</span><span class="p">(</span><span class="n">ored</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;expression&#39;</span><span class="p">)</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">equals</span><span class="p">,</span> <span class="n">expression</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rule&#39;</span><span class="p">)</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">OneOrMore</span><span class="p">(</span><span class="n">rule</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rules&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Use those hard-coded rules to parse the (more extensive) rule syntax.</span>
+        <span class="c1"># (For example, unless I start using parentheses in the rule language</span>
+        <span class="c1"># definition itself, I should never have to hard-code expressions for</span>
+        <span class="c1"># those above.)</span>
+
+        <span class="n">rule_tree</span> <span class="o">=</span> <span class="n">rules</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">rule_syntax</span><span class="p">)</span>
+
+        <span class="c1"># Turn the parse tree into a map of expressions:</span>
+        <span class="k">return</span> <span class="n">RuleVisitor</span><span class="p">()</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">rule_tree</span><span class="p">)</span>
+
+
+<span class="c1"># The grammar for parsing PEG grammar definitions:</span>
+<span class="c1"># This is a nice, simple grammar. We may someday add to it, but it&#39;s a safe bet</span>
+<span class="c1"># that the future will always be a superset of this.</span>
+<span class="n">rule_syntax</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    # Ignored things (represented by _) are typically hung off the end of the</span>
+<span class="s1">    # leafmost kinds of nodes. Literals like &quot;/&quot; count as leaves.</span>
+
+<span class="s1">    rules = _ rule*</span>
+<span class="s1">    rule = label equals expression</span>
+<span class="s1">    equals = &quot;=&quot; _</span>
+<span class="s1">    literal = spaceless_literal _</span>
+
+<span class="s1">    # So you can&#39;t spell a regex like `~&quot;...&quot; ilm`:</span>
+<span class="s1">    spaceless_literal = ~&quot;u?r?\&quot;[^\&quot;\\\\]*(?:\\\\.[^\&quot;\\\\]*)*\&quot;&quot;is /</span>
+<span class="s1">                        ~&quot;u?r?&#39;[^&#39;\\\\]*(?:\\\\.[^&#39;\\\\]*)*&#39;&quot;is</span>
+
+<span class="s1">    expression = ored / sequence / term</span>
+<span class="s1">    or_term = &quot;/&quot; _ term</span>
+<span class="s1">    ored = term or_term+</span>
+<span class="s1">    sequence = term term+</span>
+<span class="s1">    not_term = &quot;!&quot; term _</span>
+<span class="s1">    lookahead_term = &quot;&amp;&quot; term _</span>
+<span class="s1">    term = not_term / lookahead_term / quantified / atom</span>
+<span class="s1">    quantified = atom quantifier</span>
+<span class="s1">    atom = reference / literal / regex / parenthesized</span>
+<span class="s1">    regex = &quot;~&quot; spaceless_literal ~&quot;[ilmsux]*&quot;i _</span>
+<span class="s1">    parenthesized = &quot;(&quot; _ expression &quot;)&quot; _</span>
+<span class="s1">    quantifier = ~&quot;[*+?]&quot; _</span>
+<span class="s1">    reference = label !equals</span>
+
+<span class="s1">    # A subsequent equal sign is the only thing that distinguishes a label</span>
+<span class="s1">    # (which begins a new rule) from a reference (which is just a pointer to a</span>
+<span class="s1">    # rule defined somewhere else):</span>
+<span class="s1">    label = ~&quot;[a-zA-Z_][a-zA-Z_0-9]*&quot; _</span>
+
+<span class="s1">    # _ = ~r&quot;\s*(?:#[^\r\n]*)?\s*&quot;</span>
+<span class="s1">    _ = meaninglessness*</span>
+<span class="s1">    meaninglessness = ~r&quot;\s+&quot; / comment</span>
+<span class="s1">    comment = ~r&quot;#[^\r\n]*&quot;</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">LazyReference</span><span class="p">(</span><span class="n">text_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A lazy reference to a rule, which we resolve after grokking all the</span>
+<span class="sd">    rules&quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># Just for debugging:</span>
+    <span class="k">def</span> <span class="nf">_as_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">u</span><span class="s1">&#39;&lt;LazyReference to </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span>
+
+
+<span class="k">class</span> <span class="nc">RuleVisitor</span><span class="p">(</span><span class="n">NodeVisitor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turns a parse tree of a grammar definition into a map of ``Expression``</span>
+<span class="sd">    objects</span>
+
+<span class="sd">    This is the magic piece that breathes life into a parsed bunch of parse</span>
+<span class="sd">    rules, allowing them to go forth and parse other things.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">quantifier_classes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;?&#39;</span><span class="p">:</span> <span class="n">Optional</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="n">ZeroOrMore</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span> <span class="n">OneOrMore</span><span class="p">}</span>
+
+    <span class="n">visit_expression</span> <span class="o">=</span> <span class="n">visit_term</span> <span class="o">=</span> <span class="n">visit_atom</span> <span class="o">=</span> <span class="n">NodeVisitor</span><span class="o">.</span><span class="n">lift_child</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">custom_rules</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct.</span>
+
+<span class="sd">        :arg custom_rules: A dict of {rule name: expression} holding custom</span>
+<span class="sd">            rules which will take precedence over the others</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_rules</span> <span class="o">=</span> <span class="n">custom_rules</span> <span class="ow">or</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">visit_parenthesized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">parenthesized</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Treat a parenthesized subexpression as just its contents.</span>
+
+<span class="sd">        Its position in the tree suffices to maintain its grouping semantics.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">left_paren</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">expression</span><span class="p">,</span> <span class="n">right_paren</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">parenthesized</span>
+        <span class="k">return</span> <span class="n">expression</span>
+
+    <span class="k">def</span> <span class="nf">visit_quantifier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">quantifier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Turn a quantifier into just its symbol-matching node.&quot;&quot;&quot;</span>
+        <span class="n">symbol</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quantifier</span>
+        <span class="k">return</span> <span class="n">symbol</span>
+
+    <span class="k">def</span> <span class="nf">visit_quantified</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">quantified</span><span class="p">):</span>
+        <span class="n">atom</span><span class="p">,</span> <span class="n">quantifier</span> <span class="o">=</span> <span class="n">quantified</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantifier_classes</span><span class="p">[</span><span class="n">quantifier</span><span class="o">.</span><span class="n">text</span><span class="p">](</span><span class="n">atom</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_lookahead_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">lookahead_term</span><span class="p">):</span>
+        <span class="n">ampersand</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lookahead_term</span>
+        <span class="k">return</span> <span class="n">Lookahead</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_not_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">not_term</span><span class="p">):</span>
+        <span class="n">exclamation</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">not_term</span>
+        <span class="k">return</span> <span class="n">Not</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">rule</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Assign a name to the Expression and return it.&quot;&quot;&quot;</span>
+        <span class="n">label</span><span class="p">,</span> <span class="n">equals</span><span class="p">,</span> <span class="n">expression</span> <span class="o">=</span> <span class="n">rule</span>
+        <span class="n">expression</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">label</span>  <span class="c1"># Assign a name to the expr.</span>
+        <span class="k">return</span> <span class="n">expression</span>
+
+    <span class="k">def</span> <span class="nf">visit_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A parsed Sequence looks like [term node, OneOrMore node of</span>
+<span class="sd">        ``another_term``s]. Flatten it out.&quot;&quot;&quot;</span>
+        <span class="n">term</span><span class="p">,</span> <span class="n">other_terms</span> <span class="o">=</span> <span class="n">sequence</span>
+        <span class="k">return</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="o">*</span><span class="n">other_terms</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_ored</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">ored</span><span class="p">):</span>
+        <span class="n">first_term</span><span class="p">,</span> <span class="n">other_terms</span> <span class="o">=</span> <span class="n">ored</span>
+        <span class="k">return</span> <span class="n">OneOf</span><span class="p">(</span><span class="n">first_term</span><span class="p">,</span> <span class="o">*</span><span class="n">other_terms</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_or_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">or_term</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return just the term from an ``or_term``.</span>
+
+<span class="sd">        We already know it&#39;s going to be ored, from the containing ``ored``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">slash</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">term</span> <span class="o">=</span> <span class="n">or_term</span>
+        <span class="k">return</span> <span class="n">term</span>
+
+    <span class="k">def</span> <span class="nf">visit_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Turn a label into a unicode string.&quot;&quot;&quot;</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">visit_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Stick a :class:`LazyReference` in the tree as a placeholder.</span>
+
+<span class="sd">        We resolve them all later.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label</span><span class="p">,</span> <span class="n">not_equals</span> <span class="o">=</span> <span class="n">reference</span>
+        <span class="k">return</span> <span class="n">LazyReference</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_regex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a ``Regex`` expression.&quot;&quot;&quot;</span>
+        <span class="n">tilde</span><span class="p">,</span> <span class="n">literal</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">regex</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="n">flags</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">literal</span><span class="o">.</span><span class="n">literal</span>  <span class="c1"># Pull the string back out of the Literal</span>
+                                   <span class="c1"># object.</span>
+        <span class="k">return</span> <span class="n">Regex</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="s1">&#39;I&#39;</span> <span class="ow">in</span> <span class="n">flags</span><span class="p">,</span>
+                              <span class="n">locale</span><span class="o">=</span><span class="s1">&#39;L&#39;</span> <span class="ow">in</span> <span class="n">flags</span><span class="p">,</span>
+                              <span class="n">multiline</span><span class="o">=</span><span class="s1">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">flags</span><span class="p">,</span>
+                              <span class="n">dot_all</span><span class="o">=</span><span class="s1">&#39;S&#39;</span> <span class="ow">in</span> <span class="n">flags</span><span class="p">,</span>
+                              <span class="n">unicode</span><span class="o">=</span><span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">flags</span><span class="p">,</span>
+                              <span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="ow">in</span> <span class="n">flags</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_spaceless_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spaceless_literal</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Turn a string literal into a ``Literal`` that recognizes it.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Literal</span><span class="p">(</span><span class="n">evaluate_string</span><span class="p">(</span><span class="n">spaceless_literal</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">visit_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">literal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pick just the literal out of a literal-and-junk combo.&quot;&quot;&quot;</span>
+        <span class="n">spaceless_literal</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">literal</span>
+        <span class="k">return</span> <span class="n">spaceless_literal</span>
+
+    <span class="k">def</span> <span class="nf">generic_visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Replace childbearing nodes with a list of their children; keep</span>
+<span class="sd">        others untouched.</span>
+
+<span class="sd">        For our case, if a node has children, only the children are important.</span>
+<span class="sd">        Otherwise, keep the node around for (for example) the flags of the</span>
+<span class="sd">        regex rule. Most of these kept-around nodes are subsequently thrown</span>
+<span class="sd">        away by the other visitor methods.</span>
+
+<span class="sd">        We can&#39;t simply hang the visited children off the original node; that</span>
+<span class="sd">        would be disastrous if the node occurred in more than one place in the</span>
+<span class="sd">        tree.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">visited_children</span> <span class="ow">or</span> <span class="n">node</span>  <span class="c1"># should semantically be a tuple</span>
+
+    <span class="k">def</span> <span class="nf">_resolve_refs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule_map</span><span class="p">,</span> <span class="n">expr</span><span class="p">,</span> <span class="n">done</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an expression with all its lazy references recursively</span>
+<span class="sd">        resolved.</span>
+
+<span class="sd">        Resolve any lazy references in the expression ``expr``, recursing into</span>
+<span class="sd">        all subexpressions.</span>
+
+<span class="sd">        :arg done: The set of Expressions that have already been or are</span>
+<span class="sd">            currently being resolved, to ward off redundant work and prevent</span>
+<span class="sd">            infinite recursion for circular refs</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">LazyReference</span><span class="p">):</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">text_type</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">reffed_expr</span> <span class="o">=</span> <span class="n">rule_map</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">UndefinedLabel</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_refs</span><span class="p">(</span><span class="n">rule_map</span><span class="p">,</span> <span class="n">reffed_expr</span><span class="p">,</span> <span class="n">done</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">,</span> <span class="p">())</span> <span class="ow">and</span> <span class="n">expr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
+                <span class="c1"># Prevents infinite recursion for circular refs. At worst, one</span>
+                <span class="c1"># of `expr.members` can refer back to `expr`, but it can&#39;t go</span>
+                <span class="c1"># any farther.</span>
+                <span class="n">done</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+                <span class="n">expr</span><span class="o">.</span><span class="n">members</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve_refs</span><span class="p">(</span><span class="n">rule_map</span><span class="p">,</span> <span class="n">member</span><span class="p">,</span> <span class="n">done</span><span class="p">)</span>
+                                     <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">expr</span><span class="o">.</span><span class="n">members</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">expr</span>
+
+    <span class="k">def</span> <span class="nf">visit_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">rules_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collate all the rules into a map. Return (map, default rule).</span>
+
+<span class="sd">        The default rule is the first one. Or, if you have more than one rule</span>
+<span class="sd">        of that name, it&#39;s the last-occurring rule of that name. (This lets you</span>
+<span class="sd">        override the default rule when you extend a grammar.) If there are no</span>
+<span class="sd">        string-based rules, the default rule is None, because the custom rules,</span>
+<span class="sd">        due to being kwarg-based, are unordered.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">rules</span> <span class="o">=</span> <span class="n">rules_list</span>
+
+        <span class="c1"># Map each rule&#39;s name to its Expression. Later rules of the same name</span>
+        <span class="c1"># override earlier ones. This lets us define rules multiple times and</span>
+        <span class="c1"># have the last declaration win, so you can extend grammars by</span>
+        <span class="c1"># concatenation.</span>
+        <span class="n">rule_map</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">((</span><span class="n">expr</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span> <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">)</span>
+
+        <span class="c1"># And custom rules override string-based rules. This is the least</span>
+        <span class="c1"># surprising choice when you compare the dict constructor:</span>
+        <span class="c1"># dict({&#39;x&#39;: 5}, x=6).</span>
+        <span class="n">rule_map</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">custom_rules</span><span class="p">)</span>
+
+        <span class="c1"># Resolve references. This tolerates forward references.</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">rule_map</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">((</span><span class="n">expr</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_refs</span><span class="p">(</span><span class="n">rule_map</span><span class="p">,</span> <span class="n">expr</span><span class="p">,</span> <span class="n">done</span><span class="p">))</span>
+                               <span class="k">for</span> <span class="n">expr</span> <span class="ow">in</span> <span class="n">itervalues</span><span class="p">(</span><span class="n">rule_map</span><span class="p">))</span>
+
+        <span class="c1"># isinstance() is a temporary hack around the fact that * rules don&#39;t</span>
+        <span class="c1"># always get transformed into lists by NodeVisitor. We should fix that;</span>
+        <span class="c1"># it&#39;s surprising and requires writing lame branches like this.</span>
+        <span class="k">return</span> <span class="n">rule_map</span><span class="p">,</span> <span class="p">(</span><span class="n">rule_map</span><span class="p">[</span><span class="n">rules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                          <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rules</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">rules</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">TokenRuleVisitor</span><span class="p">(</span><span class="n">RuleVisitor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A visitor which builds expression trees meant to work on sequences of</span>
+<span class="sd">    pre-lexed tokens rather than strings&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">visit_spaceless_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spaceless_literal</span><span class="p">,</span> <span class="n">visited_children</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Turn a string literal into a ``TokenMatcher`` that matches</span>
+<span class="sd">        ``Token`` objects by their ``type`` attributes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">TokenMatcher</span><span class="p">(</span><span class="n">evaluate_string</span><span class="p">(</span><span class="n">spaceless_literal</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">visit_regex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+        <span class="n">tilde</span><span class="p">,</span> <span class="n">literal</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">regex</span>
+        <span class="k">raise</span> <span class="n">BadGrammar</span><span class="p">(</span><span class="s1">&#39;Regexes do not make sense in TokenGrammars, since &#39;</span>
+                         <span class="s1">&#39;TokenGrammars operate on pre-lexed tokens rather &#39;</span>
+                         <span class="s1">&#39;than characters.&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Bootstrap to level 1...</span>
+<span class="n">rule_grammar</span> <span class="o">=</span> <span class="n">BootstrappingGrammar</span><span class="p">(</span><span class="n">rule_syntax</span><span class="p">)</span>
+<span class="c1"># ...and then to level 2. This establishes that the node tree of our rule</span>
+<span class="c1"># syntax is built by the same machinery that will build trees of our users&#39;</span>
+<span class="c1"># grammars. And the correctness of that tree is tested, indirectly, in</span>
+<span class="c1"># test_grammar.</span>
+<span class="n">rule_grammar</span> <span class="o">=</span> <span class="n">Grammar</span><span class="p">(</span><span class="n">rule_syntax</span><span class="p">)</span>
+
+
+<span class="c1"># TODO: Teach Expression trees how to spit out Python representations of</span>
+<span class="c1"># themselves. Then we can just paste that in above, and we won&#39;t have to</span>
+<span class="c1"># bootstrap on import. Though it&#39;ll be a little less DRY. [Ah, but this is not</span>
+<span class="c1"># so clean, because it would have to output multiple statements to get multiple</span>
+<span class="c1"># refs to a single expression hooked up.]</span>
+</pre></div>
+
+    </main>
+    <nav class="related bottom" role="navigation">
+  <div class="clear"></div>
+    </nav>
+    
+
+  </div>
+
+  <div class="clear"></div>
+</div>
+<footer class="footer" role="contentinfo">
+    &copy; Copyright 2020, Rohit Goswami.
+  
+  Created using <a href="http://sphinx-doc.org/">Sphinx</a> with
+  <a href="https://github.com/vsalvino/sphinx-library">Library</a> theme.
+  
+</footer>
+  </body>
+</html>
