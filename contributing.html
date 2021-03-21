@@ -260,8 +260,7 @@ $ git push origin name-of-your-bugfix-or-feature
 <li><p>If the pull request adds functionality, the docs should be updated. Put
 your new functionality into a function with a docstring, and add the
 feature to the list in README.rst.</p></li>
-<li><p>The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy. Check
-<a class="reference external" href="https://travis-ci.com/HaoZeke/wailord/pull_requests">https://travis-ci.com/HaoZeke/wailord/pull_requests</a>
+<li><p>The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy. Check the status of the PR
 and make sure that the tests pass for all supported Python versions.</p></li>
 </ol>
 </div>
@@ -282,7 +281,8 @@ $ git push
 $ git push --tags
 </pre></div>
 </div>
-<p>Travis will then deploy to PyPI if tests pass.</p>
+<p>Github Actions will then deploy to TestPyPI if tests pass.
+Finally, tagged versions are deployed to PyPI.</p>
 </div>
 </div>
 
