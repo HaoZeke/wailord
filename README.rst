@@ -2,8 +2,8 @@
 Wailord
 =======
 
-.. image:: https://w.wallhaven.cc/full/4x/wallhaven-4xgw53.jpg
-        :alt: Logo of sorts
+.. image:: https://raw.githubusercontent.com/HaoZeke/wailord/main/docs/img/cover.jpeg
+        :alt: Logo of sorts from wallhaven
 
 .. image:: https://img.shields.io/pypi/v/wailord.svg
         :target: https://pypi.python.org/pypi/wailord
