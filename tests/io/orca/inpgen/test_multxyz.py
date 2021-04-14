@@ -49,5 +49,11 @@ def test_multxyz_num(mult_xyz):
 
 
 def test_multxyz_struct(exp_inpgen):
+    """
+    Generate struct struct struct struct struct.
+
+    Args:
+        exp_inpgen: (todo): write your description
+    """
     waex.cookies.gen_base(f"{exp_inpgen}")
     pass

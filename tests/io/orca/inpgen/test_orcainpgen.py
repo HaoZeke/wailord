@@ -34,6 +34,12 @@ def prep_inpgen(tmpdir_factory):
 
 
 def test_keywords(datadir):
+    """
+    Parse a yaml file.
+
+    Args:
+        datadir: (str): write your description
+    """
     ymlt = waio.inp.inpGenerator(datadir / "orcaBlockKey.yml")
     string = f"""
     ! NUMGRAD
@@ -48,6 +54,12 @@ def test_keywords(datadir):
 
 
 def test_blocks(datadir):
+    """
+    Parse the yaml text
+
+    Args:
+        datadir: (str): write your description
+    """
     ymlt = waio.inp.inpGenerator(datadir / "orcaBlockKey.yml")
     string = """
     %method
@@ -70,6 +82,12 @@ def test_blocks(datadir):
 
 
 def test_geom_constraint(prep_inpgen):
+    """
+    Test if geomagnetic geomagnetic geom
+
+    Args:
+        prep_inpgen: (bool): write your description
+    """
     string = f"""
     %geom
       Scan
@@ -101,6 +119,12 @@ def test_geom_constraint(prep_inpgen):
 
 
 def test_geom_scaniter(prep_inpgen):
+    """
+    Parse geomagnetic geomagnetic file. geom
+
+    Args:
+        prep_inpgen: (todo): write your description
+    """
     string = f"""
     %geom
       Scan
@@ -129,6 +153,12 @@ def test_geom_scaniter(prep_inpgen):
 
 
 def test_geom_maxiter(prep_inpgen):
+    """
+    Parse a geom file and - like object.
+
+    Args:
+        prep_inpgen: (todo): write your description
+    """
     string = f"""
     %geom
       maxiter = 300
@@ -147,20 +177,44 @@ def test_geom_maxiter(prep_inpgen):
 
 
 def test_brokensym(prep_inpgen):
+    """
+    Generate all brokens.
+
+    Args:
+        prep_inpgen: (todo): write your description
+    """
     waex.cookies.gen_base(f"{prep_inpgen}/expbrsym.yml")
     pass
 
 
 def test_nobrsym(prep_inpgen):
+    """
+    Èi̇·åıĸæńįģä¸ĭ¶æģ
+
+    Args:
+        prep_inpgen: (bool): write your description
+    """
     waex.cookies.gen_base(f"{prep_inpgen}/nbrsym.yml")
     pass
 
 
 def test_viz(datadir):
+    """
+    Test if the given datadir exists.
+
+    Args:
+        datadir: (str): write your description
+    """
     pass
 
 
 def test_geom_scans(datadir):
+    """
+    Parse geom
+
+    Args:
+        datadir: (str): write your description
+    """
     ymlt = waio.inp.inpGenerator(datadir / "orcaGeom.yml")
     string = f"""
     %geom

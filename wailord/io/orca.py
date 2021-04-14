@@ -348,6 +348,12 @@ class orcaExp:
         self.handle_exp(expfolder)
 
     def __repr__(self):
+        """
+        Return a repr representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         string = f"""
         Experiment: {self.inpconf}
         Outputs: {self.orclist}
@@ -576,9 +582,22 @@ class orcaVis:
         self.get_final_e()
 
     def __repr__(self):
+        """
+        Return a repr representation of a repr__.
+
+        Args:
+            self: (todo): write your description
+        """
         return f"{self.ofile}"
 
     def get_evals(self, ofile):
+        """
+        Get evals from file
+
+        Args:
+            self: (todo): write your description
+            ofile: (str): write your description
+        """
         with open(self.ofile) as of:
             flines = of.readlines()
             for line in flines:
@@ -587,6 +606,13 @@ class orcaVis:
         return
 
     def get_final_e(self, dat=False):
+        """
+        Calculate e ( e )
+
+        Args:
+            self: (todo): write your description
+            dat: (str): write your description
+        """
         with open(self.ofile) as of:
             fInp = of.read()
             try:
@@ -603,6 +629,12 @@ class orcaVis:
         pass
 
     def final_sp_e(self):
+        """
+        Finalize sp sp sp sp sp sp sp sp sp sp sp sp sp sp sp sp sp sp sp sp_e.
+
+        Args:
+            self: (todo): write your description
+        """
         erow = self.runinfo
         erow["final_sp_energy"] = self.fin_sp_e.m
         erow["unit"] = self.fin_sp_e.u
