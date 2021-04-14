@@ -55,6 +55,13 @@ AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
 class inpGenerator:
     def __init__(self, filename):
+        """
+        Initialize geomagnetic object.
+
+        Args:
+            self: (todo): write your description
+            filename: (str): write your description
+        """
         self.qc = None
         self.xyz = []
         self.xyzpath = None
@@ -73,6 +80,12 @@ class inpGenerator:
         self.scripts = []
 
     def __repr__(self):
+        """
+        Return a repr representation of a repr__.
+
+        Args:
+            self: (todo): write your description
+        """
         return f"{self.konfik.show_config()}"
 
     def read_yml(self):
@@ -272,6 +285,13 @@ class inpGenerator:
         return "".join(blines)
 
     def parse_keywords(self, keywords):
+        """
+        Parse a list of keywords.
+
+        Args:
+            self: (todo): write your description
+            keywords: (str): write your description
+        """
         keylines = []
         for kl in keywords:
             keylines.append(f"\n! {kl}")
@@ -288,6 +308,13 @@ class inpGenerator:
         pass
 
     def parse_viz(self, viz):
+        """
+        Parse a viz string.
+
+        Args:
+            self: (todo): write your description
+            viz: (todo): write your description
+        """
         if viz.chemcraft is True:
             string = """
 
@@ -300,6 +327,13 @@ class inpGenerator:
             return textwrap.dedent(string)
 
     def parse_scf(self, scf):
+        """
+        Parse a scf file.
+
+        Args:
+            self: (todo): write your description
+            scf: (todo): write your description
+        """
         textlines = []
         textlines.append("\n%scf\n")
         if "brokensym" in scf:
@@ -337,6 +371,13 @@ class inpGenerator:
         return "".join(textlines)
 
     def params_slot(self, thing):
+        """
+        Deter parameters for a thing.
+
+        Args:
+            self: (todo): write your description
+            thing: (str): write your description
+        """
         if not "xyz" in thing or thing["xyz"] is not True:
             raise TypeError("Currently only supports xyz")
         atype, anum, axis, name = itemgetter("atype", "anum", "axis", "name")(thing)
@@ -351,6 +392,14 @@ class inpGenerator:
         return xyzblock, comment
 
     def params_value(self, thing, comment):
+        """
+        Return the value of a thing.
+
+        Args:
+            self: (todo): write your description
+            thing: (int): write your description
+            comment: (str): write your description
+        """
         name, val = itemgetter("name", "value")(thing)
         return f"\t{name} = {val} {comment}\n"
 
@@ -387,6 +436,12 @@ class inpGenerator:
         pass
 
     def parse_qc(self):
+        """
+        Parse qc qc.
+
+        Args:
+            self: (todo): write your description
+        """
         qcList = list(
             itertt.chain(self.qc.style, self.qc.calculations, self.qc.basis_sets)
         )
@@ -516,10 +571,23 @@ class simpleInput:
     """ Base class for representing the simple input line"""
 
     def __init__(self, data):
+        """
+        Initialize the object.
+
+        Args:
+            self: (todo): write your description
+            data: (todo): write your description
+        """
         self.contents = None
         return
 
     def __repr__(self):
+        """
+        Return a repr representation of a repr__.
+
+        Args:
+            self: (todo): write your description
+        """
         return f"!{contents}"
 
 
@@ -527,11 +595,24 @@ class blockInput:
     """Base class representing block inputs"""
 
     def __init__(self, data):
+        """
+        Initialize the data object.
+
+        Args:
+            self: (todo): write your description
+            data: (todo): write your description
+        """
         self.keyword = None
         self.lines = None
         return
 
     def __repr__(self):
+        """
+        Return a repr representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         string = f"""
         %block {keyword}
             {lines}
@@ -544,11 +625,24 @@ class coordBlock:
     """Base class for the coordinate block"""
 
     def __init__(self, data):
+        """
+        Initialize the data object.
+
+        Args:
+            self: (todo): write your description
+            data: (todo): write your description
+        """
         self.keyword = None
         self.lines = None
         return
 
     def __repr__(self):
+        """
+        Return a repr representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         string = f"""
         *block {keyword}
             {lines}

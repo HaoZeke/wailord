@@ -11,6 +11,12 @@ Q_ = ureg.Quantity
 
 
 def test_orca_genEBDA(datadir):
+    """
+    Calculate the orca angle.
+
+    Args:
+        datadir: (str): write your description
+    """
     magnitude = [
         -38.652,
         -38.853,
@@ -44,6 +50,12 @@ def test_orca_genEBDA(datadir):
 
 
 def test_get_final_sp_energy(datadir):
+    """
+    R calculate energy.
+
+    Args:
+        datadir: (str): write your description
+    """
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     fse = expt.get_final_sp_energy()
     fse.shape == (27, 6)
@@ -100,6 +112,12 @@ def test_get_final_sp_energy(datadir):
 
 
 def test_get_energy_surface_shape(datadir):
+    """
+    R calculate the energy energy of the surface.
+
+    Args:
+        datadir: (str): write your description
+    """
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     edat = expt.get_energy_surface()
     assert list(edat.theory.unique()) == [
@@ -125,6 +143,12 @@ def test_get_energy_surface_shape(datadir):
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_get_energy_surface_empty(datadir):
+    """
+    R calculate surface surface surface energy.
+
+    Args:
+        datadir: (str): write your description
+    """
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     with pytest.raises(ValueError):
         expt.get_energy_surface(etype=["MDCI", "Actual Energy"])
@@ -132,6 +156,12 @@ def test_get_energy_surface_empty(datadir):
 
 
 def test_get_energy_surface_shape_more(datadir):
+    """
+    R calculate energy energy energy for energy.
+
+    Args:
+        datadir: (str): write your description
+    """
     otheory = ["RHF", "RHF MP2", "UHF", "UHF MP2", "QCISD(T)"]
     expt = waio.orca.orcaExp(
         expfolder=datadir / "multiword_energy", order_theory=otheory
@@ -167,6 +197,12 @@ def test_get_energy_surface_shape_more(datadir):
 
 
 def test_get_pop(datadir):
+    """
+    Calculate test.
+
+    Args:
+        datadir: (str): write your description
+    """
     oth = ["UHF", "UKS BLYP", "UKS B3LYP"]
     expt = waio.orca.orcaExp(expfolder=datadir / "multxyz_pop", order_theory=oth)
     popdat = expt.get_population()
@@ -201,6 +237,12 @@ def test_get_pop(datadir):
 
 
 def test_get_ir_freq(datadir):
+    """
+    Get the ir_get frequency.
+
+    Args:
+        datadir: (str): write your description
+    """
     oth = ["HF", "MP2", "B3LYP"]
     expt = waio.orca.orcaExp(expfolder=datadir / "ir_spec", order_theory=oth)
     vdat = expt.get_ir_spec()
@@ -215,6 +257,12 @@ def test_get_ir_freq(datadir):
 
 
 def test_vpt2_transitions(datadir):
+    """
+    Test if vpt2 cross - transformer.
+
+    Args:
+        datadir: (str): write your description
+    """
     oth = ["HF", "MP2", "B3LYP"]
     expt = waio.orca.orcaExp(expfolder=datadir / "vpt2_h2o", order_theory=oth)
     vdat = expt.get_vpt2_transitions()

@@ -5,6 +5,11 @@ import sys
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     try:
         import wailord
     except ImportError as error:
