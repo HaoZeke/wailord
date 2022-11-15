@@ -55,6 +55,13 @@ AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
 class inpGenerator:
     def __init__(self, filename):
+        """
+        Initialize the object.
+
+        Args:
+            self: write your description
+            filename: write your description
+        """
         self.qc = None
         self.xyz = []
         self.xyzpath = None
@@ -73,6 +80,12 @@ class inpGenerator:
         self.scripts = []
 
     def __repr__(self):
+        """
+        Representation of the configuration.
+
+        Args:
+            self: write your description
+        """
         return f"{self.konfik.show_config()}"
 
     def read_yml(self):
@@ -272,6 +285,13 @@ class inpGenerator:
         return "".join(blines)
 
     def parse_keywords(self, keywords):
+        """
+        Parse keywords into a string.
+
+        Args:
+            self: write your description
+            keywords: write your description
+        """
         keylines = []
         for kl in keywords:
             keylines.append(f"\n! {kl}")
@@ -288,6 +308,13 @@ class inpGenerator:
         pass
 
     def parse_viz(self, viz):
+        """
+        Parses the viz object and returns a string with the appropriate formatting.
+
+        Args:
+            self: write your description
+            viz: write your description
+        """
         if viz.chemcraft is True:
             string = """
 
@@ -300,6 +327,13 @@ class inpGenerator:
             return textwrap.dedent(string)
 
     def parse_scf(self, scf):
+        """
+        Parse a single SCF file.
+
+        Args:
+            self: write your description
+            scf: write your description
+        """
         textlines = []
         textlines.append("\n%scf\n")
         if "brokensym" in scf:
@@ -337,6 +371,13 @@ class inpGenerator:
         return "".join(textlines)
 
     def params_slot(self, thing):
+        """
+        Returns the xyzblock and comment for a slot of a type.
+
+        Args:
+            self: write your description
+            thing: write your description
+        """
         if not "xyz" in thing or thing["xyz"] is not True:
             raise TypeError("Currently only supports xyz")
         atype, anum, axis, name = itemgetter("atype", "anum", "axis", "name")(thing)
@@ -351,6 +392,14 @@ class inpGenerator:
         return xyzblock, comment
 
     def params_value(self, thing, comment):
+        """
+        Return the value of the parameters of a thing.
+
+        Args:
+            self: write your description
+            thing: write your description
+            comment: write your description
+        """
         name, val = itemgetter("name", "value")(thing)
         return f"\t{name} = {val} {comment}\n"
 
@@ -387,6 +436,12 @@ class inpGenerator:
         pass
 
     def parse_qc(self):
+        """
+        Parse the QC options.
+
+        Args:
+            self: write your description
+        """
         qcList = list(
             itertt.chain(self.qc.style, self.qc.calculations, self.qc.basis_sets)
         )
@@ -516,10 +571,23 @@ class simpleInput:
     """ Base class for representing the simple input line"""
 
     def __init__(self, data):
+        """
+        Initialize the tag from data.
+
+        Args:
+            self: write your description
+            data: write your description
+        """
         self.contents = None
         return
 
     def __repr__(self):
+        """
+        Return a string representation of the object.
+
+        Args:
+            self: write your description
+        """
         return f"!{contents}"
 
 
@@ -527,11 +595,24 @@ class blockInput:
     """Base class representing block inputs"""
 
     def __init__(self, data):
+        """
+        Initialize the parser with the given data.
+
+        Args:
+            self: write your description
+            data: write your description
+        """
         self.keyword = None
         self.lines = None
         return
 
     def __repr__(self):
+        """
+        Return a string representation of the file.
+
+        Args:
+            self: write your description
+        """
         string = f"""
         %block {keyword}
             {lines}
@@ -544,11 +625,24 @@ class coordBlock:
     """Base class for the coordinate block"""
 
     def __init__(self, data):
+        """
+        Initialize the parser with the given data.
+
+        Args:
+            self: write your description
+            data: write your description
+        """
         self.keyword = None
         self.lines = None
         return
 
     def __repr__(self):
+        """
+        Return a string representation of the file.
+
+        Args:
+            self: write your description
+        """
         string = f"""
         *block {keyword}
             {lines}
