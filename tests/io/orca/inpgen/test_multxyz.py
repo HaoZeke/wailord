@@ -49,5 +49,11 @@ def test_multxyz_num(mult_xyz):
 
 
 def test_multxyz_struct(exp_inpgen):
+    """
+    Multiply the values in the inpgen dictionary.
+
+    Args:
+        exp_inpgen: write your description
+    """
     waex.cookies.gen_base(f"{exp_inpgen}")
     pass

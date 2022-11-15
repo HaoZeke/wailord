@@ -11,6 +11,12 @@ Q_ = ureg.Quantity
 
 
 def test_orca_genEBDA(datadir):
+    """
+    Test that the genEBDA method works.
+
+    Args:
+        datadir: write your description
+    """
     magnitude = [
         -38.652,
         -38.853,
@@ -44,6 +50,12 @@ def test_orca_genEBDA(datadir):
 
 
 def test_get_final_sp_energy(datadir):
+    """
+    Test the get_final_sp_energy method of the orca expt module.
+
+    Args:
+        datadir: write your description
+    """
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     fse = expt.get_final_sp_energy()
     fse.shape == (27, 6)
@@ -100,6 +112,12 @@ def test_get_final_sp_energy(datadir):
 
 
 def test_get_energy_surface_shape(datadir):
+    """
+    Test that the get_energy_surface method works correctly with the shape of the energy surface.
+
+    Args:
+        datadir: write your description
+    """
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     edat = expt.get_energy_surface()
     assert list(edat.theory.unique()) == [
@@ -125,6 +143,12 @@ def test_get_energy_surface_shape(datadir):
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_get_energy_surface_empty(datadir):
+    """
+    Test for get_energy_surface with an empty energy surface.
+
+    Args:
+        datadir: write your description
+    """
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     with pytest.raises(ValueError):
         expt.get_energy_surface(etype=["MDCI", "Actual Energy"])
@@ -132,6 +156,12 @@ def test_get_energy_surface_empty(datadir):
 
 
 def test_get_energy_surface_shape_more(datadir):
+    """
+    Test that the get_energy_surface method works with more shapes.
+
+    Args:
+        datadir: write your description
+    """
     otheory = ["RHF", "RHF MP2", "UHF", "UHF MP2", "QCISD(T)"]
     expt = waio.orca.orcaExp(
         expfolder=datadir / "multiword_energy", order_theory=otheory
@@ -167,6 +197,12 @@ def test_get_energy_surface_shape_more(datadir):
 
 
 def test_get_pop(datadir):
+    """
+    Test that population data is consistent with get_population method.
+
+    Args:
+        datadir: write your description
+    """
     oth = ["UHF", "UKS BLYP", "UKS B3LYP"]
     expt = waio.orca.orcaExp(expfolder=datadir / "multxyz_pop", order_theory=oth)
     popdat = expt.get_population()
@@ -201,6 +237,12 @@ def test_get_pop(datadir):
 
 
 def test_get_ir_freq(datadir):
+    """
+    Test the get_ir_freq method of the orcaExp class.
+
+    Args:
+        datadir: write your description
+    """
     oth = ["HF", "MP2", "B3LYP"]
     expt = waio.orca.orcaExp(expfolder=datadir / "ir_spec", order_theory=oth)
     vdat = expt.get_ir_spec()
@@ -215,6 +257,12 @@ def test_get_ir_freq(datadir):
 
 
 def test_vpt2_transitions(datadir):
+    """
+    Test that the VPT2 transitions are stored in a transition matrix
+
+    Args:
+        datadir: write your description
+    """
     oth = ["HF", "MP2", "B3LYP"]
     expt = waio.orca.orcaExp(expfolder=datadir / "vpt2_h2o", order_theory=oth)
     vdat = expt.get_vpt2_transitions()

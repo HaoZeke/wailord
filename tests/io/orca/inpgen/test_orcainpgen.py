@@ -34,6 +34,12 @@ def prep_inpgen(tmpdir_factory):
 
 
 def test_keywords(datadir):
+    """
+    Test that ymlt has the same keywords as expected
+
+    Args:
+        datadir: write your description
+    """
     ymlt = waio.inp.inpGenerator(datadir / "orcaBlockKey.yml")
     string = f"""
     ! NUMGRAD
@@ -48,6 +54,12 @@ def test_keywords(datadir):
 
 
 def test_blocks(datadir):
+    """
+    Test that ymlt. blocks matches expected blocks
+
+    Args:
+        datadir: write your description
+    """
     ymlt = waio.inp.inpGenerator(datadir / "orcaBlockKey.yml")
     string = """
     %method
@@ -70,6 +82,12 @@ def test_blocks(datadir):
 
 
 def test_geom_constraint(prep_inpgen):
+    """
+    Test that yaml file has the expected geometry lines
+
+    Args:
+        prep_inpgen: write your description
+    """
     string = f"""
     %geom
       Scan
@@ -101,6 +119,12 @@ def test_geom_constraint(prep_inpgen):
 
 
 def test_geom_scaniter(prep_inpgen):
+    """
+    Test that yaml file has the expected geometry lines
+
+    Args:
+        prep_inpgen: write your description
+    """
     string = f"""
     %geom
       Scan
@@ -129,6 +153,12 @@ def test_geom_scaniter(prep_inpgen):
 
 
 def test_geom_maxiter(prep_inpgen):
+    """
+    Test that yaml file has maxiter geometry lines
+
+    Args:
+        prep_inpgen: write your description
+    """
     string = f"""
     %geom
       maxiter = 300
@@ -147,20 +177,44 @@ def test_geom_maxiter(prep_inpgen):
 
 
 def test_brokensym(prep_inpgen):
+    """
+    Test broken symtabs.
+
+    Args:
+        prep_inpgen: write your description
+    """
     waex.cookies.gen_base(f"{prep_inpgen}/expbrsym.yml")
     pass
 
 
 def test_nobrsym(prep_inpgen):
+    """
+    This test is a little lame but it s not a good idea to use this.
+
+    Args:
+        prep_inpgen: write your description
+    """
     waex.cookies.gen_base(f"{prep_inpgen}/nbrsym.yml")
     pass
 
 
 def test_viz(datadir):
+    """
+    Test that the Viz file is properly formatted.
+
+    Args:
+        datadir: write your description
+    """
     pass
 
 
 def test_geom_scans(datadir):
+    """
+    Test that ymlt. geomlines matches the expected geometry lines.
+
+    Args:
+        datadir: write your description
+    """
     ymlt = waio.inp.inpGenerator(datadir / "orcaGeom.yml")
     string = f"""
     %geom
