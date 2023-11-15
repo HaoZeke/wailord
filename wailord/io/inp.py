@@ -46,12 +46,11 @@ import itertools as itertt
 from pathlib import Path
 from operator import itemgetter
 
-from konfik import Konfik
+import yaml
 
 SCAN_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
 CONSTRAINT_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle", "C": "Cartesian"}
 AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
-
 
 class inpGenerator:
     def __init__(self, filename):
@@ -69,23 +68,27 @@ class inpGenerator:
         self.paramlines = None
         self.keylines = None
         self.blocks = None
-        self.konfik = Konfik(config_path=filename)
+        self.config = None
         self.scripts = []
 
+        fpath = Path(filename)
+        with fpath.open(mode='r') as ymlfile:
+            self.config = wau.DotDict( yaml.safe_load(ymlfile) )
+
     def __repr__(self):
-        return f"{self.konfik.show_config()}"
+        return f"{self.config}"
 
     def read_yml(self):
         """ Returns the overall output. """
         self.qc, self.xyzpath, self.spin = itemgetter("qc", "xyz", "spin")(
-            self.konfik.config
+            self.config
         )
         # Test later
         if "basis_sets" not in self.qc:
             self.qc["basis_sets"] = ["semi_emp"]
         # Test this later, with and without, also try overrides
-        if "extra" in self.konfik.config.keys():
-            self.extra = self.konfik.config.extra
+        if "extra" in self.config:
+            self.extra = self.config["extra"]
         else:
             print("Consider using None in the yml file for extra")
 
@@ -191,23 +194,23 @@ class inpGenerator:
         self.xyzpath = Path(self.xyzpath)
         if not self.xyzpath.is_dir():
             self.xyz.append(
-                waio.xyz.xyzIO(self.conf_path.parent / self.konfik.config.xyz)
+                waio.xyz.xyzIO(self.conf_path.parent / self.config.xyz)
             )
             self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
             # Geometry
-            if "geom" in self.konfik.config.keys():
-                self.geomlines = self.parse_geom(self.konfik.config.geom)
+            if "geom" in self.config:
+                self.geomlines = self.parse_geom(self.config.geom)
             # Paramter Blocks
-            if "params" in self.konfik.config.keys():
-                self.paramlines = self.parse_params(self.konfik.config.params)
-            if "scf" in self.konfik.config.keys():
-                self.scf = self.parse_scf(self.konfik.config.scf)
-            if "viz" in self.konfik.config.keys():
-                self.viz = self.parse_viz(self.konfik.config.viz)
-            if "keywords" in self.konfik.config.keys():
-                self.keylines = self.parse_keywords(self.konfik.config.keywords)
-            if "blocks" in self.konfik.config.keys():
-                self.blocks = self.parse_blocks(self.konfik.config.blocks)
+            if "params" in self.config:
+                self.paramlines = self.parse_params(self.config.params)
+            if "scf" in self.config:
+                self.scf = self.parse_scf(self.config.scf)
+            if "viz" in self.config:
+                self.viz = self.parse_viz(self.config.viz)
+            if "keywords" in self.config:
+                self.keylines = self.parse_keywords(self.config.keywords)
+            if "blocks" in self.config:
+                self.blocks = self.parse_blocks(self.config.blocks)
             self.gendir_qc(extra=None)
         else:
             for root, dirs, files in os.walk(self.xyzpath.resolve()):
@@ -218,23 +221,23 @@ class inpGenerator:
                         )
                         self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
                         # Geometry
-                        if "geom" in self.konfik.config.keys():
-                            self.geomlines = self.parse_geom(self.konfik.config.geom)
+                        if "geom" in self.config.keys():
+                            self.geomlines = self.parse_geom(self.config.geom)
                             # Paramter Blocks
-                        if "params" in self.konfik.config.keys():
+                        if "params" in self.config.keys():
                             self.paramlines = self.parse_params(
-                                self.konfik.config.params
+                                self.config.params
                             )
-                        if "scf" in self.konfik.config.keys():
-                            self.scf = self.parse_scf(self.konfik.config.scf)
-                        if "viz" in self.konfik.config.keys():
-                            self.viz = self.parse_viz(self.konfik.config.viz)
-                        if "keywords" in self.konfik.config.keys():
+                        if "scf" in self.config.keys():
+                            self.scf = self.parse_scf(self.config.scf)
+                        if "viz" in self.config.keys():
+                            self.viz = self.parse_viz(self.config.viz)
+                        if "keywords" in self.config.keys():
                             self.keylines = self.parse_keywords(
-                                self.konfik.config.keywords
+                                self.config.keywords
                             )
-                        if "blocks" in self.konfik.config.keys():
-                            self.blocks = self.parse_blocks(self.konfik.config.blocks)
+                        if "blocks" in self.config.keys():
+                            self.blocks = self.parse_blocks(self.config.blocks)
                         self.gendir_qc(extra=None)
         pass
 
@@ -400,7 +403,7 @@ class inpGenerator:
         if extra is not None:
             print("Overwriting extra from yml file")
             self.extra = extra
-        for styl in self.konfik.config.qc.style:
+        for styl in self.config.qc.style:
             styl = styl.replace(" ", "_")
             self.gendir_qcspin(basename / styl)
         self.genharness(basename)
@@ -415,14 +418,14 @@ class inpGenerator:
 
     def gendir_qccalc(self, path):
         """Generates set of calculation folders"""
-        for cal in self.konfik.config.qc.calculations:
+        for cal in self.config.qc.calculations:
             self.gendir_qcbasis(path / cal)
         pass
 
     def gendir_qcbasis(self, path):
         """Generates the directory of input files. Note that the folders will have +
         replaced by P and * by 8"""
-        for base in self.konfik.config.qc.basis_sets:
+        for base in self.config.qc.basis_sets:
             bas = base.replace("+", "P").replace("*", "8")
             Path.mkdir(path / bas, parents=True, exist_ok=True)
             self.geninp(path / bas)
@@ -448,7 +451,7 @@ class inpGenerator:
         self.writeinp(tmpconf)
         self.putscript(
             to_loc=path,
-            from_loc=self.conf_path.parent / self.konfik.config.jobscript,
+            from_loc=self.conf_path.parent / self.config.jobscript,
             slug=f"{tmpconf['basis']}_{tmpconf['style']}",
         )
         pass
@@ -456,7 +459,7 @@ class inpGenerator:
     def putscript(self, from_loc, to_loc, slug):
         """Copies the jobscript"""
         shutil.copy(from_loc, to_loc)
-        scriptname = to_loc / self.konfik.config.jobscript
+        scriptname = to_loc / self.config.jobscript
         slug = slug.replace(" ", "_")
         rep_obj = {
             "prev": ["ORCA_CALCULATION"],
@@ -464,7 +467,7 @@ class inpGenerator:
         }
         wau.repkey(scriptname, rep_obj)
         if self.viz is not None:
-            if self.konfik.config.viz.chemcraft is True:
+            if self.config.viz.chemcraft is True:
                 with open(scriptname, "a") as script:
                     string = """
                     cd $SLURM_SUBMIT_DIR
