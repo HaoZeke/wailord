@@ -52,6 +52,7 @@ SCAN_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle"}
 CONSTRAINT_TYPES = {"D": "Dihedral", "B": "Bond", "A": "Angle", "C": "Cartesian"}
 AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
+
 class inpGenerator:
     def __init__(self, filename):
         self.qc = None
@@ -72,17 +73,15 @@ class inpGenerator:
         self.scripts = []
 
         fpath = Path(filename)
-        with fpath.open(mode='r') as ymlfile:
-            self.config = wau.DotDict( yaml.safe_load(ymlfile) )
+        with fpath.open(mode="r") as ymlfile:
+            self.config = wau.DotDict(yaml.safe_load(ymlfile))
 
     def __repr__(self):
         return f"{self.config}"
 
     def read_yml(self):
-        """ Returns the overall output. """
-        self.qc, self.xyzpath, self.spin = itemgetter("qc", "xyz", "spin")(
-            self.config
-        )
+        """Returns the overall output."""
+        self.qc, self.xyzpath, self.spin = itemgetter("qc", "xyz", "spin")(self.config)
         # Test later
         if "basis_sets" not in self.qc:
             self.qc["basis_sets"] = ["semi_emp"]
@@ -193,9 +192,7 @@ class inpGenerator:
         """Generate folder structure for each system"""
         self.xyzpath = Path(self.xyzpath)
         if not self.xyzpath.is_dir():
-            self.xyz.append(
-                waio.xyz.xyzIO(self.conf_path.parent / self.config.xyz)
-            )
+            self.xyz.append(waio.xyz.xyzIO(self.conf_path.parent / self.config.xyz))
             self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
             # Geometry
             if "geom" in self.config:
@@ -225,17 +222,13 @@ class inpGenerator:
                             self.geomlines = self.parse_geom(self.config.geom)
                             # Paramter Blocks
                         if "params" in self.config.keys():
-                            self.paramlines = self.parse_params(
-                                self.config.params
-                            )
+                            self.paramlines = self.parse_params(self.config.params)
                         if "scf" in self.config.keys():
                             self.scf = self.parse_scf(self.config.scf)
                         if "viz" in self.config.keys():
                             self.viz = self.parse_viz(self.config.viz)
                         if "keywords" in self.config.keys():
-                            self.keylines = self.parse_keywords(
-                                self.config.keywords
-                            )
+                            self.keylines = self.parse_keywords(self.config.keywords)
                         if "blocks" in self.config.keys():
                             self.blocks = self.parse_blocks(self.config.blocks)
                         self.gendir_qc(extra=None)
@@ -516,7 +509,7 @@ class inpGenerator:
 
 
 class simpleInput:
-    """ Base class for representing the simple input line"""
+    """Base class for representing the simple input line"""
 
     def __init__(self, data):
         self.contents = None

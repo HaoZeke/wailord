@@ -24,6 +24,7 @@ def repkey(fname, repobj):
     with open(fname, "w") as o:
         o.write(fInp)
 
+
 class DotDict(dict):
     """
     Modified dictionary class for accessing key:val via dot notation.
@@ -51,12 +52,12 @@ class DotDict(dict):
         super().__setitem__(key, value)
 
     def __getattr__(self, key):
-        if key.startswith('__') and key.endswith('__'):
+        if key.startswith("__") and key.endswith("__"):
             return super().__getattr__(key)
         return self.__getitem__(key)
 
     def __setattr__(self, key, value):
-        if key.startswith('__') and key.endswith('__'):
+        if key.startswith("__") and key.endswith("__"):
             super().__setattr__(key, value)
         else:
             self.__setitem__(key, value)

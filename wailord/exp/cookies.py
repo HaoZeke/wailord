@@ -18,19 +18,19 @@ def gen_base(filen=None, /, template="basicExperiment", *, absolute=False):
         template = str(TEMPLATE_DIR / template)
 
     if filen is not None:
-        with open(filen, 'r') as ymlfile:
+        with open(filen, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)
 
         if not absolute:
-            config['orca_yml'] = str(Path(config['orca_yml']).resolve())
-            config['inp_xyz'] = str(Path(config['inp_xyz']).resolve())
+            config["orca_yml"] = str(Path(config["orca_yml"]).resolve())
+            config["inp_xyz"] = str(Path(config["inp_xyz"]).resolve())
 
         cookiecutter(
             template,
             no_input=True,
             overwrite_if_exists=True,
             extra_context=config,
-            output_dir=Path(config['outdir']),
+            output_dir=Path(config["outdir"]),
         )
     else:
         # Create project from the basic template

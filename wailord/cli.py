@@ -6,9 +6,7 @@ from wailord.exp import cookies
 
 
 @click.command()
-@click.option(
-    "--conf", default=None, help="Configuration file in YAML"
-)
+@click.option("--conf", default=None, help="Configuration file in YAML")
 @click.option(
     "--experiment",
     default="basicExperiment",
