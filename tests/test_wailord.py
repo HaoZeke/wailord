@@ -9,7 +9,7 @@ from click.testing import CliRunner
 from wailord import wailord
 from wailord import cli
 
-from wailord.utils import get_project_root
+from wailord._utils import get_project_root
 
 # DATA_DIR = get_project_root() / "tests" / "data"
 

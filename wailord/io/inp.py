@@ -36,7 +36,7 @@ Todo:
 
 """
 import wailord.io as waio
-import wailord.utils as wau
+import wailord._utils as wau
 
 import os
 import shutil
