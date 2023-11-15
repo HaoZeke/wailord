@@ -210,7 +210,7 @@ texinfo_documents = [
         "Wailord Documentation",
         author,
         "wailord",
-        "One line description of project.",
+        "ORCA input generator and output parser.",
         "Miscellaneous",
     ),
 ]
