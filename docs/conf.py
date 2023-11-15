@@ -43,7 +43,6 @@ extensions = [
     "sphinx.ext.mathjax",  # Need math support
     "sphinx.ext.githubpages",  # Puts the .nojekyll and CNAME files
     "sphinxcontrib.apidoc",  # Automatically sets up sphinx-apidoc
-    "sphinx_proof",  # Future proofing
     "sphinx_copybutton",  # Let there be plagiarism!
     "sphinx_sitemap",  # Always a good idea
     "sphinx_togglebutton",  # Toggles reduce clutter
