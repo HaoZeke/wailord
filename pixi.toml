@@ -1,0 +1,15 @@
+[project]
+name = "wailord"
+version = "0.1.0"
+description = "Add a short description here"
+authors = ["Rohit Goswami <rog32@hi.is>"]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tasks]
+
+[dependencies]
+poetry = "1.7.0.*"
+pip = "23.3.1.*"
+python = "3.9"
+cython = "3.0.5.*"

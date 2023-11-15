@@ -2,6 +2,11 @@
 History
 =======
 
+0.1.0 (2023-11-15)
+------------------
+* Rewritten from scratch
+* Less dependencies
+
 0.0.2 (2020-12-27)
 ------------------
 
