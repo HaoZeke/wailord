@@ -369,18 +369,24 @@ class inpGenerator:
             op.write("#!/usr/bin/env bash\n")
             op.write("export cur_file=$(realpath $0) \n")
             op.write('export cur_dir=$(dirname "${cur_file}")\n')
+
+            # Define the job command based on the availability of qsub
+            op.write("if command -v qsub &> /dev/null; then\n")
+            op.write("    job_command=\"qsub\"\n")
+            op.write("else\n")
+            op.write("    echo \"qsub not found, using bash instead.\"\n")
+            op.write("    job_command=\"bash\"\n")
+            op.write("fi\n")
+            op.write("\n")
             for num, script in enumerate(self.scripts, start=1):
-                op.write(f'cd "./{script.parents[0]}"')
-                op.write("\n")
-                op.write(f"qsub './{script.name}'")
-                op.write("\n")
+                op.write(f'cd "./{script.parents[0]}"\n')
+                op.write(f"${{job_command}} './{script.name}'\n")
                 op.write("cd $cur_dir\n")
                 op.write("\n")
-                if slow is True:
-                    if num % 10 == 0:
-                        op.write('echo("Slowing down!")\n')
-                        op.write("sleep 30s\n")
-        pass
+                if slow is True and num % 10 == 0:
+                    op.write('echo "Slowing down!"\n')
+                    op.write("sleep 30s\n")
+                    op.write("\n")
 
     def parse_qc(self):
         qcList = list(
