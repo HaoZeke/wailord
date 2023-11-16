@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 
 import wailord.io as waio
-from wailord.utils import get_project_root
+from wailord._utils import get_project_root
 
 CUR = Path().absolute()
 

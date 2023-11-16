@@ -4,7 +4,8 @@ import numpy as np
 import warnings
 import pytest
 
-from siuba import _, filter, select, mutate
+import siuba as si
+from siuba import _
 
 from pint import UnitRegistry
 from pathlib import Path
@@ -264,8 +265,8 @@ def test_orca_nstep_pop(datadir):
     spop = waio.orca.orcaVis(ofile=datadir / "ch3f_3ang_b3lyp.out")
     popdat = spop.single_population_analysis()
     assert popdat.step.max() == 2
-    assert (popdat >> filter(_.step == 1)).shape == (
-        popdat >> filter(_.step == 2)
+    assert (popdat >> si.filter(_.step == 1)).shape == (
+        popdat >> si.filter(_.step == 2)
     ).shape
     pass
 

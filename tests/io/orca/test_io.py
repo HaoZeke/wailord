@@ -4,7 +4,8 @@ import numpy as np
 import pytest
 
 from pint import UnitRegistry
-from siuba import _, filter, select, mutate
+import siuba as si
+from siuba import _
 
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
@@ -205,7 +206,7 @@ def test_get_ir_freq(datadir):
     expt = waio.orca.orcaExp(expfolder=datadir / "ir_spec", order_theory=oth)
     vdat = expt.get_ir_spec()
     assert vdat.shape == (63, 11)
-    assert (vdat >> filter(_.slug == "O1H2_h2o")).shape == (9, 11)
+    assert (vdat >> si.filter(_.slug == "O1H2_h2o")).shape == (9, 11)
     pass
 
 

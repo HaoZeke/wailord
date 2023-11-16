@@ -62,12 +62,12 @@ class xyzVisitor(NodeVisitor):
         return f"{self.meta}"
 
     def visit_meta(self, node, visited_children):
-        """ Returns the overall output. """
+        """Returns the overall output."""
         self.meta = node.text
         return node.text
 
     def visit_coord_block(self, node, visited_children):
-        """ Makes a dict of the section (as key) and the key/value pairs. """
+        """Makes a dict of the section (as key) and the key/value pairs."""
         cb = node.text.split("\n")
         for i, aline in enumerate(cb):
             each = aline.split()
@@ -77,17 +77,17 @@ class xyzVisitor(NodeVisitor):
         return node.text
 
     def visit_cline(self, node, visited_children):
-        """ Makes a dict of the section (as key) and the key/value pairs. """
+        """Makes a dict of the section (as key) and the key/value pairs."""
         self.clines = node.text
         return node.text
 
     def visit_natoms(self, node, visited_children):
-        """ Makes a dict of the section (as key) and the key/value pairs. """
+        """Makes a dict of the section (as key) and the key/value pairs."""
         print(node.text)
         return node.text
 
     def visit_atype(self, node, visited_children):
-        """ Makes a dict of the section (as key) and the key/value pairs. """
+        """Makes a dict of the section (as key) and the key/value pairs."""
         self.atom_types.append(node.text)
         return node.text
 

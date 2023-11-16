@@ -6,12 +6,7 @@ from wailord.exp import cookies
 
 
 @click.command()
-# @click.option('--count', default=1, help='Number of greetings.')
-# @click.option('--conf', prompt='Input file',
-#               help='Configuration file in TOML, YAML, DOTENV or JSON')
-@click.option(
-    "--conf", default=None, help="Configuration file in TOML, YAML, DOTENV or JSON"
-)
+@click.option("--conf", default=None, help="Configuration file in YAML")
 @click.option(
     "--experiment",
     default="basicExperiment",
@@ -25,15 +20,3 @@ def main(conf, experiment):
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover
-
-# @click.command()
-# @click.option('--count', default=1, help='Number of greetings.')
-# @click.option('--name', prompt='Your name',
-#               help='The person to greet.')
-# def hello(count, name):
-#     """Simple program that greets NAME for a total of COUNT times."""
-#     for x in range(count):
-#         click.echo('Hello %s!' % name)
-
-# if __name__ == '__main__':
-#     hello()

@@ -31,9 +31,6 @@ Todo:
 
 """
 
-import wailord.io as waio
-import wailord.utils as wau
-
 import numpy as np
 import pandas as pd
 import itertools as itertt
@@ -51,7 +48,7 @@ from functools import reduce
 from collections import namedtuple, OrderedDict
 from operator import itemgetter
 from pandas.api.types import CategoricalDtype
-from konfik import Konfik
+import yaml
 
 # Pint setup
 PA_ = pint_pandas.PintArray
@@ -367,7 +364,9 @@ class orcaExp:
 
         """
         fnames = []
-        self.inpconf = Konfik(config_path=efol / "orca.yml").config
+        orca_config_path = Path(efol) / "orca.yml"
+        with orca_config_path.open(mode="r") as ymlfile:
+            self.inpconf = yaml.safe_load(ymlfile)
         for root, dirs, files in os.walk(efol.resolve()):
             for filename in files:
                 if "out" in filename and "slurm" not in filename:
@@ -533,12 +532,12 @@ class orcaExp:
         return popdat
 
     def visit_meta(self, node, visited_children):
-        """ Returns the overall output. """
+        """Returns the overall output."""
         self.meta = node.text
         return node.text
 
     def visit_coord_block(self, node, visited_children):
-        """ Makes a dict of the section (as key) and the key/value pairs. """
+        """Makes a dict of the section (as key) and the key/value pairs."""
         cb = node.text.split("\n")
         for i, aline in enumerate(cb):
             each = aline.split()
