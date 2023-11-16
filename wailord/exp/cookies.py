@@ -12,11 +12,7 @@ TEMPLATE_DIR = get_project_root() / "wailord" / "_templates"
 
 def gen_base(filen=None, /, template="basicExperiment", *, absolute=False):
     """Generate a base template"""
-    if absolute:
-        template = str(template)
-    else:
-        template = str(TEMPLATE_DIR / template)
-
+    template = str(template) if absolute else str(TEMPLATE_DIR / template)
     if filen is not None:
         with open(filen, "r") as ymlfile:
             config = yaml.safe_load(ymlfile)

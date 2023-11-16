@@ -38,13 +38,12 @@ class DotDict(dict):
                 self[key] = DotDict(self[key])
 
     def __getitem__(self, key):
-        if isinstance(key, str):
-            try:
-                return super().__getitem__(key)
-            except KeyError:
-                raise MissingVariableError(f"No such variable '{key}' exists") from None
-        else:
+        if not isinstance(key, str):
             raise TypeError("Key must be a string")
+        try:
+            return super().__getitem__(key)
+        except KeyError:
+            raise MissingVariableError(f"No such variable '{key}' exists") from None
 
     def __setitem__(self, key, value):
         if isinstance(value, dict) and not isinstance(value, DotDict):

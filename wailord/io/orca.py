@@ -133,9 +133,7 @@ def parseOut(filename, plotter=False):
         spin = "triplet"
     else:
         raise (NotImplementedError(f"Not yet implemented {runinfo['spin']}"))
-    finGeom = []
-    for i in reversed(range(1, num_species + 1)):
-        finGeom.append(allAtoms[-i])
+    finGeom = [allAtoms[-i] for i in reversed(range(1, num_species + 1))]
     #  Creates a dictionary of the system H num O num
     systr = pd.DataFrame(finGeom).atype.value_counts().to_dict()
     # Flattens the dictionary to a list
@@ -151,10 +149,7 @@ def parseOut(filename, plotter=False):
         spin=spin,
         theory=runinfo["theory"],
     )
-    if plotter == True:
-        return oout, energ
-    else:
-        return oout
+    return (oout, energ) if plotter == True else oout
 
 
 def get_e(orcaoutdat, basis, system):
@@ -207,9 +202,11 @@ def genEBASet(
     geometries. Depreciate this eventually."""
     outs = []
     for root, dirs, files in os.walk(rootdir.resolve()):
-        for filename in files:
-            if "out" in filename and "slurm" not in filename:
-                outs.append(parseOut(f"{root}/{filename}"))
+        outs.extend(
+            parseOut(f"{root}/{filename}")
+            for filename in files
+            if "out" in filename and "slurm" not in filename
+        )
     outdat = pd.DataFrame(data=outs)
     basis_type = CategoricalDtype(categories=order_basis, ordered=True)
     theory_type = CategoricalDtype(categories=order_theory, ordered=True)
@@ -368,9 +365,11 @@ class orcaExp:
         with orca_config_path.open(mode="r") as ymlfile:
             self.inpconf = yaml.safe_load(ymlfile)
         for root, dirs, files in os.walk(efol.resolve()):
-            for filename in files:
-                if "out" in filename and "slurm" not in filename:
-                    fnames.append(Path(f"{root}/{filename}"))
+            fnames.extend(
+                Path(f"{root}/{filename}")
+                for filename in files
+                if "out" in filename and "slurm" not in filename
+            )
         self.orclist = fnames
         return
 
@@ -599,7 +598,6 @@ class orcaVis:
                 raise (
                     ValueError(f"Final single point energy not found for {self.ofile}")
                 )
-        pass
 
     def final_sp_e(self):
         erow = self.runinfo
@@ -677,7 +675,7 @@ class orcaVis:
         """
         if etype not in OUT_REGEX:
             raise (NotImplementedError(f"{etype} has not been implemented yet"))
-        if npoints == None:
+        if npoints is None:
             npoints = self.eeval
         xaxis = []
         yaxis = []
@@ -727,7 +725,7 @@ class orcaVis:
                                 imaginary=True,
                             )
                         accumulate.append(v)
-                        i = i + 1
+                        i += 1
         vdat = pd.DataFrame(accumulate)
         vdat["freq"] = vdat["freq"].astype("pint[cm_1]")
         # TODO: Add experiment layer
@@ -772,7 +770,7 @@ class orcaVis:
                             freq_diff=float(raw[3]),
                         )
                         accumulate.append(v)
-                        i = i + 1
+                        i += 1
         vdat = pd.DataFrame(accumulate)
         vdat["harmonic_freq"] = vdat["harmonic_freq"].astype("pint[cm_1]")
         vdat["vpt2_freq"] = vdat["vpt2_freq"].astype("pint[cm_1]")
@@ -783,9 +781,8 @@ class orcaVis:
                     f"Data not found for {self.runinfo['theory']}, did you run VPT2?"
                 )
             )
-        else:
-            for key in self.runinfo.keys():
-                vdat[key] = self.runinfo[key]
+        for key in self.runinfo.keys():
+            vdat[key] = self.runinfo[key]
         return vdat
 
     def ir_spec(self):
@@ -812,7 +809,7 @@ class orcaVis:
                             TZ=float(raw[5].replace(")", "")),
                         )
                         accumulate.append(v)
-                        i = i + 1
+                        i += 1
         vdat = pd.DataFrame(accumulate)
         vdat["T2"] = vdat["T2"].astype("pint[km/mol]")
         vdat["freq"] = vdat["freq"].astype("pint[cm_1]")
@@ -822,9 +819,8 @@ class orcaVis:
                     f"Spectra not found for {self.runinfo['theory']}, did you run FREQ?"
                 )
             )
-        else:
-            for key in self.runinfo.keys():
-                vdat[key] = self.runinfo[key]
+        for key in self.runinfo.keys():
+            vdat[key] = self.runinfo[key]
         return vdat
 
     def single_population_analysis(self, poptype="Mulliken", /):
@@ -869,7 +865,7 @@ class orcaVis:
                                 pcharge=float(raw[-1]),
                             )
                         accumulate.append(c)
-                        i = i + 1
+                        i += 1
         popdat = pd.DataFrame(accumulate)
         step = popdat.anum.count() / popdat.anum.nunique()
         popdat["step"] = np.asarray(

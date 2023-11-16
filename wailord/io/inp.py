@@ -93,8 +93,7 @@ class inpGenerator:
 
     def parse_geom(self, geom):
         """Rework the geometry into output"""
-        textlines = []
-        textlines.append("\n%geom")
+        textlines = ["\n%geom"]
         if "scan" in geom:
             textlines.append(f"\n  Scan\n")
             for scanthing in geom.scan.keys():
@@ -106,7 +105,7 @@ class inpGenerator:
                     raise TypeError(
                         f"Only dihedral, bond and angle scan types are supported, got {scanthing} instead"
                     )
-            textlines.append(f"  end")
+            textlines.append("  end")
         if "constrain" in geom:
             textlines.append(f"\n  Constraints\n")
             for consthing in geom.constrain.keys():
@@ -120,7 +119,7 @@ class inpGenerator:
                     raise TypeError(
                         f"Only dihedral, bond, angle, and cartesian constraints are supported, got {consthing} instead"
                     )
-            textlines.append(f"  end")
+            textlines.append("  end")
         if "maxiter" in geom:
             string = f"""
             maxiter {geom.maxiter}
@@ -135,10 +134,7 @@ class inpGenerator:
         constype = constype[0][0].upper()
         for constraint in cons:
             btwn = constraint["between"]
-            if "value" in constraint.keys():
-                value = float(constraint["value"])
-            else:
-                value = ""
+            value = float(constraint["value"]) if "value" in constraint.keys() else ""
             if constype != "C":
                 btwn_num = btwn.split(" ")
                 # TODO Handle the other types as tuples (B,2)
@@ -150,9 +146,7 @@ class inpGenerator:
                 )
                 # if constype == 'B' and len(btwn_num) == 2:
             else:
-                warnings.warn(
-                    f"Cartesian comments have not been implemented", UserWarning
-                )
+                warnings.warn("Cartesian comments have not been implemented", UserWarning)
                 comment = ""
             linesthing.append(f"    {{ {constype} {btwn} {value} C }} # {comment}\n")
         return "".join(linesthing)
@@ -232,7 +226,6 @@ class inpGenerator:
                         if "blocks" in self.config.keys():
                             self.blocks = self.parse_blocks(self.config.blocks)
                         self.gendir_qc(extra=None)
-        pass
 
     def parse_blocks(self, blocks):
         """Generic Block Handler
@@ -268,9 +261,7 @@ class inpGenerator:
         return "".join(blines)
 
     def parse_keywords(self, keywords):
-        keylines = []
-        for kl in keywords:
-            keylines.append(f"\n! {kl}")
+        keylines = [f"\n! {kl}" for kl in keywords]
         return "".join(keylines)
 
     def parse_yml(self):
@@ -281,7 +272,6 @@ class inpGenerator:
         self.parse_xyz()
         if self.qc.active is True:
             self.parse_qc()
-        pass
 
     def parse_viz(self, viz):
         if viz.chemcraft is True:
@@ -296,8 +286,7 @@ class inpGenerator:
             return textwrap.dedent(string)
 
     def parse_scf(self, scf):
-        textlines = []
-        textlines.append("\n%scf\n")
+        textlines = ["\n%scf\n"]
         if "brokensym" in scf:
             textlines.append(
                 f"  BrokenSym {scf.brokensym.more_unpaired}, {scf.brokensym.less_unpaired}"
@@ -314,8 +303,7 @@ class inpGenerator:
         """Rework the parameters into output. Recall that these do not require
         relaxation, and can also take fixed variables. On the other hand, these
         need more information to set up."""
-        textlines = []
-        textlines.append("%paras\n")
+        textlines = ["%paras\n"]
         for param in params:
             if param.get("value"):
                 param["slot"]["name"] = param["name"]
@@ -326,14 +314,12 @@ class inpGenerator:
                 self.xyzlines[-1], comment = self.params_slot(param["slot"])
                 textlines.append(self.params_range(param, comment))
             else:
-                raise TypeError(
-                    f"Currently only value and range variables are supported"
-                )
+                raise TypeError("Currently only value and range variables are supported")
         textlines.append("end\n")
         return "".join(textlines)
 
     def params_slot(self, thing):
-        if not "xyz" in thing or thing["xyz"] is not True:
+        if "xyz" not in thing or thing["xyz"] is not True:
             raise TypeError("Currently only supports xyz")
         atype, anum, axis, name = itemgetter("atype", "anum", "axis", "name")(thing)
         xyztmp = self.xyzlines[-1].split("\n")
@@ -393,7 +379,6 @@ class inpGenerator:
             itertt.chain(self.qc.style, self.qc.calculations, self.qc.basis_sets)
         )
         self.qcopts = qcList
-        pass
 
     def gendir_qc(self, basename=None, extra=None):
         """Function to generate QC folder structure recursively"""
@@ -406,20 +391,17 @@ class inpGenerator:
             styl = styl.replace(" ", "_")
             self.gendir_qcspin(basename / styl)
         self.genharness(basename)
-        pass
 
     def gendir_qcspin(self, path):
         """Generates the style folders"""
         for sp in self.spin:
             sp = sp.replace(" ", "")
             self.gendir_qccalc(path / Path(f"spin_{sp}"))
-        pass
 
     def gendir_qccalc(self, path):
         """Generates set of calculation folders"""
         for cal in self.config.qc.calculations:
             self.gendir_qcbasis(path / cal)
-        pass
 
     def gendir_qcbasis(self, path):
         """Generates the directory of input files. Note that the folders will have +
@@ -428,7 +410,6 @@ class inpGenerator:
             bas = base.replace("+", "P").replace("*", "8")
             Path.mkdir(path / bas, parents=True, exist_ok=True)
             self.geninp(path / bas)
-        pass
 
     def geninp(self, path):
         """Uses the path to generate details for an input file"""
@@ -453,7 +434,6 @@ class inpGenerator:
             from_loc=self.conf_path.parent / self.config.jobscript,
             slug=f"{tmpconf['basis']}_{tmpconf['style']}",
         )
-        pass
 
     def putscript(self, from_loc, to_loc, slug):
         """Copies the jobscript"""
@@ -473,7 +453,6 @@ class inpGenerator:
                     $orcadir/orca_2mkl orca -molden"""
                     script.writelines(textwrap.dedent(string))
         self.scripts.append(scriptname)
-        pass
 
     def writeinp(self, confobj, extralines=None):
         """Writes an input file. Minimally should have:
@@ -511,7 +490,6 @@ class inpGenerator:
             op.write("\n")
             op.write(self.xyzlines[-1])
             op.write("*")
-        pass
 
 
 class simpleInput:

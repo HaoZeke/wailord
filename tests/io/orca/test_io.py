@@ -92,7 +92,6 @@ def test_get_final_sp_energy(datadir):
             dtype=object,
         ),
     )
-    pass
 
 
 ##############################
@@ -121,7 +120,6 @@ def test_get_energy_surface_shape(datadir):
     assert len(edat[edat.isin(["3-21G"]).any(axis=1)]) == 3 * 33  #: 3 levels of theory
     assert len(edat[edat.isin(["UHF"]).any(axis=1)]) == 9 * 33  #: 9 basis sets
     assert edat.shape == (891, 8)  #: Rows = basis (9) * theory (3) * npoints (33)
-    pass
 
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
@@ -129,7 +127,6 @@ def test_get_energy_surface_empty(datadir):
     expt = waio.orca.orcaExp(expfolder=datadir / "h2")
     with pytest.raises(ValueError):
         expt.get_energy_surface(etype=["MDCI", "Actual Energy"])
-    pass
 
 
 def test_get_energy_surface_shape_more(datadir):
@@ -159,7 +156,6 @@ def test_get_energy_surface_shape_more(datadir):
         edat.theory.value_counts().to_numpy(),
         np.repeat(33, 5),
     )
-    pass
 
 
 #######################
@@ -193,7 +189,6 @@ def test_get_pop(datadir):
         popdat.theory.value_counts().to_numpy(),
         np.array([60, 50, 40]),
     )
-    pass
 
 
 ###############
@@ -207,7 +202,6 @@ def test_get_ir_freq(datadir):
     vdat = expt.get_ir_spec()
     assert vdat.shape == (63, 11)
     assert (vdat >> si.filter(_.slug == "O1H2_h2o")).shape == (9, 11)
-    pass
 
 
 ######################
@@ -220,4 +214,3 @@ def test_vpt2_transitions(datadir):
     expt = waio.orca.orcaExp(expfolder=datadir / "vpt2_h2o", order_theory=oth)
     vdat = expt.get_vpt2_transitions()
     assert vdat.shape == (9, 9)
-    pass

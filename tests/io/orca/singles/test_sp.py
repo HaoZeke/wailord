@@ -22,7 +22,6 @@ ureg.define("kcal_mol = kcal / 6.02214076e+23 = kcm")
 def test_orca_get_sp_e(datadir):
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     np.testing.assert_almost_equal(sEnerg.fin_sp_e.m, -1.01010039)
-    pass
 
 
 def test_orca_runinfo(datadir):
@@ -35,7 +34,6 @@ def test_orca_runinfo(datadir):
         "theory": "QCISD",
         "slug": "H2_test",
     }
-    pass
 
 
 ##########################
@@ -47,14 +45,12 @@ def test_orca_mdci_e_bounds(datadir):
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     with pytest.raises(ValueError):
         sEnerg.single_energy_surface(npoints=34)
-    pass
 
 
 def test_orca_energ_error(datadir):
     sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
     with pytest.raises(NotImplementedError):
         sEnerg.single_energy_surface(etype="Squid")
-    pass
 
 
 def test_orca_energ_empty(datadir):
@@ -64,7 +60,6 @@ def test_orca_energ_empty(datadir):
         sEnerg.single_energy_surface("MDCI", 33)
     with pytest.raises(ValueError):
         sEnerg.single_energy_surface("MDCI w/o Triples")
-    pass
 
 
 def test_orca_mdci_e_xvals(datadir):
@@ -76,7 +71,6 @@ def test_orca_mdci_e_xvals(datadir):
         blength,
         np.linspace(0.4, 2, 33),
     )
-    pass
 
 
 def test_orca_mdci_e_yvals(datadir):
@@ -125,7 +119,6 @@ def test_orca_mdci_e_yvals(datadir):
         energy,
         exp_e,
     )
-    pass
 
 
 def test_orca_mdci_e_mtrip_xvals(datadir):
@@ -137,7 +130,6 @@ def test_orca_mdci_e_mtrip_xvals(datadir):
         blength,
         np.linspace(0.4, 2, 33),
     )
-    pass
 
 
 def test_orca_mdci_e_mtrip_energy_evals(datadir):
@@ -146,7 +138,6 @@ def test_orca_mdci_e_mtrip_energy_evals(datadir):
     eDat = sEnerg.single_energy_surface(npoints=33)
     eDat1 = sEnerg.single_energy_surface()
     pd.testing.assert_frame_equal(eDat, eDat1)
-    pass
 
 
 def test_orca_mdci_e_mtrip_yvals(datadir):
@@ -195,7 +186,6 @@ def test_orca_mdci_e_mtrip_yvals(datadir):
         energy,
         exp_e,
     )
-    pass
 
 
 ############################
@@ -211,7 +201,6 @@ def test_mult_energy_surf(datadir):
     pd.testing.assert_frame_equal(eDat, eDatAll[["bond_length", "MDCI w/o Triples"]])
     pd.testing.assert_frame_equal(eDatMDCI, eDatAll[["bond_length", "MDCI"]])
     assert len(eDatAll) == len(eDat)
-    pass
 
 
 def test_mult_energy_surf_subset(datadir):
@@ -220,7 +209,6 @@ def test_mult_energy_surf_subset(datadir):
     assert "Actual Energy" not in eDatAll.columns
     assert "MDCI" in eDatAll.columns
     assert "SCF Energy" in eDatAll.columns
-    pass
 
 
 def test_mult_energy_surf_single(datadir):
@@ -230,7 +218,6 @@ def test_mult_energy_surf_single(datadir):
     pd.testing.assert_frame_equal(eDatMDCI, eDatSingleL.loc[:, ["bond_length", "MDCI"]])
     eDatSingle = sEnerg.mult_energy_surface(etype="MDCI")
     pd.testing.assert_frame_equal(eDatMDCI, eDatSingle.loc[:, ["bond_length", "MDCI"]])
-    pass
 
 
 ##############################
@@ -246,7 +233,6 @@ def test_orca_single_chargepop(datadir):
     sdat2 = spop.single_population_analysis("Loewdin")
     assert sdat2.shape == (4, 5)
     np.testing.assert_equal(sdat2.pcharge.to_numpy(), np.zeros(4))
-    pass
 
 
 def test_orca_single_fullpop(datadir):
@@ -258,7 +244,6 @@ def test_orca_single_fullpop(datadir):
     sdat2 = spop.single_population_analysis("Loewdin")
     assert sdat2.shape == (2, 6)
     np.testing.assert_equal(sdat2.pcharge.to_numpy(), np.zeros(2))
-    pass
 
 
 def test_orca_nstep_pop(datadir):
@@ -268,7 +253,6 @@ def test_orca_nstep_pop(datadir):
     assert (popdat >> si.filter(_.step == 1)).shape == (
         popdat >> si.filter(_.step == 2)
     ).shape
-    pass
 
 
 ################################
@@ -281,7 +265,6 @@ def test_orca_mult_chargepop(datadir):
     sdat = spop.mult_population_analysis()
     assert sdat.shape == (8, 10)
     np.testing.assert_equal(sdat.pcharge.to_numpy(), np.zeros(8))
-    pass
 
 
 def test_orca_mult_fullpop(datadir):
@@ -290,7 +273,6 @@ def test_orca_mult_fullpop(datadir):
     assert sdat.shape == (4, 11)
     np.testing.assert_equal(sdat.pcharge.to_numpy(), np.zeros(4))
     np.testing.assert_equal(sdat.pspin.to_numpy(), np.zeros(4))
-    pass
 
 
 ###############
@@ -308,7 +290,6 @@ def test_orca_irspec(datadir):
         sdat.freq.pint.m.to_numpy(), np.array([1639.47, 3807.28, 3903.73])
     )
     np.testing.assert_equal(sdat.Mode.to_numpy(), np.array([6, 7, 8]))
-    pass
 
 
 ######################
@@ -326,7 +307,6 @@ def test_orca_vpt2(datadir):
         sdat.harmonic_freq.pint.m.to_numpy(), np.array([1638.78, 3808.09, 3904.51])
     )
     np.testing.assert_equal(sdat.Mode.to_numpy(), np.array([1, 2, 3]))
-    pass
 
 
 #########################
@@ -360,4 +340,3 @@ def test_calc_htst(datadir):
     assert kf.u == "1/second"
     np.testing.assert_almost_equal(kf.m, 2.80583587e-07)
     np.testing.assert_almost_equal(kb.m, 3.31522447e-29)
-    pass
