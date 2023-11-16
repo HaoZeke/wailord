@@ -45,6 +45,11 @@ echo "Scratchdir is: $tdir"
 
 $orcadir/orca orca.inp >orca.out
 
+# Check if SLURM_SUBMIT_DIR is set, if not set it to the script's directory
+if [ -z "$SLURM_SUBMIT_DIR" ]; then
+    SLURM_SUBMIT_DIR=$(dirname "$cur_dir")
+fi
+
 cp -r $tdir/*.xyz $SLURM_SUBMIT_DIR
 cp -r $tdir/*.gbw $SLURM_SUBMIT_DIR
 cp -r $tdir/*.out $SLURM_SUBMIT_DIR
