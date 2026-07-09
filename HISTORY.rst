@@ -1,3 +1,9 @@
+0.1.1 (2026-07-09)
+------------------
+
+* requires-python >=3.10 (suite deps).
+* chemparseplot>=1.9.8, rgpycrumbs>=1.9.18.
+
 =======
 History
 =======

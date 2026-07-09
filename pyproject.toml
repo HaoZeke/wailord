@@ -1,6 +1,6 @@
 [project]
 name = "wailord"
-version = "0.1.0"
+version = "0.1.1"
 description = "Wailord is a python library to interact with ORCA"
 readme = "README.rst"
 license = {text = "MIT"}
@@ -17,10 +17,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
-    "rgpycrumbs>=1.9.17",
-    "chemparseplot>=1.9.0",
+    "rgpycrumbs>=1.9.18",
+    "chemparseplot>=1.9.8",
     "pint>=0.22",
     "pint-pandas>=0.5",
     "numpy>=1.26",
