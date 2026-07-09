@@ -28,6 +28,16 @@ jobs:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v6
       - run: uv build
+      - name: Assert clean dist
+        run: |
+          set -euo pipefail
+          ls -la dist/
+          for f in dist/*.tar.gz; do
+            if tar tzf "$f" | grep -E '/\.venv|/\.git/|__pycache__' ; then
+              echo "contaminated sdist: $f" >&2
+              exit 1
+            fi
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: dist
@@ -45,9 +55,21 @@ jobs:
         with:
           name: dist
           path: dist/
+      # Token auth: PyPI trusted publisher not configured for this repo yet.
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${{ github.ref_name }}" dist/* --repo "${{ github.repository }}" --title "${{ github.ref_name }}" --generate-notes
+        run: |
+          if gh release view "${{ github.ref_name }}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            gh release upload "${{ github.ref_name }}" dist/* --repo "${{ github.repository }}" --clobber
+          else
+            gh release create "${{ github.ref_name }}" dist/* \
+              --repo "${{ github.repository }}" \
+              --title "${{ github.ref_name }}" \
+              --generate-notes
+          fi
 
