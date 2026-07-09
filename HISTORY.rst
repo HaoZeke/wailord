@@ -1,3 +1,9 @@
+0.1.2 (2026-07-09)
+------------------
+
+* Fix CI: pin pandas>=2.2 wheels; move siuba to test extra (old pandas sdist fails on modern Python).
+* requires-python >=3.10 for rgpkgs suite deps.
+
 0.1.1 (2026-07-09)
 ------------------
 

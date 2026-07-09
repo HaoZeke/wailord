@@ -1,6 +1,6 @@
 [project]
 name = "wailord"
-version = "0.1.1"
+version = "0.1.2"
 description = "Wailord is a python library to interact with ORCA"
 readme = "README.rst"
 license = {text = "MIT"}
@@ -24,12 +24,18 @@ dependencies = [
     "pint>=0.22",
     "pint-pandas>=0.5",
     "numpy>=1.26",
+    "pandas>=2.2.0",
     "pyyaml>=6.0.1",
     "vg>=2.0.0",
-    "siuba>=0.4.4",
     "parsimonious>=0.10.0",
     "cookiecutter>=2.4.0",
     "click>=8.1.7",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=7.0",
+  "pytest-datadir>=1.5.0",
 ]
 
 [project.urls]
@@ -72,4 +78,6 @@ test = [
 [tool.pdm.scripts]
 lint = "ruff"
 all = {composite = ["lint wailord/"]}
+
+
 
