@@ -1,3 +1,10 @@
+0.1.4 (2026-07-09)
+------------------
+
+* Slim proxy: XYZ and final-energy paths prefer chemparseplot grammar track.
+* Deprecate ``inpGenerator`` in favor of pychum; document migration in README.
+* Keep exp/cookies and suite bridge as the batch-shell surface.
+
 0.1.3 (2026-07-09)
 ------------------
 

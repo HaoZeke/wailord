@@ -67,3 +67,27 @@ Credits
 .. _ZenodoDOI: https://zenodo.org/badge/latestdoi/303189277
 .. _Bulbagarden: https://archives.bulbagarden.net/wiki/File:321Wailord_AG_anime.png
 .. _`wallhaven.cc`: https://wallhaven.cc/w/4xgw53
+
+Migration (rgpkgs suite)
+------------------------
+
+Wailord is a **batch / experiment shell** for ORCA workflows. Parsing and
+plotting belong in **chemparseplot**; new ORCA inputs belong in **pychum**.
+
+==============================  ================================================
+Legacy wailord API              Prefer
+==============================  ================================================
+``wailord.io.xyz.xyzIO``        ``chemparseplot.api.parse_xyz`` /
+                                ``chemparseplot.parse.grammar``
+``wailord.io.orca.parseOut``    ``chemparseplot.api.parse_orca_final_energy`` /
+                                ``parse_orca_text_summary``
+``wailord.io.orca.orcaVis``     chemparseplot plot/parse modules for surfaces
+``wailord.io.inp.inpGenerator`` ``pychum.render_orca`` (deprecated wrapper)
+==============================  ================================================
+
+Install suite peers::
+
+    pip install 'chemparseplot[grammar]' pychum rgpycrumbs
+
+Cookiecutter experiment scaffolding stays in ``wailord.exp``. eOn CON/outcome
+I/O never lives in wailord — use chemparseplot / readcon.

@@ -55,6 +55,15 @@ AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
 class inpGenerator:
     def __init__(self, filename):
+        import warnings
+
+        warnings.warn(
+            "wailord.io.inp.inpGenerator is deprecated for new inputs; "
+            "use pychum.render_orca / pychum engine configs instead. "
+            "Batch experiment scaffolding remains in wailord.exp.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.qc = None
         self.xyz = []
         self.xyzpath = None

@@ -1,7 +1,9 @@
 """Bridge to the rgpkgs suite (rgpycrumbs + chemparseplot).
 
-Wailord focuses on ORCA experiment workflows. Suite-wide pins, locks, and
-on-demand imports live in the hub — do not reimplement them here.
+Wailord is the batch/experiment shell: cookiecutter runs, multi-job tables,
+SLURM harnesses. Parse/plot I/O lives in chemparseplot; new ORCA inputs in
+pychum. Suite-wide pins, locks, and on-demand imports live in the hub — do
+not reimplement them here.
 
 Example::
 

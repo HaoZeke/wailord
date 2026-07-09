@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
-"""An ad-hoc treatment of orca output files
+"""ORCA output helpers for wailord experiment workflows.
 
-This should implement a grammar, but currently consists of a number of utility
-structures and functions to parse data from the orca output format
+Final single-point energy extraction prefers the chemparseplot grammar track
+(``chemparseplot.parse.grammar`` / ``chemparseplot.api.parse_orca_final_energy``)
+when available. Energy surfaces, IR/VPT2, and experiment tables remain here for
+batch shell use. Prefer chemparseplot for new parse/plot call sites; prefer
+pychum for new input generation (see ``wailord.io.inp`` deprecation).
 
 Example:
     See the tests for more
@@ -96,8 +99,18 @@ OUT_REGEX = {
 
 # ------------ Refactor
 
+def _final_energy_via_chemparseplot(text: str):
+    """Return last final single-point energy (hartree Magnitude) or None."""
+    try:
+        from chemparseplot.parse.grammar.orca_text import parse_orca_text_summary
+    except ImportError:
+        return None
+    summary = parse_orca_text_summary(text)
+    return summary.final_energy_hartree
+
 
 def parseOut(filename, plotter=False):
+
     """Handles orca outputs with regex for energy and coordinates"""
     intcreg, fsp_ereg, get_basis = itemgetter(
         "cartesian_coord", "final_single_point_e", "basis_set"
@@ -105,9 +118,16 @@ def parseOut(filename, plotter=False):
     get_spec = re.compile(r"Number\s*of\s*atoms\s*.*\s*\d*")
     with open(filename) as f:
         fInp = f.read()
-        fin_energ = float(fsp_ereg.findall(fInp)[-1].split()[-1]) * ureg.hartree
-        if plotter == True:
-            energ = [float(x.split()[-1]) for x in fsp_ereg.findall(fInp)]
+        suite_e = _final_energy_via_chemparseplot(fInp)
+        if suite_e is not None:
+            fin_energ = float(suite_e) * ureg.hartree
+            if plotter == True:
+                # full series still from regex until grammar exposes all lines publicly
+                energ = [float(x.split()[-1]) for x in fsp_ereg.findall(fInp)]
+        else:
+            fin_energ = float(fsp_ereg.findall(fInp)[-1].split()[-1]) * ureg.hartree
+            if plotter == True:
+                energ = [float(x.split()[-1]) for x in fsp_ereg.findall(fInp)]
         num_species = int(get_spec.search(fInp).group(0).split()[-1])
     with open(filename) as f:
         flines = f.readlines()
@@ -589,17 +609,22 @@ class orcaVis:
         with open(self.ofile) as of:
             fInp = of.read()
             try:
-                self.fin_sp_e = (
-                    float(
-                        OUT_REGEX["final_single_point_e"].findall(fInp)[-1].split()[-1]
+                suite_e = _final_energy_via_chemparseplot(fInp)
+                if suite_e is not None:
+                    self.fin_sp_e = float(suite_e) * ureg.hartree
+                else:
+                    self.fin_sp_e = (
+                        float(
+                            OUT_REGEX["final_single_point_e"]
+                            .findall(fInp)[-1]
+                            .split()[-1]
+                        )
+                        * ureg.hartree
                     )
-                    * ureg.hartree
-                )
-            except:
-                raise (
-                    ValueError(f"Final single point energy not found for {self.ofile}")
-                )
-        pass
+            except Exception as exc:
+                raise ValueError(
+                    f"Final single point energy not found for {self.ofile}"
+                ) from exc
 
     def final_sp_e(self):
         erow = self.runinfo

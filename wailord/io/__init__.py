@@ -1,6 +1,7 @@
+"""I/O package: thin proxies over the rgpkgs suite where possible.
+
+* ``xyz`` / energy slices → prefer chemparseplot grammar track
+* ``inp`` → deprecated; use pychum for new ORCA inputs
+* ``orca`` → experiment helpers; parse/plot migrate to chemparseplot
 """
-IO packages, readers, grammars and the lot
-"""
-from . import xyz
-from . import inp
-from . import orca
+from . import inp, orca, xyz

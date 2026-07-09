@@ -1,6 +1,6 @@
 [project]
 name = "wailord"
-version = "0.1.3"
+version = "0.1.4"
 description = "Wailord is a python library to interact with ORCA"
 readme = "README.rst"
 license = {text = "MIT"}
@@ -33,9 +33,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# Grammar track for XYZ / ORCA text (forwarded to chemparseplot)
+grammar = ["chemparseplot[grammar]>=1.9.8"]
+# Modern ORCA input generation
+pychum = ["pychum>=1.4.0"]
+suite = ["wailord[grammar,pychum]"]
 test = [
   "pytest>=7.0",
   "pytest-datadir>=1.5.0",
+  "chemparseplot[grammar]>=1.9.8",
 ]
 
 [project.urls]
