@@ -38,6 +38,11 @@ Being written up. Till then feel free to use the ZenodoDOI_.
 Features
 --------
 
+* Part of the **rgpkgs** suite: depends on ``rgpycrumbs`` (config/pins/ensure_import)
+  and ``chemparseplot`` (unit helpers). Suite config is shared
+  (``~/.config/rgpkgs/config.toml``, project ``rgpkgs.toml``) — wailord does not
+  invent its own pin file. See ``wailord.suite``.
+
 * Integrates with SLURM in a manner of speaking
 * Generic helpers for building arbitrary input files
 * Generates data-frames for all supported runs
