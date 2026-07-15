@@ -90,4 +90,4 @@ Install suite peers::
     pip install 'chemparseplot[grammar]' pychum rgpycrumbs
 
 Cookiecutter experiment scaffolding stays in ``wailord.exp``. eOn CON/outcome
-I/O never lives in wailord — use chemparseplot / readcon.
+I/O never lives in wailord — use chemparseplot and `readcon-core <https://github.com/lode-org/readcon-core>`_ (PyPI: `readcon <https://pypi.org/project/readcon/>`_).
