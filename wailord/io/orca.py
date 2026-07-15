@@ -112,6 +112,16 @@ def _final_energy_via_chemparseplot(text: str):
 def parseOut(filename, plotter=False):
 
     """Handles orca outputs with regex for energy and coordinates"""
+    import warnings
+
+    warnings.warn(
+        "wailord.io.orca.parseOut is deprecated for new code; "
+        "use chemparseplot.api.parse_orca_final_energy / "
+        "chemparseplot.api.extract_orca_geomscan_energy (and grammar track) "
+        "for parse. Experiment table assembly remains in wailord.io.orca.orcaExp.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
     intcreg, fsp_ereg, get_basis = itemgetter(
         "cartesian_coord", "final_single_point_e", "basis_set"
     )(OUT_REGEX)
@@ -587,6 +597,15 @@ class orcaVis:
             eeval (int): The number of energy evaluations
 
         """
+        import warnings
+
+        warnings.warn(
+            "wailord.io.orca.orcaVis is deprecated for new parse/plot work; "
+            "use chemparseplot.parse / chemparseplot.api (geomscan, grammar) "
+            "and keep experiment orchestration in orcaExp only.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.eeval = None
         self.ofile = ofile
         self.runinfo = getRunInfo(self.ofile.parent)

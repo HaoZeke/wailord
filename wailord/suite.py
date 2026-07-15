@@ -26,12 +26,23 @@ def load_suite_config():
 
 
 def load_suite_pins() -> dict[str, str]:
-    """Package pins from suite config + ``RGPKGS_LOCK_PINS`` env."""
+    """Package pins from suite config + ``RGPKGS_LOCK_PINS`` env.
+
+    Prefer the hub ``rgpycrumbs.api.suite_pins``; soft-fallbacks for older hubs.
+    """
+    try:
+        from rgpycrumbs.api import suite_pins
+
+        return suite_pins()
+    except ImportError:
+        pass
     try:
         from chemparseplot.api import suite_pins
 
         return suite_pins()
     except ImportError:
+        pass
+    try:
         from rgpycrumbs.api import load_config, pins_from_env
 
         pins = dict(pins_from_env())
@@ -40,6 +51,8 @@ def load_suite_pins() -> dict[str, str]:
         except Exception:  # noqa: BLE001
             pass
         return pins
+    except ImportError:
+        return {}
 
 
 def ensure_import(module_name: str):
