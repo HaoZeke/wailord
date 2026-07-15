@@ -579,6 +579,110 @@ class orcaExp:
         return node.text
 
 
+
+def _vib_via_chemparseplot(path):
+    try:
+        from chemparseplot.parse.orca.freq import parse_orca_vibrational_frequencies
+    except ImportError:
+        return None
+    modes = parse_orca_vibrational_frequencies(path)
+    if not modes:
+        return None
+    import pandas as pd
+    rows = [
+        {"Mode": m.mode, "freq": m.freq_cm1, "imaginary": m.imaginary}
+        for m in modes
+    ]
+    vdat = pd.DataFrame(rows)
+    try:
+        vdat["freq"] = vdat["freq"].astype("pint[1/cm]")
+    except Exception:
+        pass
+    return vdat
+
+
+def _vpt2_via_chemparseplot(path):
+    try:
+        from chemparseplot.parse.orca.vpt2 import parse_orca_vpt2_fundamentals
+    except ImportError:
+        return None
+    try:
+        rows = parse_orca_vpt2_fundamentals(path)
+    except ValueError:
+        return None
+    import pandas as pd
+    vdat = pd.DataFrame(
+        [
+            {
+                "Mode": r.mode,
+                "harmonic_freq": r.harmonic_cm1,
+                "vpt2_freq": r.vpt2_cm1,
+                "freq_diff": r.diff_cm1,
+            }
+            for r in rows
+        ]
+    )
+    for col in ("harmonic_freq", "vpt2_freq", "freq_diff"):
+        try:
+            vdat[col] = vdat[col].astype("pint[1/cm]")
+        except Exception:
+            pass
+    return vdat
+
+
+def _ir_via_chemparseplot(path):
+    try:
+        from chemparseplot.parse.orca.freq import parse_orca_ir_spectrum
+    except ImportError:
+        return None
+    modes = parse_orca_ir_spectrum(path, backend="text")
+    if not modes:
+        return None
+    import pandas as pd
+    vdat = pd.DataFrame(
+        [
+            {
+                "Mode": m.mode,
+                "freq": m.freq_cm1,
+                "T2": m.intensity_km_mol,
+                "TX": m.dipole[0],
+                "TY": m.dipole[1],
+                "TZ": m.dipole[2],
+            }
+            for m in modes
+        ]
+    )
+    try:
+        vdat["freq"] = vdat["freq"].astype("pint[1/cm]")
+        vdat["T2"] = vdat["T2"].astype("pint[km/mol]")
+    except Exception:
+        pass
+    return vdat
+
+
+def _pop_via_chemparseplot(path, poptype):
+    try:
+        from chemparseplot.parse.orca.populations import parse_orca_populations
+    except ImportError:
+        return None
+    try:
+        rows = parse_orca_populations(path, kind=poptype)
+    except (ValueError, TypeError):
+        return None
+    import pandas as pd
+    data = []
+    for r in rows:
+        d = {"anum": r.atom_index, "atype": r.symbol, "pcharge": r.charge}
+        if r.spin is not None:
+            d["pspin"] = r.spin
+        data.append(d)
+    if not data:
+        return None
+    popdat = pd.DataFrame(data)
+    popdat["population"] = poptype
+    return popdat
+
+
 class orcaVis:
     """The class meant to handle ORCA output files.
 
@@ -760,6 +864,9 @@ class orcaVis:
     def vib_freq(self):
         """Get the vibrational frequencies, and fails if there are more than one
         imaginary frequency"""
+        suite = _vib_via_chemparseplot(self.ofile)
+        if suite is not None and not suite.empty:
+            return suite
         sregexp = OUT_REGEX["Vibrational Frequency"]
         vline = namedtuple("vline", "Mode freq imaginary")
         accumulate = []
@@ -811,6 +918,11 @@ class orcaVis:
 
     def vpt2_transitions(self):
         """Grabs the fundamental transition analysis from a VPT2 calculation"""
+        suite = _vpt2_via_chemparseplot(self.ofile)
+        if suite is not None and not suite.empty:
+            for key in self.runinfo.keys():
+                suite[key] = self.runinfo[key]
+            return suite
         sregexp = OUT_REGEX["vpt2trans"]
         vline = namedtuple("vline", "Mode harmonic_freq vpt2_freq freq_diff")
         accumulate = []
@@ -848,6 +960,11 @@ class orcaVis:
     def ir_spec(self):
         """Grabs the non-ZPE corrected IR Spectra and the dipole derivatives for
         intensities"""
+        suite = _ir_via_chemparseplot(self.ofile)
+        if suite is not None and not suite.empty:
+            for key in self.runinfo.keys():
+                suite[key] = self.runinfo[key]
+            return suite
         sregexp = OUT_REGEX["irSpectrum"]
         vline = namedtuple("vline", "Mode freq T2 TX TY TZ")
         accumulate = []
@@ -895,6 +1012,9 @@ class orcaVis:
             pd.DataFrame: Returns a data frame of the population analysis
 
         """
+        suite = _pop_via_chemparseplot(self.ofile, poptype)
+        if suite is not None and not suite.empty:
+            return suite
         if poptype not in OUT_REGEX:
             raise (NotImplementedError(f"{poptype} has not been implemented yet"))
         sregexp = OUT_REGEX[poptype]
