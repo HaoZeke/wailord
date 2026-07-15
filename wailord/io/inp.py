@@ -58,9 +58,10 @@ class inpGenerator:
         import warnings
 
         warnings.warn(
-            "wailord.io.inp.inpGenerator is deprecated for new inputs; "
-            "use pychum.render_orca / pychum engine configs instead. "
-            "Batch experiment scaffolding remains in wailord.exp.",
+            "wailord.io.inp.inpGenerator is frozen/deprecated. "
+            "New ORCA inputs: pychum.render_orca (TOML + dataclasses). "
+            "There is no YAML→pychum auto-adapter; migrate configs to pychum "
+            "TOML. Batch experiment scaffolding remains in wailord.exp.",
             DeprecationWarning,
             stacklevel=2,
         )

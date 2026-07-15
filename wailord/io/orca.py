@@ -53,13 +53,15 @@ from operator import itemgetter
 from pandas.api.types import CategoricalDtype
 import yaml
 
-# Pint setup
+# Pint setup — prefer chemparseplot.units (suite owner); local fallback only.
 PA_ = pint_pandas.PintArray
-ureg = pint.UnitRegistry()
+try:
+    from chemparseplot.units import ureg, Q_
+except ImportError:  # pragma: no cover
+    ureg = pint.UnitRegistry()
+    Q_ = ureg.Quantity
+    ureg.define("kcal_mol = kcal / 6.02214076e+23 = kcm")
 pint_pandas.PintType.ureg = ureg
-Q_ = ureg.Quantity
-
-ureg.define("kcal_mol = kcal / 6.02214076e+23 = kcm")
 
 inpcart = namedtuple("inpcart", "atype x y z")
 orcaout = namedtuple("orcaout", "final_energy fGeom basis filename system spin theory")
@@ -697,28 +699,39 @@ class orcaVis:
         return eDat_all
 
     def single_energy_surface(self, etype="Actual Energy", npoints=None):
-        """Single energy surface dataframe generator
+        """Single energy surface dataframe generator.
 
-        For say, QCISD(T), this is essentially the same as a QCISD calculation.
-
-        Note:
-            `MDCI`_ types are meant to work with single reference correlation
-            methods
+        Prefer chemparseplot.api.extract_orca_geomscan_energy when the
+        Calculated Surface block is present; fall back to legacy regex tables
+        for MDCI variants that still need the older line-oriented path.
 
         Args:
-            etype (str,optional): The type of calculated energy surface to
-            return. Defaults to 'Actual Energy' and can be any of `["Actual Energy", "MDCI", "MDCI w/o Triples", "SCF Energy"]`
-            npoints (int,optional): The number of points over which a scan has
-                taken place. Defaults to the number of evaluations calculated in
-                the output file.
+            etype (str,optional): Surface type label.
+            npoints (int,optional): Legacy point count (unused on suite path).
 
         Returns:
-            pd.DataFrame: Returns a data frame of energy surfaces
-
-        .. _MDCI:
-            https://www.its.hku.hk/services/research/hpc/software/orca
-
+            pd.DataFrame: bond_length + energy column named *etype*
         """
+        # Suite path: chemparseplot owns geomscan parse (bohr / hartree).
+        try:
+            from chemparseplot.api import extract_orca_geomscan_energy
+
+            text = Path(self.ofile).read_text()
+            dist, energy = extract_orca_geomscan_energy(text, energy_type=etype)
+            n = len(getattr(dist, "magnitude", dist))
+            if n > 0:
+                if hasattr(dist, "m_as"):
+                    xvals = dist.m_as("bohr")
+                    yvals = energy.m_as("hartree")
+                else:
+                    xvals = dist.magnitude
+                    yvals = energy.magnitude
+                edat = pd.DataFrame({"bond_length": xvals, etype: yvals})
+                if not edat.empty:
+                    return edat
+        except Exception:
+            pass
+
         if etype not in OUT_REGEX:
             raise (NotImplementedError(f"{etype} has not been implemented yet"))
         if npoints == None:
