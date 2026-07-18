@@ -74,16 +74,12 @@ Migration (rgpkgs suite)
 Wailord is a **batch / experiment shell** for ORCA workflows. Parsing and
 plotting belong in **chemparseplot**; new ORCA inputs belong in **pychum**.
 
-==============================  ================================================
-Legacy wailord API              Prefer
-==============================  ================================================
-``wailord.io.xyz.xyzIO``        ``chemparseplot.api.parse_xyz`` /
-                                ``chemparseplot.parse.grammar``
-``wailord.io.orca.parseOut``    ``chemparseplot.api.parse_orca_final_energy`` /
-                                ``parse_orca_text_summary``
-``wailord.io.orca.orcaVis``     chemparseplot plot/parse modules for surfaces
-``wailord.io.inp.inpGenerator`` ``pychum.render_orca`` (deprecated wrapper)
-==============================  ================================================
+* ``wailord.io.xyz.xyzIO`` → ``chemparseplot.api.parse_xyz`` /
+  ``chemparseplot.parse.grammar``
+* ``wailord.io.orca.parseOut`` → ``chemparseplot.api.parse_orca_final_energy`` /
+  ``parse_orca_text_summary``
+* ``wailord.io.orca.orcaVis`` → chemparseplot plot/parse modules for surfaces
+* ``wailord.io.inp.inpGenerator`` → ``pychum.render_orca`` (deprecated wrapper)
 
 Install suite peers::
 
