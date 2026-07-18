@@ -827,7 +827,9 @@ class orcaVis:
 
         Args:
             etype (str,optional): Surface type label.
-            npoints (int,optional): Legacy point count (unused on suite path).
+            npoints (int,optional): Expected scan length. When set, must match
+                the number of points found or ``ValueError`` is raised (same
+                contract as pre-suite callers / tests).
 
         Returns:
             pd.DataFrame: bond_length + energy column named *etype*
@@ -840,6 +842,10 @@ class orcaVis:
             dist, energy = extract_orca_geomscan_energy(text, energy_type=etype)
             n = len(getattr(dist, "magnitude", dist))
             if n > 0:
+                if npoints is not None and n != npoints:
+                    raise ValueError(
+                        f"requested npoints={npoints} but {etype} surface has {n}"
+                    )
                 if hasattr(dist, "m_as"):
                     xvals = dist.m_as("bohr")
                     yvals = energy.m_as("hartree")
@@ -849,12 +855,14 @@ class orcaVis:
                 edat = pd.DataFrame({"bond_length": xvals, etype: yvals})
                 if not edat.empty:
                     return edat
+        except ValueError:
+            raise
         except Exception:
             pass
 
         if etype not in OUT_REGEX:
             raise (NotImplementedError(f"{etype} has not been implemented yet"))
-        if npoints == None:
+        if npoints is None:
             npoints = self.eeval
         xaxis = []
         yaxis = []
@@ -865,7 +873,13 @@ class orcaVis:
                 if sregexp.search(line):
                     offset = lnum + 1
                     for i in range(npoints):
-                        x, y = flines[offset + i].split()
+                        try:
+                            x, y = flines[offset + i].split()
+                        except (IndexError, ValueError) as exc:
+                            raise ValueError(
+                                f"requested npoints={npoints} past end of "
+                                f"{etype} surface"
+                            ) from exc
                         xaxis.append(x)
                         yaxis.append(y)
         edat = pd.DataFrame(
