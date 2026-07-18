@@ -1,8 +1,12 @@
-0.1.4 (2026-07-09)
+0.1.4 (2026-07-18)
 ------------------
 
 * Slim proxy: XYZ and final-energy paths prefer chemparseplot grammar track.
+* Proxy vib/IR/VPT2/populations and geomscan through chemparseplot when present.
 * Deprecate ``inpGenerator`` in favor of pychum; document migration in README.
+* Drop ``vg``; bond lengths/angles use NumPy only (conda-forge friendly metadata).
+* Align package license metadata with ``LICENSE`` (GPL-3.0-only).
+* Runtime ``install_requires`` are library deps only (no Sphinx/black/flake8).
 * Keep exp/cookies and suite bridge as the batch-shell surface.
 
 0.1.3 (2026-07-09)

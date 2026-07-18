@@ -44,7 +44,6 @@ import textwrap
 import pint
 import pint_pandas
 import warnings
-import vg
 
 from pathlib import Path
 from functools import reduce
@@ -198,6 +197,23 @@ def get_e(orcaoutdat, basis, system):
     ]["final_energy"].to_list()[0]
 
 
+def _euclidean_distance(v1, v2):
+    """||v1 - v2||_2 without an external vector-geometry dependency."""
+    return float(np.linalg.norm(np.asarray(v1, dtype=float) - np.asarray(v2, dtype=float)))
+
+
+def _angle_deg(v12, v13):
+    """Angle in degrees between two vectors (origin at shared vertex)."""
+    a = np.asarray(v12, dtype=float)
+    b = np.asarray(v13, dtype=float)
+    na = np.linalg.norm(a)
+    nb = np.linalg.norm(b)
+    if na == 0.0 or nb == 0.0:
+        raise ValueError("zero-length vector in bond-angle calculation")
+    cosang = float(np.clip(np.dot(a, b) / (na * nb), -1.0, 1.0))
+    return float(np.degrees(np.arccos(cosang)))
+
+
 def getBL(dat, x, y, z, indi=[0, 1]):
     """Takes in a data frame of xyz coordinates and uses it to calculate the bond length"""
     v1 = np.array(
@@ -206,7 +222,7 @@ def getBL(dat, x, y, z, indi=[0, 1]):
     v2 = np.array(
         [dat.x[indi[1]].magnitude, dat.y[indi[1]].magnitude, dat.z[indi[1]].magnitude]
     )
-    return Q_(vg.euclidean_distance(v1, v2), x[indi[0]].units)
+    return Q_(_euclidean_distance(v1, v2), x[indi[0]].units)
 
 
 def getBA(dat, x, y, z, indi=[0, 1, 2]):
@@ -223,7 +239,7 @@ def getBA(dat, x, y, z, indi=[0, 1, 2]):
     )
     v12 = v2 - v1
     v13 = v3 - v1
-    return Q_(vg.angle(v12, v13, units="deg"), "degrees")
+    return Q_(_angle_deg(v12, v13), "degrees")
 
 
 def genEBASet(

@@ -3,7 +3,8 @@ name = "wailord"
 version = "0.1.4"
 description = "Wailord is a python library to interact with ORCA"
 readme = "README.rst"
-license = {text = "MIT"}
+# LICENSE is GPLv3; keep packaging metadata aligned for pip check / conda-forge.
+license = {text = "GPL-3.0-only"}
 authors = [
     { name="Rohit Goswami", email="rgoswami@ieee.org" },
 ]
@@ -14,10 +15,12 @@ keywords = ["wailord", "quantum chemistry", "orca"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
 ]
 requires-python = ">=3.10"
+# Runtime-only deps (docs/lint stay in optional/pdm groups). All of these are on
+# conda-forge so `pip check` can pass in a conda env without workarounds.
 dependencies = [
     "rgpycrumbs>=1.9.18",
     "chemparseplot>=1.9.8",
@@ -26,7 +29,6 @@ dependencies = [
     "numpy>=1.26",
     "pandas>=2.2.0",
     "pyyaml>=6.0.1",
-    "vg>=2.0.0",
     "parsimonious>=0.10.0",
     "cookiecutter>=2.4.0",
     "click>=8.1.7",
