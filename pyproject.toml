@@ -1,6 +1,6 @@
 [project]
 name = "wailord"
-version = "0.1.5"
+version = "0.2.0"
 description = "Wailord is a python library to interact with ORCA"
 readme = "README.rst"
 # LICENSE is GPLv3; keep packaging metadata aligned for pip check / conda-forge.

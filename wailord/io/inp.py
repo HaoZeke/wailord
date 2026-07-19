@@ -1,39 +1,15 @@
 # -*- coding: utf-8 -*-
-"""An orca input generator and reader
+"""Multi-job ORCA harness generator (wailord batch shell).
 
-This module reads in a configuration file and generates the requisite input
-files. It also reads existing configuration files and returns interesting
-things. A short description of the input types is at the `ORCA input
-description`_ page.
+Single-run ORCA inputs: use **pychum** (``pychum.render_orca``, TOML +
+dataclasses). This module builds multi-basis / multi-spin directory trees and
+SLURM harnesses from a YAML experiment config.
 
-Example:
-    See the tests for more
+XYZ coordinate text for ``* xyz`` blocks comes from ``wailord.io.xyz``
+(chemparseplot for structured parse; plain text helpers for embedding).
 
-        $ pytest
-
-Some more details.
-
-Todo:
-    * Make tests
-    * Return interesting things
-    * Add MNDO and other semi-empirical methods, which employ a minimal basis by
-      default and do not need a basis set in the input
-    * Add more explicit support for "simple input lines"
-    * Add more explicit support for the "block input structure"
-    * Add support for "sequential" jobs
-    * Support multiple xyz files [DONE]
-    * Clean up geometry, add gen_dirs back
-    * Test and expand brokensym
-    * Test number in harness
-    * Test Visualizer modifications
-    * Validate scans and constraints
-    * Parse wailord generated input files
-
-.. _Google Python Style Guide:
-   http://google.github.io/styleguide/pyguide.html
 .. _ORCA input description:
    https://sites.google.com/site/orcainputlibrary/generalinput
-
 """
 import wailord.io as waio
 import wailord._utils as wau
@@ -54,17 +30,14 @@ AXIS_PROXY = {"x": 1, "y": 2, "z": 3}  # 0 is the atom type
 
 
 class inpGenerator:
-    def __init__(self, filename):
-        import warnings
+    """Multi-job ORCA harness generator (batch shell).
 
-        warnings.warn(
-            "wailord.io.inp.inpGenerator is frozen/deprecated. "
-            "New ORCA inputs: pychum.render_orca (TOML + dataclasses). "
-            "There is no YAML→pychum auto-adapter; migrate configs to pychum "
-            "TOML. Batch experiment scaffolding remains in wailord.exp.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
+    Single-run ORCA inputs belong in **pychum** (``pychum.render_orca``).
+    This class builds multi-basis / multi-spin directory trees and harness
+    scripts from a YAML experiment config — that is the wailord batch role.
+    """
+
+    def __init__(self, filename):
         self.qc = None
         self.xyz = []
         self.xyzpath = None
@@ -190,7 +163,8 @@ class inpGenerator:
         thiskey = use_types[f"{thistype}"]
         for i in tmp:
             try:
-                outtmp.append(f"{self.xyz[-1].xyzdat.atom_types[i]}{i}")
+                symbols = waio.xyz.atom_symbols(self.xyz[-1])
+                outtmp.append(f"{symbols[i]}{i}")
             except:
                 raise SyntaxError(
                     "Trying to use an atom which does not exist, check indices"
@@ -202,8 +176,9 @@ class inpGenerator:
         """Generate folder structure for each system"""
         self.xyzpath = Path(self.xyzpath)
         if not self.xyzpath.is_dir():
-            self.xyz.append(waio.xyz.xyzIO(self.conf_path.parent / self.config.xyz))
-            self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
+            xyz_path = self.conf_path.parent / self.config.xyz
+            self.xyz.append(xyz_path)
+            self.xyzlines.append(waio.xyz.coord_block(xyz_path))
             # Geometry
             if "geom" in self.config:
                 self.geomlines = self.parse_geom(self.config.geom)
@@ -223,10 +198,9 @@ class inpGenerator:
             for root, dirs, files in os.walk(self.xyzpath.resolve()):
                 for filename in files:
                     if Path(filename).suffix == ".xyz":
-                        self.xyz.append(
-                            waio.xyz.xyzIO(self.conf_path.parent / f"{root}/{filename}")
-                        )
-                        self.xyzlines.append(self.xyz[-1].xyzdat.coord_block)
+                        xyz_path = self.conf_path.parent / f"{root}/{filename}"
+                        self.xyz.append(xyz_path)
+                        self.xyzlines.append(waio.xyz.coord_block(xyz_path))
                         # Geometry
                         if "geom" in self.config.keys():
                             self.geomlines = self.parse_geom(self.config.geom)
@@ -408,7 +382,9 @@ class inpGenerator:
     def gendir_qc(self, basename=None, extra=None):
         """Function to generate QC folder structure recursively"""
         if basename is None:
-            basename = Path(f"{self.prjname}/{self.xyz[-1].slug}")
+            xyz_path = Path(self.xyz[-1])
+            slug = f"{waio.xyz.system_label(xyz_path)}_{xyz_path.stem}"
+            basename = Path(f"{self.prjname}/{slug}")
         if extra is not None:
             print("Overwriting extra from yml file")
             self.extra = extra

@@ -3,7 +3,6 @@ from wailord._utils import get_project_root
 
 DATA_DIR = get_project_root() / "tests" / "data"
 
-# Make this more general
-sx = waio.xyz.xyzIO(DATA_DIR / "h2mol.xyz")
-print(sx.comment_line)
-sx.write("t.xyz")
+frame = waio.xyz.parse_xyz(DATA_DIR / "h2mol.xyz")
+print(frame.comment)
+waio.xyz.rewrite_xyz(DATA_DIR / "h2mol.xyz", "t.xyz")

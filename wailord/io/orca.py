@@ -110,19 +110,12 @@ def _final_energy_via_chemparseplot(text: str):
     return summary.final_energy_hartree
 
 
-def parseOut(filename, plotter=False):
+def _parse_out(filename, plotter=False):
+    """Batch helper: one ORCA out-file → energy/geometry row for tables.
 
-    """Handles orca outputs with regex for energy and coordinates"""
-    import warnings
-
-    warnings.warn(
-        "wailord.io.orca.parseOut is deprecated for new code; "
-        "use chemparseplot.api.parse_orca_final_energy / "
-        "chemparseplot.api.extract_orca_geomscan_energy (and grammar track) "
-        "for parse. Experiment table assembly remains in wailord.io.orca.orcaExp.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
+    Application single-file parse: ``chemparseplot.api.parse_orca_final_energy``
+    / grammar track. Experiment multi-file assembly: ``orcaExp``.
+    """
     intcreg, fsp_ereg, get_basis = itemgetter(
         "cartesian_coord", "final_single_point_e", "basis_set"
     )(OUT_REGEX)
@@ -257,7 +250,7 @@ def genEBASet(
     for root, dirs, files in os.walk(rootdir.resolve()):
         for filename in files:
             if "out" in filename and "slurm" not in filename:
-                outs.append(parseOut(f"{root}/{filename}"))
+                outs.append(_parse_out(f"{root}/{filename}"))
     outdat = pd.DataFrame(data=outs)
     basis_type = CategoricalDtype(categories=order_basis, ordered=True)
     theory_type = CategoricalDtype(categories=order_theory, ordered=True)
@@ -337,14 +330,20 @@ def calc_htst(product, reactant, transition_state, temperature):
     might be necessary to weigh the results by the magnitude of 'c'
 
     Args:
-        product(:obj:`orcaVis`): The product visitor class
-        reactant(:obj:`orcaVis`): The reactant visitor class
-        transition_state(:obj:`orcaVis`): The transition state visitor class
-        temperature(`float`): The temperature
+        product: Path or ``_OrcaRun`` for the product frequency job
+        reactant: Path or ``_OrcaRun`` for the reactant frequency job
+        transition_state: Path or ``_OrcaRun`` for the TS frequency job
+        temperature (`float`): Temperature in kelvin
 
     Returns:
-        kout(:obj:`rateconst`) : Returns a named tuple of forward and backward rates
+        Forward and backward rate constants (pint quantities)
     """
+    def _run(x):
+        return x if isinstance(x, _OrcaRun) else _OrcaRun(Path(x))
+
+    product = _run(product)
+    reactant = _run(reactant)
+    transition_state = _run(transition_state)
     prod = product.vib_freq()
     react = reactant.vib_freq()
     ts = transition_state.vib_freq()
@@ -425,7 +424,7 @@ class orcaExp:
     def get_final_sp_energy(self):
         """Returns a datframe of only the final single point energies
 
-        Proxies calls to the base orcaVis class over a series of generated files
+        Proxies calls to the per-output `_OrcaRun` adapter over a series of generated files
 
         Args:
             None
@@ -435,7 +434,7 @@ class orcaExp:
         """
         edatl = []
         for runf in self.orclist:
-            runorc = orcaVis(runf).final_sp_e()
+            runorc = _OrcaRun(runf).final_sp_e()
             edatl.append(runorc)
         fe = pd.DataFrame(edatl)
         basis_type = CategoricalDtype(categories=self.order_basis, ordered=True)
@@ -450,7 +449,7 @@ class orcaExp:
     def get_ir_spec(self):
         """Returns a datframe of the "ir spectrum"
 
-        Proxies calls to the base orcaVis class over a series of generated files
+        Proxies calls to the per-output `_OrcaRun` adapter over a series of generated files
 
         Args:
             None
@@ -460,7 +459,7 @@ class orcaExp:
         """
         vdatl = []
         for runf in self.orclist:
-            runorc = orcaVis(runf).ir_spec()
+            runorc = _OrcaRun(runf).ir_spec()
             vdatl.append(runorc)
         ve = pd.concat(vdatl, axis=0)
         ve = ve.drop_duplicates()
@@ -474,7 +473,7 @@ class orcaExp:
     def get_vib_freq(self):
         """Returns a datframe of the vibrational modes
 
-        Proxies calls to the base orcaVis class over a series of generated files
+        Proxies calls to the per-output `_OrcaRun` adapter over a series of generated files
 
         Args:
             None
@@ -484,7 +483,7 @@ class orcaExp:
         """
         vdatl = []
         for runf in self.orclist:
-            runorc = orcaVis(runf).vib_freq()
+            runorc = _OrcaRun(runf).vib_freq()
             vdatl.append(runorc)
         ve = pd.concat(vdatl, axis=0)
         ve = ve.drop_duplicates()
@@ -498,7 +497,7 @@ class orcaExp:
     def get_vpt2_transitions(self):
         """Returns a datframe of the fundamental transitions table
 
-        Proxies calls to the base orcaVis class over a series of generated files
+        Proxies calls to the per-output `_OrcaRun` adapter over a series of generated files
 
         Args:
             None
@@ -508,7 +507,7 @@ class orcaExp:
         """
         vdatl = []
         for runf in self.orclist:
-            runorc = orcaVis(runf).vpt2_transitions()
+            runorc = _OrcaRun(runf).vpt2_transitions()
             vdatl.append(runorc)
         ve = pd.concat(vdatl, axis=0)
         ve = ve.drop_duplicates()
@@ -523,7 +522,7 @@ class orcaExp:
         """Populates an energy surface dataframe
 
         This essentially walks over the generated set of files, and fills out
-        calls to the base orcaVis class.
+        calls to the per-output `_OrcaRun` adapter.
 
         Args:
             etype (:obj:`list` of :obj:`str`, optional): This is passed to the base
@@ -537,7 +536,7 @@ class orcaExp:
             etype = [etype]
         edatl = []
         for runf in self.orclist:
-            runsurf = orcaVis(runf).mult_energy_surface(etype=etype)
+            runsurf = _OrcaRun(runf).mult_energy_surface(etype=etype)
             edatl.append(runsurf)
         edat = pd.concat(edatl, axis=0)
         edat = edat.drop_duplicates()
@@ -554,7 +553,7 @@ class orcaExp:
         """Populates a population dataframe
 
         This essentially walks over the generated set of files, and fills out
-        calls to the base orcaVis class.
+        calls to the per-output `_OrcaRun` adapter.
 
         Args:
             poptype (:obj:`list` of :obj:`str`, optional): This is passed to the base
@@ -568,7 +567,7 @@ class orcaExp:
             poptype = [poptype]
         popdatl = []
         for runf in self.orclist:
-            runsurf = orcaVis(runf).mult_population_analysis(poptype)
+            runsurf = _OrcaRun(runf).mult_population_analysis(poptype)
             popdatl.append(runsurf)
         popdat = pd.concat(popdatl, axis=0)
         popdat = popdat.drop_duplicates()
@@ -699,35 +698,19 @@ def _pop_via_chemparseplot(path, poptype):
     return popdat
 
 
-class orcaVis:
-    """The class meant to handle ORCA output files.
+class _OrcaRun:
+    """Per-output adapter for multi-job experiment tables (``orcaExp``).
 
-    Todo:
-        * Add a grammar and recursive descent later
+    Not a public parse API. Prefer chemparseplot for single-file energies,
+    geomscan, IR, VPT2, and populations. This class stitches chemparseplot
+    results (with legacy regex fallback for MDCI tables) into the dataframes
+    ``orcaExp`` assembles across a harness tree.
     """
 
     def __init__(self, ofile):
-        """Output file initialization.
-
-        This is meant to return base objects to the experiment level class.
-
-        Note:
-            Do not include the `self` parameter in the ``Args`` section.
-
-        Args:
-            ofile (str): The output file generated by ORCA.
-            eeval (int): The number of energy evaluations
-
+        """Args:
+            ofile: Path to one ORCA ``.out`` file.
         """
-        import warnings
-
-        warnings.warn(
-            "wailord.io.orca.orcaVis is deprecated for new parse/plot work; "
-            "use chemparseplot.parse / chemparseplot.api (geomscan, grammar) "
-            "and keep experiment orchestration in orcaExp only.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
         self.eeval = None
         self.ofile = ofile
         self.runinfo = getRunInfo(self.ofile.parent)

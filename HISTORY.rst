@@ -1,3 +1,17 @@
+0.2.0 (2026-07-19)
+------------------
+
+* Finish suite migration (no more deprecation shims):
+
+  * ``xyzIO`` removed — use ``chemparseplot.api.parse_xyz`` /
+    ``wailord.io.xyz.parse_xyz``; harness helpers ``coord_block`` /
+    ``atom_symbols`` / ``rewrite_xyz``.
+  * ``parseOut`` / ``orcaVis`` are private (``_parse_out`` / ``_OrcaRun``);
+    public multi-job surface is ``orcaExp`` + ``calc_htst`` / ``genEBASet``.
+  * ``inpGenerator`` stays as the multi-job YAML harness (batch shell);
+    single-run ORCA inputs remain ``pychum.render_orca``.
+* Drop local XYZ grammar; chemparseplot grammar track owns structured XYZ.
+
 0.1.5 (2026-07-19)
 ------------------
 

@@ -1,12 +1,13 @@
-"""I/O package: thin proxies over the rgpkgs suite where possible.
+"""I/O package for the wailord batch shell.
 
-* ``xyz`` / energy slices → prefer chemparseplot grammar track
-  (``chemparseplot.api.parse_xyz``, ``parse_orca_final_energy``,
-  ``extract_orca_geomscan_energy``)
-* ``inp`` → **frozen**; use pychum for new ORCA inputs
-* ``orca`` → experiment helpers (``orcaExp``); parse/plot migrate to chemparseplot
-  (see ``chemparseplot.parse.orca.migration.MIGRATION_CHECKLIST``)
+Role split (rgpkgs suite):
 
-Legacy classes emit ``DeprecationWarning`` on construction.
+* **Parse / plot (single file):** ``chemparseplot`` — ``api.parse_xyz``,
+  ``api.parse_orca_final_energy``, ``api.extract_orca_geomscan_energy``,
+  IR/VPT2/populations under ``chemparseplot.parse.orca``.
+* **Single-run ORCA inputs:** ``pychum.render_orca`` (TOML).
+* **This package:** multi-job harness generation (``inp``), experiment table
+  assembly (``orca.orcaExp``), HTST rates, SLURM-oriented out-file walks, and
+  thin XYZ helpers for embedding coordinates in generated inputs.
 """
 from . import inp, orca, xyz

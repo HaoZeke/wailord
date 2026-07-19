@@ -18,13 +18,13 @@ ureg.define("kcal_mol = kcal / 6.02214076e+23 = kcm")
 
 
 def test_orca_get_sp_e(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     np.testing.assert_almost_equal(sEnerg.fin_sp_e.m, -1.01010039)
     pass
 
 
 def test_orca_runinfo(datadir):
-    se = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    se = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     se.runinfo = waio.orca.getRunInfo(Path("H2_test/QCISD/spin_01/ENERGY/3-21G/"))
     assert se.runinfo == {
         "basis": "3-21G",
@@ -42,14 +42,14 @@ def test_orca_runinfo(datadir):
 
 
 def test_orca_mdci_e_bounds(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     with pytest.raises(ValueError):
         sEnerg.single_energy_surface(npoints=34)
     pass
 
 
 def test_orca_energ_error(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     with pytest.raises(NotImplementedError):
         sEnerg.single_energy_surface(etype="Squid")
     pass
@@ -57,7 +57,7 @@ def test_orca_energ_error(datadir):
 
 def test_orca_energ_empty(datadir):
     warnings.filterwarnings("ignore")
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_uhf.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_uhf.out")
     with pytest.raises(ValueError):
         sEnerg.single_energy_surface("MDCI", 33)
     with pytest.raises(ValueError):
@@ -67,7 +67,7 @@ def test_orca_energ_empty(datadir):
 
 def test_orca_mdci_e_xvals(datadir):
     """Ensure the bond scan is correct for the MDCI surface"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI", 33)
     blength = eDat.bond_length.to_numpy(dtype=float)
     np.testing.assert_almost_equal(
@@ -79,7 +79,7 @@ def test_orca_mdci_e_xvals(datadir):
 
 def test_orca_mdci_e_yvals(datadir):
     """Ensure the energy is correct for the MDCI surface"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI", 33)
     energy = eDat["MDCI"].to_numpy(dtype=float)
     exp_e = np.array(
@@ -128,7 +128,7 @@ def test_orca_mdci_e_yvals(datadir):
 
 def test_orca_mdci_e_mtrip_xvals(datadir):
     """Ensure the bond scan is correct for MDCI without triples"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
     blength = eDat.bond_length.to_numpy(dtype=float)
     np.testing.assert_almost_equal(
@@ -140,7 +140,7 @@ def test_orca_mdci_e_mtrip_xvals(datadir):
 
 def test_orca_mdci_e_mtrip_energy_evals(datadir):
     """Ensure that the number of evaluations matches the number parsed"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface(npoints=33)
     eDat1 = sEnerg.single_energy_surface()
     pd.testing.assert_frame_equal(eDat, eDat1)
@@ -149,7 +149,7 @@ def test_orca_mdci_e_mtrip_energy_evals(datadir):
 
 def test_orca_mdci_e_mtrip_yvals(datadir):
     """Ensure the energy is correct for MDCI without triples"""
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
     energy = eDat["MDCI w/o Triples"].to_numpy(dtype=float)
     exp_e = np.array(
@@ -202,7 +202,7 @@ def test_orca_mdci_e_mtrip_yvals(datadir):
 
 
 def test_mult_energy_surf(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     eDat = sEnerg.single_energy_surface("MDCI w/o Triples", 33)
     eDatMDCI = sEnerg.single_energy_surface("MDCI")
     eDatAll = sEnerg.mult_energy_surface()
@@ -213,7 +213,7 @@ def test_mult_energy_surf(datadir):
 
 
 def test_mult_energy_surf_subset(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     eDatAll = sEnerg.mult_energy_surface(etype=["MDCI", "SCF Energy"])
     assert "Actual Energy" not in eDatAll.columns
     assert "MDCI" in eDatAll.columns
@@ -222,7 +222,7 @@ def test_mult_energy_surf_subset(datadir):
 
 
 def test_mult_energy_surf_single(datadir):
-    sEnerg = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    sEnerg = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     eDatSingleL = sEnerg.mult_energy_surface(etype=["MDCI"])
     eDatMDCI = sEnerg.single_energy_surface("MDCI")
     pd.testing.assert_frame_equal(eDatMDCI, eDatSingleL.loc[:, ["bond_length", "MDCI"]])
@@ -237,7 +237,7 @@ def test_mult_energy_surf_single(datadir):
 
 
 def test_orca_single_chargepop(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    spop = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     sdat = spop.single_population_analysis()
     assert sdat.shape == (4, 5)
     np.testing.assert_equal(sdat.pcharge.to_numpy(), np.zeros(4))
@@ -248,7 +248,7 @@ def test_orca_single_chargepop(datadir):
 
 
 def test_orca_single_fullpop(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "orca_uhf.out")
+    spop = waio.orca._OrcaRun(ofile=datadir / "orca_uhf.out")
     sdat = spop.single_population_analysis()
     assert sdat.shape == (2, 6)
     np.testing.assert_equal(sdat.pcharge.to_numpy(), np.zeros(2))
@@ -260,7 +260,7 @@ def test_orca_single_fullpop(datadir):
 
 
 def test_orca_nstep_pop(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "ch3f_3ang_b3lyp.out")
+    spop = waio.orca._OrcaRun(ofile=datadir / "ch3f_3ang_b3lyp.out")
     popdat = spop.single_population_analysis()
     assert popdat.step.max() == 2
     assert popdat[popdat.step == 1].shape == popdat[popdat.step == 2].shape
@@ -273,7 +273,7 @@ def test_orca_nstep_pop(datadir):
 
 
 def test_orca_mult_chargepop(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "orca_qcisdt.out")
+    spop = waio.orca._OrcaRun(ofile=datadir / "orca_qcisdt.out")
     sdat = spop.mult_population_analysis()
     assert sdat.shape == (8, 10)
     np.testing.assert_equal(sdat.pcharge.to_numpy(), np.zeros(8))
@@ -281,7 +281,7 @@ def test_orca_mult_chargepop(datadir):
 
 
 def test_orca_mult_fullpop(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "orca_uhf.out")
+    spop = waio.orca._OrcaRun(ofile=datadir / "orca_uhf.out")
     sdat = spop.mult_population_analysis()
     assert sdat.shape == (4, 11)
     np.testing.assert_equal(sdat.pcharge.to_numpy(), np.zeros(4))
@@ -295,7 +295,7 @@ def test_orca_mult_fullpop(datadir):
 
 
 def test_orca_irspec(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "b3lyp_6311g88_h2o.out")
+    spop = waio.orca._OrcaRun(ofile=datadir / "b3lyp_6311g88_h2o.out")
     sdat = spop.ir_spec()
     assert sdat.shape == (3, 11)
     assert sdat.T2.pint.units == "kilometer / mole"
@@ -313,7 +313,7 @@ def test_orca_irspec(datadir):
 
 
 def test_orca_vpt2(datadir):
-    spop = waio.orca.orcaVis(ofile=datadir / "orcaVPT2.out")
+    spop = waio.orca._OrcaRun(ofile=datadir / "orcaVPT2.out")
     sdat = spop.vpt2_transitions()
     assert sdat.shape == (3, 9)
     assert sdat.harmonic_freq.pint.units == "reciprocal_centimeter"
@@ -332,7 +332,7 @@ def test_orca_vpt2(datadir):
 
 # FIXME: Test more things
 # def test_orca_vibfreq(datadir):
-#     spop = waio.orca.orcaVis(ofile=datadir / "orca_imaginary_freq.out")
+#     spop = waio.orca._OrcaRun(ofile=datadir / "orca_imaginary_freq.out")
 #     sdat = spop.vib_freq()
 #     assert sdat.shape == (3, 33)
 #     assert sdat.freq.pint.units == "reciprocal_centimeter"
@@ -345,9 +345,9 @@ def test_orca_vpt2(datadir):
 
 
 def test_calc_htst(datadir):
-    prod = waio.orca.orcaVis(ofile=datadir / "orcaProduct.out")
-    react = waio.orca.orcaVis(ofile=datadir / "orcaReactant.out")
-    ts = waio.orca.orcaVis(ofile=datadir / "orcaTS.out")
+    prod = waio.orca._OrcaRun(ofile=datadir / "orcaProduct.out")
+    react = waio.orca._OrcaRun(ofile=datadir / "orcaReactant.out")
+    ts = waio.orca._OrcaRun(ofile=datadir / "orcaTS.out")
     temp = 298.15
     kf, kb = waio.orca.calc_htst(
         product=prod, reactant=react, transition_state=ts, temperature=temp

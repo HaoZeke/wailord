@@ -39,9 +39,9 @@ Features
 --------
 
 * Part of the **rgpkgs** suite: depends on ``rgpycrumbs`` (config/pins/ensure_import)
-  and ``chemparseplot`` (unit helpers). Suite config is shared
-  (``~/.config/rgpkgs/config.toml``, project ``rgpkgs.toml``) — wailord does not
-  invent its own pin file. See ``wailord.suite``.
+  and ``chemparseplot`` (units + parse). Suite config is shared
+  (``~/.config/rgpkgs/config.toml``, project ``rgpkgs.toml``). See ``wailord.suite``.
+  Parse/plot is chemparseplot; single-run inputs are pychum; wailord is multi-job only.
 
 * Integrates with SLURM in a manner of speaking
 * Generic helpers for building arbitrary input files
@@ -85,26 +85,25 @@ Manual peer list (secondary; prefer the suite extra above)::
 
     pip install 'chemparseplot[grammar]' pychum rgpycrumbs
 
-Migration (rgpkgs suite)
+Role split (rgpkgs suite)
 ------------------------
 
-Wailord is a **batch / experiment shell** for ORCA workflows. Parsing and
-plotting belong in **chemparseplot**; new ORCA inputs belong in **pychum**.
+Wailord is a **batch / experiment shell** for ORCA workflows.
 
-* ``wailord.io.xyz.xyzIO`` → ``chemparseplot.api.parse_xyz`` /
-  ``chemparseplot.parse.grammar``
-* ``wailord.io.orca.parseOut`` → ``chemparseplot.api.parse_orca_final_energy`` /
-  ``parse_orca_text_summary``
-* ``wailord.io.orca.orcaVis`` → chemparseplot plot/parse modules for surfaces
-* ``wailord.io.inp.inpGenerator`` → ``pychum.render_orca`` (deprecated wrapper)
+* **Parse / plot (single file):** ``chemparseplot`` —
+  ``api.parse_xyz``, ``api.parse_orca_final_energy``,
+  ``api.extract_orca_geomscan_energy``, and
+  ``chemparseplot.parse.orca`` (IR / VPT2 / populations / geomscan).
+* **Single-run ORCA inputs:** ``pychum.render_orca`` (TOML + dataclasses).
+* **Batch shell (this package):**
 
-What stays in wailord (batch shell)::
-
-* Cookiecutter experiment scaffolding (``wailord.exp.cookies``, ``_templates/``)
-* HTST rate helper (``wailord.io.orca.calc_htst``) over frequency-job outputs
-* SLURM-oriented out-file filters in multi-job table loaders
+  * multi-job YAML harness generation (``wailord.io.inp.inpGenerator``)
+  * experiment table assembly (``wailord.io.orca.orcaExp``)
+  * HTST rates (``calc_htst``) and bond/angle table helpers (``genEBASet``)
+  * cookiecutter experiment scaffolding (``wailord.exp.cookies``)
+  * thin XYZ embed helpers (``wailord.io.xyz.coord_block``, ``atom_symbols``)
 
 eOn CON/outcome I/O never lives in wailord — use chemparseplot and
 `readcon-core <https://github.com/lode-org/readcon-core>`_ (PyPI:
 `readcon <https://pypi.org/project/readcon/>`_). siuba experiment APIs are
-not part of the suite and are not ported.
+not part of the suite.
