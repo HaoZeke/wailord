@@ -68,6 +68,23 @@ Credits
 .. _Bulbagarden: https://archives.bulbagarden.net/wiki/File:321Wailord_AG_anime.png
 .. _`wallhaven.cc`: https://wallhaven.cc/w/4xgw53
 
+Install (rgpkgs suite)
+----------------------
+
+Recommended one-shot for the full suite peers (chemparseplot grammar track +
+pychum inputs)::
+
+    pip install 'wailord[suite]'
+
+That expands to ``wailord[grammar,pychum]``: grammar-backed XYZ/ORCA text
+parsing and modern ORCA input generation. Hard deps already pull
+``rgpycrumbs`` and ``chemparseplot``; the suite extra adds the optional
+grammar stack and pychum.
+
+Manual peer list (secondary; prefer the suite extra above)::
+
+    pip install 'chemparseplot[grammar]' pychum rgpycrumbs
+
 Migration (rgpkgs suite)
 ------------------------
 
@@ -81,9 +98,13 @@ plotting belong in **chemparseplot**; new ORCA inputs belong in **pychum**.
 * ``wailord.io.orca.orcaVis`` → chemparseplot plot/parse modules for surfaces
 * ``wailord.io.inp.inpGenerator`` → ``pychum.render_orca`` (deprecated wrapper)
 
-Install suite peers::
+What stays in wailord (batch shell)::
 
-    pip install 'chemparseplot[grammar]' pychum rgpycrumbs
+* Cookiecutter experiment scaffolding (``wailord.exp.cookies``, ``_templates/``)
+* HTST rate helper (``wailord.io.orca.calc_htst``) over frequency-job outputs
+* SLURM-oriented out-file filters in multi-job table loaders
 
-Cookiecutter experiment scaffolding stays in ``wailord.exp``. eOn CON/outcome
-I/O never lives in wailord — use chemparseplot and `readcon-core <https://github.com/lode-org/readcon-core>`_ (PyPI: `readcon <https://pypi.org/project/readcon/>`_).
+eOn CON/outcome I/O never lives in wailord — use chemparseplot and
+`readcon-core <https://github.com/lode-org/readcon-core>`_ (PyPI:
+`readcon <https://pypi.org/project/readcon/>`_). siuba experiment APIs are
+not part of the suite and are not ported.

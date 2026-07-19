@@ -85,6 +85,26 @@ def _parse_via_chemparseplot(path: Path):
     return parse_xyz_file(path)
 
 
+class _XyzDatCompat:
+    """Legacy-shaped xyzdat for chemparseplot-backed reads.
+
+    Callers (``inpGenerator``) expect ``.coord_block`` (atom lines only) and
+    ``.atom_types`` (symbol list), matching the old ``_xyzVisitor`` surface.
+    """
+
+    def __init__(self, natoms: int, coord_block: str, atom_types: list[str], meta: str):
+        self.natoms = natoms
+        self.coord_block = coord_block
+        self.atom_types = list(atom_types)
+        self.meta = meta
+
+    def __repr__(self):
+        return f"{self.meta}"
+
+    def __str__(self):
+        return self.meta
+
+
 class xyzIO:
     """XYZ file handler (proxy over chemparseplot grammar when installed)."""
 
@@ -126,10 +146,27 @@ class xyzIO:
             self.slug = f"{self.system}_{self.filename.stem}"
             self._atoms = [(a.symbol, a.x, a.y, a.z) for a in frame.atoms]
             self._coord_lines = raw_lines[2:] if len(raw_lines) > 2 else []
-            lines = [str(frame.natoms)] + [
+            # Prefer original formatting for coord_block (inpGenerator embeds it)
+            if self._coord_lines:
+                cb_lines = []
+                for aline in self._coord_lines:
+                    each = aline.split()
+                    if each:
+                        cb_lines.append("    ".join(each))
+                coord_block = "\n".join(cb_lines)
+            else:
+                coord_block = "\n".join(
+                    f"{s}    {x}    {y}    {z}" for s, x, y, z in self._atoms
+                )
+            meta_lines = [str(frame.natoms)] + [
                 f"{s} {x} {y} {z}" for s, x, y, z in self._atoms
             ]
-            self.xyzdat = "\n".join(lines)
+            self.xyzdat = _XyzDatCompat(
+                natoms=int(frame.natoms),
+                coord_block=coord_block,
+                atom_types=list(frame.symbols),
+                meta="\n".join(meta_lines),
+            )
             return
 
         with open(self.filename) as fp:

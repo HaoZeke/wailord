@@ -1,6 +1,6 @@
 [project]
 name = "wailord"
-version = "0.1.4"
+version = "0.1.5"
 description = "Wailord is a python library to interact with ORCA"
 readme = "README.rst"
 # LICENSE is GPLv3; keep packaging metadata aligned for pip check / conda-forge.
@@ -18,12 +18,12 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 # Runtime-only deps (docs/lint stay in optional/pdm groups). All of these are on
 # conda-forge so `pip check` can pass in a conda env without workarounds.
 dependencies = [
-    "rgpycrumbs>=1.9.18",
-    "chemparseplot>=1.9.8",
+    "rgpycrumbs>=1.10.10",
+    "chemparseplot>=1.9.17",
     "pint>=0.22",
     "pint-pandas>=0.5",
     "numpy>=1.26",
@@ -36,14 +36,15 @@ dependencies = [
 
 [project.optional-dependencies]
 # Grammar track for XYZ / ORCA text (forwarded to chemparseplot)
-grammar = ["chemparseplot[grammar]>=1.9.8"]
+grammar = ["chemparseplot[grammar]>=1.9.17"]
 # Modern ORCA input generation
 pychum = ["pychum>=1.4.0"]
+# One-shot install for full suite peers (grammar + pychum)
 suite = ["wailord[grammar,pychum]"]
 test = [
   "pytest>=7.0",
   "pytest-datadir>=1.5.0",
-  "chemparseplot[grammar]>=1.9.8",
+  "chemparseplot[grammar]>=1.9.17",
 ]
 docs = [
   "sphinx>=7.1.2",
@@ -95,7 +96,7 @@ run = "wailord.cli:main"
 
 [tool.ruff]
 line-length = 80
-target-version = ['py310']
+target-version = ['py311']
 select = [
     "NPY",
     "I",

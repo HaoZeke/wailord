@@ -1,3 +1,14 @@
+0.1.5 (2026-07-19)
+------------------
+
+* Raise suite floors to chemparseplot>=1.9.17 and rgpycrumbs>=1.10.10.
+* requires-python >=3.11 (matches chemparseplot 1.9.17).
+* Restore legacy ``xyzdat.coord_block`` / ``atom_types`` shape when XYZ is
+  parsed via chemparseplot so deprecated ``inpGenerator`` still works.
+* Document ``wailord[suite]`` as the recommended one-shot install for suite peers.
+* Inventory: keep HTST, cookiecutter templates, and SLURM out filters in the
+  batch shell; siuba remains absent (not ported).
+
 0.1.4 (2026-07-18)
 ------------------
 
