@@ -1,24 +1,25 @@
-name: "Build & Test"
+name: Build & Test
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 on: [push, pull_request]
 jobs:
-  ci:
+  test:
+    name: pytest (py${{ matrix.python }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.9, 3.12]
-        os: [ubuntu-18.04, macos-latest]
-    runs-on: ${{ matrix.os }}
+        os: [ubuntu-latest]
+        python: ["3.10", "3.12"]
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup PDM
-        uses: pdm-project/setup-pdm@v3
+      - uses: actions/checkout@v4
         with:
-          python-version: ${{ matrix.python-version }}
-          cache: true
-          cache-dependency-path: |
-              ./pdm.lock
-              ./pdm.new.lock
-      - name: Install dependencies
-        run: pdm install -G:all
-      - name: Test project
-        run: pdm run pytest
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install (test extra)
+        run: uv sync --extra test
+      - name: Run tests
+        run: uv run pytest -v

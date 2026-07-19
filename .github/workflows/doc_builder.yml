@@ -1,30 +1,20 @@
-name: "Build Documentation"
+name: Build Documentation
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 on: [push, pull_request]
 jobs:
-  ci:
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.9]
-        poetry-version: [1.1.5]
-        os: [ubuntu-18.04]
-    runs-on: ${{ matrix.os }}
+  docs:
+    name: sphinx (ubuntu)
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Run image
-        uses: abatilo/actions-poetry@v2.0.0
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
         with:
-          poetry-version: ${{ matrix.poetry-version }}
-      - name: Prep dependencies
-        run: poetry install
-      - name: Build docs
-        run: poetry run sphinx-build docs ./genDocs
-      - name: Deploy Documentation
-        if: ${{ (github.ref == 'refs/heads/main' && github.repository == 'HaoZeke/wailord') || (github.ref == 'refs/heads/master' && github.repository == 'HaoZeke/wailord')}}
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./genDocs
+          python-version: "3.12"
+      - name: Install (docs + test extras)
+        run: uv sync --extra test --extra docs
+      - name: Build HTML docs
+        run: uv run sphinx-build -b html docs genDocs
