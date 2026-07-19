@@ -86,7 +86,8 @@ Manual peer list (secondary; prefer the suite extra above)::
     pip install 'chemparseplot[grammar]' pychum rgpycrumbs
 
 Role split (rgpkgs suite)
-------------------------
+-------------------------
+
 
 Wailord is a **batch / experiment shell** for ORCA workflows.
 
